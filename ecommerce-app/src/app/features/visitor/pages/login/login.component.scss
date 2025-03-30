@@ -1,0 +1,28 @@
+h2 {
+    text-align: center;
+  }
+  
+  form {
+    max-width: 300px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    margin-top: 10px;
+  }
+  
+  input {
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+  
+  button {
+    padding: 10px;
+    background: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
