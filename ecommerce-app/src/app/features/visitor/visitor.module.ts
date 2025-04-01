@@ -5,7 +5,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-  declarations: [HomeComponent], // HomeComponent standalone değilse buraya eklenecek
+  declarations: [HomeComponent], 
   imports: [CommonModule, VisitorRoutingModule, SharedModule]
 })
 export class VisitorModule { }

@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './features/visitor/pages/home/home.component';  // HomeComponent import edildi
+import { HomeComponent } from './features/visitor/pages/home/home.component';  
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },  // HomeComponent yönlendirmesi burada
+  { path: '', component: HomeComponent },  
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],  // forRoot() sadece ana modülde kullanılır
+  imports: [RouterModule.forRoot(routes)], 
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
