@@ -4,10 +4,11 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module'; 
 import { VisitorModule } from './features/visitor/visitor.module';
+import { CustomerModule } from './features/customer/customer.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, SharedModule,VisitorModule],  
+  imports: [BrowserModule, AppRoutingModule, SharedModule,VisitorModule, CustomerModule],  
   providers: [],
   bootstrap: [AppComponent]
 })
