@@ -5,10 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module'; 
 import { VisitorModule } from './features/visitor/visitor.module';
 import { CustomerModule } from './features/customer/customer.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, SharedModule,VisitorModule, CustomerModule],  
+  imports: [BrowserModule, AppRoutingModule, SharedModule,VisitorModule, CustomerModule,ReactiveFormsModule],  
   providers: [],
   bootstrap: [AppComponent]
 })
