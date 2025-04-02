@@ -1,1 +1,8 @@
-<p>banner works!</p>
+<div class="banner">
+    <div class="banner-slider">
+      <div *ngFor="let item of items; let i = index" class="slide" [class.active]="i === currentIndex">
+        <img [src]="item.image" [alt]="item.altText" />
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,28 @@
+.banner {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 300px;
+  
+    .banner-slider {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      
+      .slide {
+        min-width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+  
+        &.active {
+          opacity: 1;
+        }
+      }
+  
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+  
