@@ -1,1 +1,16 @@
-<p>sidebar works!</p>
+<button class="sidebar-toggle" (mouseenter)="openSidebar()" *ngIf="!sidebarVisible">
+    Categories
+</button>
+
+<aside class="sidebar" (mouseleave)="closeSidebar()" [class.open]="sidebarVisible">
+    <div class="sidebar-header">
+        <h2>Categories</h2>
+    </div>
+    <ul class="menu">
+        <li><a href="#">Electronics</a></li>
+        <li><a href="#">Fashion</a></li>
+        <li><a href="#">Home & Living</a></li>
+        <li><a href="#">Sports & Outdoor</a></li>
+        <li><a href="#">Cosmetics</a></li>
+    </ul>
+</aside>
