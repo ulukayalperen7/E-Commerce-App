@@ -1,9 +1,10 @@
 <nav>
-    <ul>
-      <li><a routerLink="/home">Home</a></li>
-      <li><a routerLink="/products">Products</a></li>
-      <li><a routerLink="/login">Login</a></li>
-      <li><a routerLink="/register">Register</a></li>
-    </ul>
-  </nav>
-  
+  <ul>
+    <li *ngFor="let link of navLinks">
+      <a [routerLink]="link.path">{{ link.label }}</a>
+    </li>
+    <li *ngFor="let link of (isLoggedIn ? userLinks : authLinks)">
+      <a [routerLink]="link.path">{{ link.label }}</a>
+    </li>
+  </ul>
+</nav>
