@@ -1,1 +1,25 @@
-/* You can add global styles to this file, and also import other style files */
+footer {
+    background-color: #222;
+    color: white;
+    padding: 20px 10px;  
+  }
+  
+  body {
+    overflow: auto;
+  }
+  
+  body::-webkit-scrollbar {
+    width: 12px;
+    background-color: #333;
+  }
+  
+  body::-webkit-scrollbar-thumb {
+    background-color: #aaa;  
+    border-radius: 6px;
+    border: 2px solid #666;  
+  }
+  
+  body::-webkit-scrollbar-thumb:hover {
+    background-color: #888; 
+  }
+  
