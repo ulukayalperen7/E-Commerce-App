@@ -7,6 +7,7 @@ import { CustomerHomeComponent } from './pages/customer-home/customer-home.compo
 import { CustomerCartComponent } from './pages/customer-cart/customer-cart.component';
 import { CustomerProfileComponent } from './pages/customer-profile/customer-profile.component';
 import { OrderHistoryComponent } from './pages/order-history/order-history.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { OrderHistoryComponent } from './pages/order-history/order-history.compo
   ],
   imports: [
     CommonModule,
+    RouterModule,
     CustomerRoutingModule,
     SharedModule 
   ]

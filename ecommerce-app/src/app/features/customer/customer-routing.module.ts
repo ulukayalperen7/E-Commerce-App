@@ -6,10 +6,11 @@ import { CustomerProfileComponent } from './pages/customer-profile/customer-prof
 import { OrderHistoryComponent } from './pages/order-history/order-history.component';
 
 const routes: Routes = [
-  { path: '', component: CustomerHomeComponent },
+  { path: 'home', component: CustomerHomeComponent }, 
   { path: 'cart', component: CustomerCartComponent },
   { path: 'profile', component: CustomerProfileComponent },
-  { path: 'orders', component: OrderHistoryComponent },
+  { path: 'order-history', component: OrderHistoryComponent }, 
+  { path: '', redirectTo: 'home', pathMatch: 'full' } 
 ];
 
 @NgModule({

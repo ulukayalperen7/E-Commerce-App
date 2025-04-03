@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,20 +8,21 @@ import { Component } from '@angular/core';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
-  isLoggedIn = false; 
+  isLoggedIn = false;
 
   navLinks = [
     { path: '/home', label: 'Home' },
-    { path: '/products', label: 'Products' }
+    { path: '/products', label: 'Products' } 
   ];
   
   authLinks = [
     { path: '/login', label: 'Login' },
-    { path: '/register', label: 'Register' }
+    { path: '/register', label: 'Register' } 
   ];
 
   userLinks = [
-    { path: '/profile', label: 'Profile' },
+    { path: '/customer/profile', label: 'Profile' }, 
+    { path: '/customer/order-history', label: 'Orders' },
     { path: '/logout', label: 'Logout' }
   ];
 }
