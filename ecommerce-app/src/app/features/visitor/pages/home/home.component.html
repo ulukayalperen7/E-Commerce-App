@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 
 <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
-  <input formControlName="searchQuery" placeholder="Search products..." />
+  <input formControlName="search" placeholder="Search products..." />
   <button type="submit" [disabled]="searchForm.invalid">Search</button>
 </form>
 
@@ -11,9 +11,11 @@
 <app-sidebar></app-sidebar>
 
 <div class="product-list">
-  <div *ngFor="let product of products">
-    <div>{{ product.name }}</div>
-    <div>{{ product.price | currency }}</div>
+  <div *ngFor="let product of filteredProducts" class="product-card">
+    <img [src]="product.image" alt="{{ product.name }}">
+    <h3>{{ product.name }}</h3>
+    <p>{{ product.price | currency }}</p>
+    <button>Add to Cart</button>
   </div>
 </div>
 
