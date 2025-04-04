@@ -1,10 +1,5 @@
 <app-navbar></app-navbar>
 
-<form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
-  <input formControlName="search" placeholder="Search products..." />
-  <button type="submit" [disabled]="searchForm.invalid">Search</button>
-</form>
-
 <h1>Welcome to Our E-Commerce Store</h1>
 
 <app-banner></app-banner>

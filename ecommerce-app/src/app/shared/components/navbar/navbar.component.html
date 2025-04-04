@@ -1,10 +1,27 @@
-<nav>
-  <ul>
-    <li *ngFor="let link of navLinks">
-      <a [routerLink]="link.path">{{ link.label }}</a>
-    </li>
-    <li *ngFor="let link of (isLoggedIn ? userLinks : authLinks)">
-      <a [routerLink]="link.path">{{ link.label }}</a>
-    </li>
-  </ul>
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="navbar-left">
+      <div class="logo">
+        <span class="icon">🛍️</span>
+        <span class="text">MyStore</span>
+      </div>
+
+      <div class="search-container">
+        <input type="text" placeholder="Search products..." />
+        <button class="search-btn">🔍</button>
+      </div>
+    </div>
+
+    <div class="navbar-center">
+      <a routerLink="/favorites" class="nav-item">❤️Favorites</a>
+    </div>
+
+    <div class="navbar-right">
+      <a routerLink="/login" class="nav-item">Login</a>
+      <a routerLink="/register" class="nav-item">Register</a>
+      <a routerLink="/cart" class="nav-item cart">
+        🛒 Cart
+      </a>
+    </div>
+  </div>
 </nav>
