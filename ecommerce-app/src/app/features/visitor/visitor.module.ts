@@ -6,14 +6,16 @@ import { SharedModule } from '../../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './pages/login/login.component';
 import { ProductListComponent } from './pages/product-list/product-list.component'; 
-import { RegisterComponent } from './pages/register/register.component'; 
+import { RegisterComponent } from './pages/register/register.component';
+import { AboutComponent } from './pages/about/about.component';
+import { ContactComponent } from './pages/contact/contact.component'; 
 
 @NgModule({
   declarations: [
     HomeComponent,
     LoginComponent,
     ProductListComponent, 
-    RegisterComponent 
+    RegisterComponent, AboutComponent, ContactComponent 
   ],
   imports: [
     CommonModule, 

@@ -1,0 +1,59 @@
+.about-container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 2rem;
+    text-align: center;
+  
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+  
+    p {
+      font-size: 1.1rem;
+      color: #555;
+      margin-bottom: 2rem;
+    }
+  
+    .team-section {
+      h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: #444;
+      }
+  
+      .team-members {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 2rem;
+  
+        .member-card {
+          background-color: #f9f9f9;
+          border-radius: 12px;
+          padding: 1rem;
+          box-shadow: 0 0 10px rgba(0,0,0,0.1);
+          width: 200px;
+  
+          img {
+            width: 100%;
+            height: auto;
+            border-radius: 50%;
+            margin-bottom: 0.5rem;
+          }
+  
+          h3 {
+            font-size: 1.2rem;
+            color: #222;
+          }
+  
+          p {
+            font-size: 0.95rem;
+            color: #777;
+          }
+        }
+      }
+    }
+  }
+  

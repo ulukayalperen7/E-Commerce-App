@@ -1,0 +1,10 @@
+<section class="contact-container">
+    <h1>Contact Us</h1>
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+      <input formControlName="name" placeholder="Your Name" />
+      <input formControlName="email" placeholder="Your Email" />
+      <textarea formControlName="message" placeholder="Your Message"></textarea>
+      <button type="submit" [disabled]="contactForm.invalid">Send</button>
+    </form>
+  </section>
+  
