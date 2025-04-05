@@ -1,14 +1,12 @@
-<h2>Sign Up</h2>
-<form (ngSubmit)="onRegister()">
-  <label for="name">Full Name:</label>
-  <input type="text" id="name" required />
-
-  <label for="email">Email:</label>
-  <input type="email" id="email" required />
-
-  <label for="password">Password:</label>
-  <input type="password" id="password" required />
-
-  <button type="submit">Sign Up</button>
+<h2>Register</h2>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <input formControlName="name" type="text" placeholder="Name" />
+  <input formControlName="email" type="email" placeholder="Email" />
+  <input formControlName="password" type="password" placeholder="Password" />
+  <button type="submit">Register</button>
 </form>
-<p>Already have an account? <a routerLink="/login">Log In</a></p>
+
+<p>
+  Already have an account?
+  <a routerLink="/login">Login here</a>
+</p>

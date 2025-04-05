@@ -1,17 +1,14 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <div>
-    <label for="username">Username</label>
-    <input formControlName="username" id="username" placeholder="Enter your username" />
-  </div>
-  
-  <div>
-    <label for="password">Password</label>
-    <input type="password" formControlName="password" id="password" placeholder="Enter your password" />
-  </div>
+<h2>Login</h2>
 
-  <button type="submit" [disabled]="loginForm.invalid">Login</button>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <input formControlName="email" type="email" placeholder="Email" />
+  <input formControlName="password" type="password" placeholder="Password" />
+  <button type="submit">Login</button>
 </form>
 
+<p *ngIf="errorMessage" style="color: red">{{ errorMessage }}</p>
+
 <p>
-  Don't have an account? <a (click)="goToRegister()">Register here</a>
+  Don't have an account?
+  <a routerLink="/register">Register here</a>
 </p>
