@@ -5,7 +5,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
-  standalone :false,
+  standalone : false,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
@@ -27,13 +27,14 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.invalid) return;
 
-    const credentials = this.loginForm.value; 
+    const credentials = this.loginForm.value;
     this.authService.login(credentials).subscribe({
       next: () => {
+        this.errorMessage = '';
         this.router.navigate(['/customer/home']);
       },
       error: () => {
-        this.errorMessage = 'Invalid credentials';
+        this.errorMessage = 'Incorrect email or password. Please try again.';
       }
     });
   }

@@ -1,14 +1,24 @@
-<h2>Login</h2>
+<div class="login-container">
+  <h2>Login</h2>
 
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <input formControlName="email" type="email" placeholder="Email" />
-  <input formControlName="password" type="password" placeholder="Password" />
-  <button type="submit">Login</button>
-</form>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <input formControlName="email" type="email" placeholder="Email" id="email" />
+    <small *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="field-error">
+      Please enter a valid email.
+    </small>
 
-<p *ngIf="errorMessage" style="color: red">{{ errorMessage }}</p>
+    <input formControlName="password" type="password" placeholder="Password" id="password" />
+    <small *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="field-error">
+      Password is required.
+    </small>
 
-<p>
-  Don't have an account?
-  <a routerLink="/register">Register here</a>
-</p>
+    <button type="submit">Login</button>
+  </form>
+
+  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+
+  <p class="register-text">
+    Don't have an account?
+    <a routerLink="/register">Register here</a>
+  </p>
+</div>

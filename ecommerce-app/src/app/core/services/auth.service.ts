@@ -7,6 +7,10 @@ import { Observable, of, throwError } from 'rxjs';
 export class AuthService {
   register(user: any): Observable<any> {
     const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const exists = users.some((u: any) => u.email === user.email);
+    if (exists) {
+      return throwError(() => new Error('Email already registered'));
+    }
     users.push(user);
     localStorage.setItem('users', JSON.stringify(users));
     return of(user);
