@@ -1,0 +1,33 @@
+.login-required-container {
+    text-align: center;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    max-width: 500px;
+    margin: 100px auto;
+  }
+  
+  .login-required-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .login-required-container p {
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+  
+  .login-required-container button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .login-required-container button:hover {
+    background-color: #0056b3;
+  }
+  

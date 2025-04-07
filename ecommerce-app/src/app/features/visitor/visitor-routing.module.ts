@@ -9,6 +9,7 @@ import { ContactComponent } from './pages/contact/contact.component';
 import { AuthGuard } from '../../core/guards/auth.guard';
 import { CustomerCartComponent } from '../customer/pages/customer-cart/customer-cart.component';
 import { FavoritesComponent } from '../customer/pages/favorites/favorites.component';
+import { LoginRequiredComponent } from './pages/login-required/login-required.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'contact', component: ContactComponent },
   { path: 'cart', component: CustomerCartComponent, canActivate: [AuthGuard] },
   { path: 'favorites', component: FavoritesComponent, canActivate: [AuthGuard] },
+  { path: 'login-required', component: LoginRequiredComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];
 
