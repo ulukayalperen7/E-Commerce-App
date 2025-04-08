@@ -1,1 +1,17 @@
-<p>customer-home works!</p>
+<app-customer-navbar></app-customer-navbar>
+
+<h1 class="home-heading">This season's best deals</h1>
+
+<app-banner></app-banner>
+<app-sidebar></app-sidebar>
+
+<div class="product-list">
+  <div *ngFor="let product of filteredProducts" class="product-card">
+    <img [src]="product.image" alt="{{ product.name }}" />
+    <h3>{{ product.name }}</h3>
+    <p>{{ product.price | currency }}</p>
+    <button>Add to Cart</button>
+  </div>
+</div>
+
+<app-footer></app-footer>

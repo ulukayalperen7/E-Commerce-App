@@ -1,0 +1,138 @@
+.navbar {
+  background-color: #ffffff;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+
+  .navbar-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    background-color: #fafafa;
+  }
+
+  .navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 1.5rem;
+
+      .icon {
+        margin-right: 0.5rem;
+      }
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+
+      input {
+        padding: 0.5rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px 0 0 4px;
+        outline: none;
+      }
+
+      .search-btn {
+        padding: 0.5rem 1rem;
+        border: 1px solid #ddd;
+        border-left: none;
+        border-radius: 0 4px 4px 0;
+        background-color: #f5f5f5;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: #e2e2e2;
+        }
+      }
+    }
+  }
+
+  .navbar-center {
+    display: flex;
+    gap: 2rem;
+
+    .nav-item {
+      font-weight: 500;
+      color: #333;
+      text-decoration: none;
+      transition: color 0.3s;
+
+      &:hover {
+        color: #000;
+      }
+
+      &.cart {
+        font-weight: bold;
+        background-color: #f5f5f5;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+
+        &:hover {
+          background-color: #e2e2e2;
+        }
+      }
+    }
+  }
+
+  .navbar-right {
+    .profile-dropdown {
+      position: relative;
+
+      .profile-btn {
+        background: none;
+        border: none;
+        font-weight: 500;
+        color: #333;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: #f0f0f0;
+        }
+      }
+
+      .dropdown-content {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        position: absolute;
+        top: 2.5rem;
+        right: 0;
+        background-color: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        z-index: 10;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+
+        a {
+          display: block;
+          padding: 0.75rem 1.5rem;
+          text-decoration: none;
+          color: #333;
+          transition: background-color 0.3s;
+
+          &:hover {
+            background-color: #f7f7f7;
+          }
+        }
+      }
+
+      &:hover .dropdown-content {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+    }
+  }
+}
