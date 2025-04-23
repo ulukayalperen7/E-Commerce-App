@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-order-tracking',
+  standalone: false,
   templateUrl: './order-tracking.component.html',
   styleUrls: ['./order-tracking.component.scss']
 })

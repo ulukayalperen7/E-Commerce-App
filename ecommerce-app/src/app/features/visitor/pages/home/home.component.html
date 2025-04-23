@@ -1,17 +1,48 @@
-<app-navbar></app-navbar>
+<app-visitor-navbar></app-visitor-navbar>
 
-<h1>Welcome to Our E-Commerce Store</h1>
+<main class="container home-page">
 
-<app-banner></app-banner>
-<app-sidebar></app-sidebar>
+  <section class="welcome">
+    <h1>Welcome to MyStore</h1>
+  </section>
 
-<div class="product-list">
-  <div *ngFor="let product of filteredProducts" class="product-card">
-    <img [src]="product.image" alt="{{ product.name }}">
-    <h3>{{ product.name }}</h3>
-    <p>{{ product.price | currency }}</p>
-    <button>Add to Cart</button>
-  </div>
-</div>
+  <section class="banner-section">
+    <app-banner></app-banner>
+  </section>
+
+  <section class="recommended">
+    <h2>Recommended for You</h2>
+    <div class="scroll-cards">
+      <div *ngFor="let product of filteredProducts" class="product-card">
+        <img [src]="product.image" alt="{{ product.name }}" />
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.price | currency }}</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="flash-deals">
+    <h2>Flash Deals</h2>
+    <div class="scroll-cards">
+      <div *ngFor="let deal of filteredProducts" class="product-card">
+        <img [src]="deal.image" alt="{{ deal.name }}" />
+        <h3>{{ deal.name }}</h3>
+        <p>{{ deal.price | currency }}</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="brands">
+    <h2>Our Brands</h2>
+    <div class="scroll-brands">
+      <div *ngFor="let brand of ['Nike','Adidas','Sony','Apple','Samsung']" class="brand-logo">
+        {{ brand }}
+      </div>
+    </div>
+  </section>
+
+</main>
 
 <app-footer></app-footer>
