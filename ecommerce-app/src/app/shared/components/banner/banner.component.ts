@@ -2,33 +2,64 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-banner',
-  standalone : false,
+  standalone :false,
   templateUrl: './banner.component.html',
   styleUrls: ['./banner.component.scss']
 })
 export class BannerComponent implements OnInit, OnDestroy {
   items = [
-    { image: 'path/to/image1.jpg', altText: 'Image 1' },
-    { image: 'path/to/image2.jpg', altText: 'Image 2' },
-    { image: 'path/to/image3.jpg', altText: 'Image 3' }
+    {
+      image: 'assets/images/banner2.jpg',
+      altText: 'Skin Care',
+      title: 'Radiant Skin Care',
+      buttonText: 'Explore Skincare'
+    },
+    {
+      image: 'assets/images/banner4.jpg',
+      altText: 'Stylish Shoes',
+      title: 'New Trendy Footwear',
+      buttonText: 'View Shoes'
+    },
+    {
+      image: 'assets/images/banner3.jpg',
+      altText: 'Computers',
+      title: 'Latest Computer Deals',
+      buttonText: 'Dive into Tech'
+    },
+    {
+      image: 'assets/images/banner1.jpg',
+      altText: 'Fitness Gear',
+      title: 'Get Fit & Strong',
+      buttonText: 'Shop Fitness'
+    }
   ];
-
   currentIndex = 0;
-  interval: any;
+  private intervalId!: any;
+  private readonly delay = 3000;
 
-  ngOnInit() { 
-    this.startAutoSlide();
+  ngOnInit() {
+    this.play();
   }
 
   ngOnDestroy() {
-    if (this.interval) {
-      clearInterval(this.interval);
-    }
+    this.pause();
   }
 
-  startAutoSlide() {
-    this.interval = setInterval(() => {
-      this.currentIndex = (this.currentIndex + 1) % this.items.length;
-    }, 3000);
+  play() {
+    this.pause();
+    this.intervalId = setInterval(() => this.next(), this.delay);
+  }
+
+  pause() {
+    clearInterval(this.intervalId);
+  }
+
+  next() {
+    this.currentIndex = (this.currentIndex + 1) % this.items.length;
+  }
+
+  prev() {
+    this.currentIndex =
+      (this.currentIndex - 1 + this.items.length) % this.items.length;
   }
 }

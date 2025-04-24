@@ -1,7 +1,6 @@
 <app-visitor-navbar></app-visitor-navbar>
 
-<main class="container home-page">
-
+<main class="home-container">
   <section class="welcome">
     <h1>Welcome to MyStore</h1>
   </section>
@@ -34,15 +33,27 @@
     </div>
   </section>
 
+  <hr />
+
   <section class="brands">
     <h2>Our Brands</h2>
     <div class="scroll-brands">
-      <div *ngFor="let brand of ['Nike','Adidas','Sony','Apple','Samsung']" class="brand-logo">
+      <div *ngFor="let brand of [
+        'Nike','Adidas','Puma','Under Armour','Reebok',
+        'Sony','Samsung','Apple','Huawei','LG',
+        'Dell','MSI','Alienware','Lenovo','Asus',
+        'Casio','Rolex','Fossil','Beats','Razer',
+        'Zara','Mango','H&M','Tommy Hilfiger','Armani',
+        'Balenciaga','Prada','Chanel','Gucci','Guess',
+        'Columbia','Crocs','Jordan','Vans','Levi’s',
+        'New Balance','Reebok','Canon','Nikon','Lacoste',
+        'Diesel','Converse','Ray-Ban','Timberland','Fossil',
+        'HP','ASUS','Xiaomi','Bosch','Panasonic'
+      ]" class="brand-logo">
         {{ brand }}
       </div>
     </div>
   </section>
-
 </main>
 
 <app-footer></app-footer>

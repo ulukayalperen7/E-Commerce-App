@@ -1,28 +1,103 @@
 .banner {
-    position: relative;
-    overflow: hidden;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 380px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  
+  .banner-slider {
+    display: flex;
     width: 100%;
-    height: 300px;
-  
-    .banner-slider {
-      display: flex;
-      transition: transform 0.5s ease-in-out;
-      
-      .slide {
-        min-width: 100%;
-        height: 100%;
-        opacity: 0;
-        transition: opacity 1s ease-in-out;
-  
-        &.active {
-          opacity: 1;
-        }
+    height: 100%;
+    transition: transform 0.8s ease-in-out;
+  }
+
+  .slide {
+    flex: 0 0 100%;
+    height: 100%;
+    position: relative;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      border-radius: 16px;
+    }
+
+    .caption {
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      transform: translateY(-50%);
+      color: #fff;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+
+      h2 {
+        font-size: 2rem;
+        margin-bottom: 0.8rem;
       }
-  
-      img {
-        width: 100%;
-        height: auto;
+
+      button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: #0056b3;
+        }
       }
     }
   }
-  
+
+  .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.4);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  .prev { left: 1rem; }
+  .next { right: 1rem; }
+}
+
+@media (max-width: 768px) {
+  .banner {
+    height: 250px;
+
+    .banner-slider {
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .caption h2 {
+      font-size: 1.5rem;
+    }
+
+    .arrow {
+      font-size: 1.5rem;
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+}

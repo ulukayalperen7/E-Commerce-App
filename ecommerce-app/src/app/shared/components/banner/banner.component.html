@@ -1,8 +1,16 @@
-<div class="banner">
-    <div class="banner-slider">
-      <div *ngFor="let item of items; let i = index" class="slide" [class.active]="i === currentIndex">
-        <img [src]="item.image" [alt]="item.altText" />
+<div class="banner" (mouseenter)="pause()" (mouseleave)="play()">
+  <button class="arrow prev" (click)="prev()">‹</button>
+
+  <div class="banner-slider"
+       [style.transform]="'translateX(-' + currentIndex * 100 + '%)'">
+    <div class="slide" *ngFor="let item of items">
+      <img [src]="item.image" [alt]="item.altText" />
+      <div class="caption">
+        <h2>{{ item.title }}</h2>
+        <button routerLink="/products">{{ item.buttonText }}</button>
       </div>
     </div>
   </div>
-  
+
+  <button class="arrow next" (click)="next()">›</button>
+</div>

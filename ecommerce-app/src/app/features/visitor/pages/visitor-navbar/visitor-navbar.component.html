@@ -1,26 +1,30 @@
-<nav class="visitor-navbar">
-  <div class="container navbar-inner">
-    <div class="logo">MyStore</div>
+<div class="navbar-spacer" [style.height.px]="navbarHeight"></div>
 
-    <div class="categories-wrapper">
-      <button class="categories-btn">Categories ▾</button>
-      <ul class="categories-menu">
-        <li><a href="#">Electronics</a></li>
-        <li><a href="#">Fashion</a></li>
-        <li><a href="#">Home & Living</a></li>
-        <li><a href="#">Sports & Outdoor</a></li>
-        <li><a href="#">Beauty</a></li>
-      </ul>
+<nav class="visitor-navbar" [class.hidden]="isNavbarHidden">
+  <div class="container">
+    <div class="navbar-inner">
+      <div class="logo">MyStore</div>
+
+      <div class="categories-wrapper">
+        <button class="categories-btn">Categories ▾</button>
+        <ul class="categories-menu">
+          <li><a href="#">Electronics</a></li>
+          <li><a href="#">Fashion</a></li>
+          <li><a href="#">Home &amp; Living</a></li>
+          <li><a href="#">Sports &amp; Outdoor</a></li>
+          <li><a href="#">Beauty</a></li>
+        </ul>
+      </div>
+
+      <div class="search-box">
+        <input type="text" placeholder="Search products..." />
+        <button aria-label="Search">🔍</button>
+      </div>
+
+      <a routerLink="/favorites" class="icon-link">❤️ Favorites</a>
+      <a routerLink="/cart"      class="icon-link">🛒 Cart</a>
+      <a routerLink="/login"     class="nav-link">Login</a>
+      <a routerLink="/register"  class="nav-link">Register</a>
     </div>
-
-    <div class="search-box">
-      <input type="text" placeholder="Search products..." />
-      <button aria-label="Search">🔍</button>
-    </div>
-
-    <a routerLink="/favorites" class="icon-link">❤️ Favorites</a>
-    <a routerLink="/cart" class="icon-link">🛒 Cart</a>
-    <a routerLink="/login" class="nav-link">Login</a>
-    <a routerLink="/register" class="nav-link">Register</a>
   </div>
 </nav>
