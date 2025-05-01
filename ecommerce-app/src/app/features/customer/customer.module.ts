@@ -10,6 +10,7 @@ import { OrderHistoryComponent } from './pages/order-history/order-history.compo
 import { RouterModule } from '@angular/router';
 import { FavoritesComponent } from './pages/favorites/favorites.component';
 import { CustomerNavbarComponent } from './pages/customer-navbar/customer-navbar.component';
+import { CustomerCategoryProductsComponent } from './pages/customer-category-products/customer-category-products.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { CustomerNavbarComponent } from './pages/customer-navbar/customer-navbar
     CustomerProfileComponent,
     OrderHistoryComponent,
     FavoritesComponent,
-    CustomerNavbarComponent
+    CustomerNavbarComponent,
+    CustomerCategoryProductsComponent
   ],
   imports: [
     CommonModule,
