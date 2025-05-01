@@ -1,0 +1,19 @@
+<div class="category-products">
+    <h1>Category: {{ categoryId }}</h1>
+  
+    <ng-container *ngIf="loading; else listTpl">
+      <p>Loading…</p>
+    </ng-container>
+  
+    <ng-template #listTpl>
+      <div class="products-grid">
+        <div *ngFor="let p of products" class="product-card">
+          <img [src]="p.imageUrl" alt="{{ p.name }}" />
+          <h3>{{ p.name }}</h3>
+          <p>{{ p.price | currency }}</p>
+          <a [routerLink]="['/product', p.id]" class="btn">View Details</a>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  

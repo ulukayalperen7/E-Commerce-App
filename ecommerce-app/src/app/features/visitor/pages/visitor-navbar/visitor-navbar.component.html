@@ -3,16 +3,18 @@
 <nav class="visitor-navbar" [class.hidden]="isNavbarHidden">
   <div class="container">
     <div class="navbar-inner">
-      <div class="logo">MyStore</div>
+      <div class="logo">
+        <a routerLink="/">MyStore</a>
+      </div>
 
       <div class="categories-wrapper">
-        <button class="categories-btn">Categories ▾</button>
+        <button class="categories-btn" (click)="toggleCategories()">
+          Categories ▾
+        </button>
         <ul class="categories-menu">
-          <li><a href="#">Electronics</a></li>
-          <li><a href="#">Fashion</a></li>
-          <li><a href="#">Home &amp; Living</a></li>
-          <li><a href="#">Sports &amp; Outdoor</a></li>
-          <li><a href="#">Beauty</a></li>
+          <li *ngFor="let cat of categories">
+            <a [routerLink]="['/category', cat.id]">{{ cat.name }}</a>
+          </li>
         </ul>
       </div>
 

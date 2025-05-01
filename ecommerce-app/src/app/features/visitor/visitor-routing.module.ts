@@ -10,9 +10,11 @@ import { LoginRequiredComponent } from './pages/login-required/login-required.co
 import { CustomerCartComponent }  from '../customer/pages/customer-cart/customer-cart.component';
 import { FavoritesComponent }     from '../customer/pages/favorites/favorites.component';
 import { AuthGuard }              from '../../core/guards/auth.guard';
+import { CategoryProductsComponent } from './pages/category-products/category-products.component';
 
 const routes: Routes = [
   { path: 'home',          component: HomeComponent },
+  { path: 'category/:id', component: CategoryProductsComponent },
   { path: 'login',         component: LoginComponent },
   { path: 'products',      component: ProductListComponent },
   { path: 'register',      component: RegisterComponent },

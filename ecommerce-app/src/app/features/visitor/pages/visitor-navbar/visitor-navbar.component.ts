@@ -1,48 +1,43 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { Subscription, fromEvent } from 'rxjs';
-import { throttleTime } from 'rxjs/operators';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { Category, CategoryService } from '../../../../core/services/category.service';
 
 @Component({
   selector: 'app-visitor-navbar',
-  standalone :false,
+  standalone: false,
   templateUrl: './visitor-navbar.component.html',
   styleUrls: ['./visitor-navbar.component.scss']
 })
-export class VisitorNavbarComponent implements OnInit, OnDestroy {
+export class VisitorNavbarComponent implements OnInit {
+  categories: Category[] = [];
   isNavbarHidden = false;
-  lastScrollPosition = 0;
-  navbarHeight = 75;
-  private scrollSub!: Subscription;
+  navbarHeight = 0;
+
+  constructor(private categoryService: CategoryService) {}
 
   ngOnInit() {
-    this.scrollSub = fromEvent(window, 'scroll')
-      .pipe(throttleTime(100))
-      .subscribe(() => this.handleScroll());
+    this.categoryService.getAll().subscribe(cats => this.categories = cats);
+
+    this.updateNavbarHeight();
   }
 
-  ngOnDestroy() {
-    this.scrollSub?.unsubscribe();
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const scrollY = window.scrollY || document.documentElement.scrollTop;
+    this.isNavbarHidden = scrollY > 100;
   }
 
-  @HostListener('window:resize')
+  @HostListener('window:resize', [])
   onResize() {
-    this.navbarHeight = document.querySelector('.visitor-navbar')?.clientHeight || 75;
+    this.updateNavbarHeight();
   }
 
-  private handleScroll() {
-    const currentScroll = window.pageYOffset;
-    
-    if (currentScroll <= 0) {
-      this.isNavbarHidden = false;
-      return;
-    }
+  private updateNavbarHeight() {
+    const nav = document.querySelector('.visitor-navbar') as HTMLElement;
+    this.navbarHeight = nav ? nav.offsetHeight : 0;
+  }
 
-    if (currentScroll > this.lastScrollPosition && !this.isNavbarHidden) {
-      this.isNavbarHidden = true;
-    } else if (currentScroll < this.lastScrollPosition && this.isNavbarHidden) {
-      this.isNavbarHidden = false;
-    }
-
-    this.lastScrollPosition = currentScroll;
+  toggleCategories() {
+    const menu = document.querySelector('.categories-menu');
+    menu?.classList.toggle('open');
   }
 }
