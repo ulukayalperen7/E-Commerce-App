@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute }      from '@angular/router';
-import { Product }             from '../../../../core/models/product.model';
-import { ProductService }      from '../../../../core/services/product.service';
+import { ActivatedRoute } from '@angular/router';
+import { Product } from '../../../../core/models/product.model';
+import { ProductService } from '../../../../core/services/product.service';
 import { CartService } from '../../../../core/services/cart.service';
 
 @Component({
   selector: 'app-customer-category-products',
-  standalone:false,
+  standalone: false,
   templateUrl: './customer-category-products.component.html',
   styleUrls: ['./customer-category-products.component.scss']
 })
 export class CustomerCategoryProductsComponent implements OnInit {
   categoryId = 0;
+  categoryName = '';
   products: Product[] = [];
   loading = true;
 
@@ -23,10 +24,12 @@ export class CustomerCategoryProductsComponent implements OnInit {
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
-    if (idParam === null) {
-      throw new Error('Category ID parametresi eksik');
-    }
+    const nameParam = this.route.snapshot.paramMap.get('name');
+
+    if (!idParam) throw new Error('Category ID eksik');
+
     this.categoryId = +idParam;
+    this.categoryName = nameParam ?? 'Category';
 
     this.productService.getProductsByCategory(this.categoryId)
       .subscribe((list: Product[]) => {
@@ -35,7 +38,7 @@ export class CustomerCategoryProductsComponent implements OnInit {
       });
   }
 
-  addToCart(product: Product) {
+  addToCart(product: Product): void {
     this.cartService.add(product);
   }
 }

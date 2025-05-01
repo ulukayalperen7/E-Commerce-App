@@ -9,18 +9,25 @@ export class CartService {
   items$: Observable<Product[]> = this.itemsSubject.asObservable();
 
   add(product: Product): void {
-    this.items = [...this.items, product];
-    this.itemsSubject.next(this.items);
+    const itemExists = this.items.some(p => p.id === product.id);
+    if (itemExists) {
+      return;
+    }
+    this.items.push(product);
+    this.itemsSubject.next([...this.items]);
   }
 
   remove(productId: number): void {
-    this.items = this.items.filter(p => p.id !== productId);
-    this.itemsSubject.next(this.items);
+    const index = this.items.findIndex(p => p.id === productId);
+    if (index > -1) {
+      this.items.splice(index, 1);
+      this.itemsSubject.next([...this.items]);
+    }
   }
 
   clear(): void {
     this.items = [];
-    this.itemsSubject.next(this.items);
+    this.itemsSubject.next([]);
   }
 
   getCount(): number {

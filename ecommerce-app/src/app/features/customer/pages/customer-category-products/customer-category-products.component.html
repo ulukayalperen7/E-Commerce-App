@@ -1,22 +1,18 @@
-<div class="customer-category-products">
-    <h1>Category: {{ categoryId }}</h1>
-  
-    <ng-container *ngIf="loading; else listTpl">
-      <p>Loading…</p>
-    </ng-container>
-  
-    <ng-template #listTpl>
-      <div class="products-grid">
-        <div *ngFor="let p of products" class="product-card">
-          <img [src]="p.imageUrl" alt="{{ p.name }}" />
-          <h3>{{ p.name }}</h3>
-          <p>{{ p.price | currency }}</p>
-          <div class="actions">
-            <button (click)="addToCart(p)">Add to Cart</button>
-            <a [routerLink]="['/product', p.id]" class="btn">View Details</a>
-          </div>
-        </div>
-      </div>
-    </ng-template>
+<div *ngIf="loading">Loading...</div>
+
+<div *ngIf="!loading">
+  <h2>Products in "{{ categoryName }}"</h2>
+
+  <div *ngIf="products.length === 0">
+    No products found in this category.
   </div>
-  
+
+  <div class="products-grid" *ngIf="products.length > 0">
+    <div *ngFor="let product of products" class="product-card">
+      <img [src]="product.imageUrl" alt="{{ product.name }}" />
+      <h3>{{ product.name }}</h3>
+      <p>{{ product.price | currency }}</p>
+      <button (click)="addToCart(product)">Add to Cart</button>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,23 @@
-<p>customer-cart works!</p>
+<div *ngIf="loading" class="loading">Loading...</div>
+
+<div *ngIf="!loading && products.length === 0" class="empty-cart">
+  Your cart is empty.
+</div>
+
+<div *ngIf="!loading && products.length > 0">
+  <div *ngFor="let product of products">
+    <div class="cart-item">
+      <img [src]="product.imageUrl" alt="{{ product.name }}" class="cart-item-image">
+      <div class="cart-item-details">
+        <span>{{ product.name }}</span>
+        <span>{{ product.price | currency }}</span>
+      </div>
+      <button (click)="removeFromCart(product)">Remove</button>
+    </div>
+  </div>
+  
+  <div class="cart-summary">
+    <span>Total: {{ totalPrice | currency }}</span>
+    <button (click)="checkout()">Checkout</button>
+  </div>
+</div>
