@@ -5,10 +5,7 @@
     <h2>Products in “{{ categoryName }}”</h2>
   </header>
 
-  <div *ngIf="loading" class="loading">
-    Loading products…
-  </div>
-
+  <div *ngIf="loading" class="loading">Loading products…</div>
   <div *ngIf="!loading && products.length === 0" class="empty">
     No products found in this category.
   </div>
@@ -22,9 +19,7 @@
         <h3>{{ product.name }}</h3>
         <p class="price">{{ product.price | currency }}</p>
       </div>
-      <button class="btn view-btn" (click)="viewDetails(product)">
-        View Details
-      </button>
+      <button class="btn view-btn" (click)="viewDetails(product)">View Details</button>
     </div>
   </div>
 </main>

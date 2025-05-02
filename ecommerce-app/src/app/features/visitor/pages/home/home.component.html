@@ -17,18 +17,15 @@
       <h2><i class="fa fa-check-circle"></i> Recommended for You</h2>
       <div class="product-cards recommended-cards">
         <div *ngFor="let product of recommendedProducts" class="product-card">
-          <div class="image-container"
-               (click)="onViewDetails(product)"
-               style="cursor: pointer">
+          <div class="image-container" (click)="onViewDetails(product)" style="cursor: pointer">
             <img [src]="product.imageUrl" [alt]="product.name" />
-            <button (click)="toggleFavorite(product); $event.stopPropagation()"
-                    class="favorite-btn"
-                    [class.active]="product.isFavorite"
-                    aria-label="Favorilere ekle">
+            <button (click)="onFavoriteClick(product, $event)" class="favorite-btn" [class.active]="product.isFavorite" aria-label="Favorilere ekle">
               <svg width="24" height="24" viewBox="0 0 24 24">
-                <path fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+                         2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09
+                         C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42
+                         22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" 
                       class="heart-icon"/>
               </svg>
             </button>
@@ -38,8 +35,7 @@
             <p class="price">{{ product.price | currency }}</p>
             <p class="description">{{ product.description }}</p>
           </div>
-          <button class="action-btn view-details-btn"
-                  (click)="onViewDetails(product)">
+          <button class="action-btn view-details-btn" (click)="onViewDetails(product)">
             View Details
           </button>
         </div>
@@ -53,19 +49,16 @@
       <h2><i class="fa fa-bolt"></i> Flash Deals</h2>
       <div class="product-cards flash-deal-cards">
         <div *ngFor="let deal of flashDeals" class="product-card">
-          <div class="image-container"
-               (click)="onViewDetails(deal)"
-               style="cursor: pointer">
+          <div class="image-container" (click)="onViewDetails(deal)" style="cursor: pointer">
             <img [src]="deal.imageUrl" [alt]="deal.name" />
             <div class="discount-badge">-{{ deal.discount }}%</div>
-            <button (click)="toggleFavorite(deal); $event.stopPropagation()"
-                    class="favorite-btn"
-                    [class.active]="deal.isFavorite"
-                    aria-label="Favorilere ekle">
+            <button (click)="onFavoriteClick(deal, $event)" class="favorite-btn" [class.active]="deal.isFavorite" aria-label="Favorilere ekle">
               <svg width="24" height="24" viewBox="0 0 24 24">
-                <path fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+                         2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09
+                         C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42
+                         22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" 
                       class="heart-icon"/>
               </svg>
             </button>
@@ -77,8 +70,7 @@
               <p class="sale-price">{{ deal.price | currency }}</p>
             </div>
           </div>
-          <button class="action-btn add-to-cart-btn"
-                  (click)="onAddToCart(deal)">
+          <button class="action-btn add-to-cart-btn" (click)="onAddToCart(deal)">
             Add to Cart
           </button>
         </div>
@@ -86,7 +78,7 @@
     </div>
   </section>
 
-  <!-- Brands Section -->
+  <!-- Popular Brands -->
   <section class="brands">
     <h2>Popular Brands</h2>
     <div class="scroll-brands">

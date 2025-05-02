@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../../../../core/models/product.model';
 import { ProductService } from '../../../../core/services/product.service';
+import { CategoryService, Category } from '../../../../core/services/category.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-category-products',
@@ -9,35 +11,60 @@ import { ProductService } from '../../../../core/services/product.service';
   templateUrl: './category-products.component.html',
   styleUrls: ['./category-products.component.scss']
 })
-export class CategoryProductsComponent implements OnInit {
+export class CategoryProductsComponent implements OnInit, OnDestroy {
   categoryId = 0;
   categoryName = '';
   products: Product[] = [];
   loading = true;
+  private routeSubscription: Subscription | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private productService: ProductService
+    private productService: ProductService,
+    private categoryService: CategoryService
   ) {}
 
   ngOnInit(): void {
-    const idParam  = this.route.snapshot.paramMap.get('id');
-    const nameParam = this.route.snapshot.paramMap.get('name');
+    this.routeSubscription = this.route.paramMap.subscribe(params => {
+      const idParam = params.get('id');
+      if (!idParam) {
+        this.router.navigate(['/home']);
+        return;
+      }
+      const newCategoryId = +idParam;
+      if (this.categoryId !== newCategoryId) {
+        this.categoryId = newCategoryId;
+        this.loadCategoryData();
+      }
+    });
+  }
 
-    if (!idParam) {
-      this.router.navigate(['/home']);
-      return;
-    }
+  ngOnDestroy(): void {
+    this.routeSubscription?.unsubscribe();
+  }
 
-    this.categoryId   = +idParam;
-    this.categoryName = nameParam ?? 'Category';
+  loadCategoryData(): void {
+    this.loading = true;
 
-    this.productService.getProductsByCategory(this.categoryId)
-      .subscribe(list => {
+    this.categoryService.getAll().subscribe({
+      next: (cats: Category[]) => {
+        const found = cats.find(c => c.id === this.categoryId);
+        this.categoryName = found ? found.name : 'Category';
+      },
+      error: (err) => console.error(err)
+    });
+
+    this.productService.getProductsByCategory(this.categoryId).subscribe({
+      next: (list) => {
         this.products = list;
-        this.loading  = false;
-      });
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.loading = false;
+      }
+    });
   }
 
   viewDetails(p: Product) {
