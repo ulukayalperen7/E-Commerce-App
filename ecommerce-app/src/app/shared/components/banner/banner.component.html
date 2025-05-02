@@ -4,10 +4,12 @@
   <div class="banner-slider"
        [style.transform]="'translateX(-' + currentIndex * 100 + '%)'">
     <div class="slide" *ngFor="let item of items">
-      <img [src]="item.image" [alt]="item.altText" />
+      <img [src]="item.image" [alt]="item.name" />
       <div class="caption">
         <h2>{{ item.title }}</h2>
-        <button routerLink="/products">{{ item.buttonText }}</button>
+        <button (click)="goToCategory(item)">
+          {{ item.buttonText }}
+        </button>
       </div>
     </div>
   </div>

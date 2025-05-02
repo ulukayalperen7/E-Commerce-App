@@ -1,44 +1,29 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router }                        from '@angular/router';
+import { BannerItem, BannerService } from '../../../core/services/banner.service';
 
 @Component({
   selector: 'app-banner',
-  standalone :false,
+  standalone : false,
   templateUrl: './banner.component.html',
   styleUrls: ['./banner.component.scss']
 })
 export class BannerComponent implements OnInit, OnDestroy {
-  items = [
-    {
-      image: 'assets/images/banner2.jpg',
-      altText: 'Skin Care',
-      title: 'Radiant Skin Care',
-      buttonText: 'Explore Skincare'
-    },
-    {
-      image: 'assets/images/banner4.jpg',
-      altText: 'Stylish Shoes',
-      title: 'New Trendy Footwear',
-      buttonText: 'View Shoes'
-    },
-    {
-      image: 'assets/images/banner3.jpg',
-      altText: 'Computers',
-      title: 'Latest Computer Deals',
-      buttonText: 'Dive into Tech'
-    },
-    {
-      image: 'assets/images/banner1.jpg',
-      altText: 'Fitness Gear',
-      title: 'Get Fit & Strong',
-      buttonText: 'Shop Fitness'
-    }
-  ];
+  items: BannerItem[] = [];
   currentIndex = 0;
   private intervalId!: any;
   private readonly delay = 3000;
 
+  constructor(
+    private bannerService: BannerService,
+    private router: Router
+  ) {}
+
   ngOnInit() {
-    this.play();
+    this.bannerService.getAll().subscribe(list => {
+      this.items = list;
+      this.play();
+    });
   }
 
   ngOnDestroy() {
@@ -59,7 +44,10 @@ export class BannerComponent implements OnInit, OnDestroy {
   }
 
   prev() {
-    this.currentIndex =
-      (this.currentIndex - 1 + this.items.length) % this.items.length;
+    this.currentIndex = (this.currentIndex - 1 + this.items.length) % this.items.length;
+  }
+
+  goToCategory(item: BannerItem) {
+    this.router.navigate(['/category', item.categoryId, item.name]);
   }
 }
