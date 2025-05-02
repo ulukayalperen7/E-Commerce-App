@@ -1,0 +1,68 @@
+<app-visitor-navbar></app-visitor-navbar>
+
+<main class="detail-container" *ngIf="!loading && product; else loadingTpl">
+  <div class="detail-card">
+    <div class="image-section" (click)="onViewDetails(product)" style="cursor:pointer">
+      <img [src]="product.imageUrl" [alt]="product.name" />
+      <button 
+        (click)="toggleFavorite(product, $event)"
+        class="favorite-btn"
+        [class.active]="product.isFavorite"
+        aria-label="Favorilere ekle">
+        <svg width="28" height="28" viewBox="0 0 24 24">
+          <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
+                   2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09
+                   C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 
+                   22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="info-section">
+      <h1>{{ product.name }}</h1>
+      <p class="price">{{ product.price | currency }}</p>
+      <p class="description">{{ product.description }}</p>
+
+      <div class="actions">
+        <button 
+          class="action-btn add-to-cart-btn"
+          (click)="addToCart()">
+          Add to Cart
+        </button>
+        <button 
+          class="action-btn view-details-btn"
+          (click)="onViewDetails(product)">
+          View Details
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <section class="related-section" *ngIf="relatedProducts.length">
+    <h2>Related Products</h2>
+    <div class="related-cards">
+      <div 
+        *ngFor="let rp of relatedProducts" 
+        class="related-card"
+        (click)="onViewDetails(rp)"
+        style="cursor:pointer">
+        <img [src]="rp.imageUrl" [alt]="rp.name" />
+        <p>{{ rp.name }}</p>
+        <button 
+          (click)="toggleFavorite(rp, $event)"
+          class="favorite-btn-small"
+          [class.active]="rp.isFavorite"
+          aria-label="Favorilere ekle">
+          ♥
+        </button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<ng-template #loadingTpl>
+  <p class="loading">Loading…</p>
+</ng-template>
+
+<app-footer></app-footer>
