@@ -11,10 +11,12 @@ import { CustomerCartComponent }  from '../customer/pages/customer-cart/customer
 import { FavoritesComponent }     from '../customer/pages/favorites/favorites.component';
 import { AuthGuard }              from '../../core/guards/auth.guard';
 import { CategoryProductsComponent } from './pages/category-products/category-products.component';
+import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
 
 const routes: Routes = [
   { path: 'home',          component: HomeComponent },
   { path: 'category/:id', component: CategoryProductsComponent },
+  { path: 'product/:id',  component: ProductDetailComponent },
   { path: 'login',         component: LoginComponent },
   { path: 'products',      component: ProductListComponent },
   { path: 'register',      component: RegisterComponent },

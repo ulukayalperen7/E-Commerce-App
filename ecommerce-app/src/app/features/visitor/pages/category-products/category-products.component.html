@@ -1,17 +1,32 @@
-<div *ngIf="loading">Loading...</div>
+<app-visitor-navbar></app-visitor-navbar>
 
-<div *ngIf="!loading">
-  <h2>Products in "{{ categoryName }}"</h2>
+<main class="category-products">
+  <header>
+    <h2>Products in “{{ categoryName }}”</h2>
+  </header>
 
-  <div *ngIf="products.length === 0">
+  <div *ngIf="loading" class="loading">
+    Loading products…
+  </div>
+
+  <div *ngIf="!loading && products.length === 0" class="empty">
     No products found in this category.
   </div>
 
-  <div class="products-grid" *ngIf="products.length > 0">
+  <div *ngIf="!loading && products.length > 0" class="products-grid">
     <div *ngFor="let product of products" class="product-card">
-      <img [src]="product.imageUrl" alt="{{ product.name }}" />
-      <h3>{{ product.name }}</h3>
-      <p>{{ product.price | currency }}</p>
+      <div class="thumb" (click)="viewDetails(product)" style="cursor: pointer">
+        <img [src]="product.imageUrl" [alt]="product.name" />
+      </div>
+      <div class="info">
+        <h3>{{ product.name }}</h3>
+        <p class="price">{{ product.price | currency }}</p>
+      </div>
+      <button class="btn view-btn" (click)="viewDetails(product)">
+        View Details
+      </button>
     </div>
   </div>
-</div>
+</main>
+
+<app-footer></app-footer>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../../../../core/models/product.model';
 import { ProductService } from '../../../../core/services/product.service';
 
@@ -17,22 +17,30 @@ export class CategoryProductsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private productService: ProductService
   ) {}
 
   ngOnInit(): void {
-    const idParam = this.route.snapshot.paramMap.get('id');
+    const idParam  = this.route.snapshot.paramMap.get('id');
     const nameParam = this.route.snapshot.paramMap.get('name');
 
-    if (!idParam) throw new Error('Category ID eksik');
+    if (!idParam) {
+      this.router.navigate(['/home']);
+      return;
+    }
 
-    this.categoryId = +idParam;
+    this.categoryId   = +idParam;
     this.categoryName = nameParam ?? 'Category';
 
     this.productService.getProductsByCategory(this.categoryId)
-      .subscribe((list: Product[]) => {
+      .subscribe(list => {
         this.products = list;
-        this.loading = false;
+        this.loading  = false;
       });
+  }
+
+  viewDetails(p: Product) {
+    this.router.navigate(['/product', p.id]);
   }
 }

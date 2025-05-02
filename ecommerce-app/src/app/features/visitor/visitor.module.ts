@@ -11,14 +11,15 @@ import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { LoginRequiredComponent } from './pages/login-required/login-required.component';
 import { VisitorNavbarComponent } from './pages/visitor-navbar/visitor-navbar.component';
-import { CategoryProductsComponent } from './pages/category-products/category-products.component'; 
+import { CategoryProductsComponent } from './pages/category-products/category-products.component';
+import { ProductDetailComponent } from './pages/product-detail/product-detail.component'; 
 
 @NgModule({
   declarations: [
     HomeComponent,
     LoginComponent,
     ProductListComponent, 
-    RegisterComponent, AboutComponent, ContactComponent, LoginRequiredComponent, VisitorNavbarComponent, CategoryProductsComponent 
+    RegisterComponent, AboutComponent, ContactComponent, LoginRequiredComponent, VisitorNavbarComponent, CategoryProductsComponent, ProductDetailComponent 
   ],
   imports: [
     CommonModule, 
