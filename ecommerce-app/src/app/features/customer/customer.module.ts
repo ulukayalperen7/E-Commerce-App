@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 import { FavoritesComponent } from './pages/favorites/favorites.component';
 import { CustomerNavbarComponent } from './pages/customer-navbar/customer-navbar.component';
 import { CustomerCategoryProductsComponent } from './pages/customer-category-products/customer-category-products.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { CustomerCategoryProductsComponent } from './pages/customer-category-pro
     CommonModule,
     RouterModule,
     CustomerRoutingModule,
-    SharedModule 
+    SharedModule ,
+    ReactiveFormsModule
   ]
 })
 export class CustomerModule { }

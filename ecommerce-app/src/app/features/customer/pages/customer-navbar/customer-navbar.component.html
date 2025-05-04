@@ -1,31 +1,43 @@
-<nav class="navbar">
-  <div class="navbar-inner">
-    <div class="navbar-left">
+<div class="navbar-spacer" [style.height.px]="navbarHeight"></div>
+
+<nav class="customer-navbar" [class.hidden]="isNavbarHidden">
+  <div class="container">
+    <div class="navbar-inner">
+      
       <div class="logo">
-        <span class="icon">🛍️</span>
-        <span class="text">MyStore</span>
+        <a routerLink="/customer/home">MyStore</a>
       </div>
 
-      <div class="search-container">
-        <input type="text" placeholder="Search products..." />
-        <button class="search-btn">🔍</button>
+      <div class="categories-wrapper">
+        <button class="categories-btn">Categories ▾</button>
+        <ul class="categories-menu">
+          <li *ngFor="let cat of categories">
+            <a [routerLink]="['/customer/category', cat.id]">{{ cat.name }}</a>
+          </li>
+        </ul>
       </div>
-    </div>
 
-    <div class="navbar-center">
-      <a routerLink="/favorites" class="nav-item">❤️ Favorites</a>
-    </div>
+      <form [formGroup]="searchForm" class="search-box" (ngSubmit)="onSearch()">
+        <input formControlName="query" type="text" placeholder="Search products..." />
+        <button type="submit" aria-label="Search">🔍</button>
+      </form>
 
-    <div class="navbar-right">
-      <a routerLink="/cart" class="nav-item cart">🛒 Cart</a>
+      <a routerLink="/customer/favorites" class="icon-link">❤️ Favorites</a>
+      <a routerLink="/customer/cart"      class="icon-link">🛒 Cart</a>
+
       <div class="profile-dropdown">
-        <button class="nav-item profile-btn">👤 My Account ⏷</button>
-        <div class="dropdown-content">
-          <a routerLink="/customer/profile">Profile</a>
-          <a routerLink="/customer/orders">Order History</a>
-          <a routerLink="/logout">Logout</a>
-        </div>
+        <button class="profile-btn">👤 Account ▾</button>
+        <ul class="dropdown-menu">
+          <li *ngFor="let item of profileMenu">
+            <a [routerLink]="item.path">{{ item.label }}</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a href="#" (click)="onLogout(); $event.preventDefault()">Logout</a>
+          </li>
+        </ul>
       </div>
+
     </div>
   </div>
 </nav>
