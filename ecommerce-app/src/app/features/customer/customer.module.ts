@@ -5,7 +5,6 @@ import { SharedModule } from '../../shared/shared.module';
 
 import { CustomerHomeComponent } from './pages/customer-home/customer-home.component';
 import { CustomerCartComponent } from './pages/customer-cart/customer-cart.component';
-import { CustomerProfileComponent } from './pages/customer-profile/customer-profile.component';
 import { OrderHistoryComponent } from './pages/order-history/order-history.component';
 import { RouterModule } from '@angular/router';
 import { FavoritesComponent } from './pages/favorites/favorites.component';
@@ -17,7 +16,6 @@ import { ReactiveFormsModule } from '@angular/forms';
   declarations: [
     CustomerHomeComponent,
     CustomerCartComponent,
-    CustomerProfileComponent,
     OrderHistoryComponent,
     FavoritesComponent,
     CustomerNavbarComponent,
