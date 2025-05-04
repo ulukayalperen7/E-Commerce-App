@@ -1,1 +1,30 @@
-<p>favorites works!</p>
+<app-customer-navbar></app-customer-navbar>
+
+<main class="favorites-container">
+  <h1 class="favorites-heading">Your Favorites</h1>
+
+  <div *ngIf="favorites.length; else emptyState" class="product-cards favorites-cards">
+    <div *ngFor="let product of favorites" class="product-card">
+      <div class="image-container" (click)="onViewDetails(product)">
+        <img [src]="product.imageUrl" [alt]="product.name" />
+        <button (click)="onRemoveFavorite(product); $event.stopPropagation()"
+                class="remove-fav-btn" aria-label="Remove from favorites">
+          ✖
+        </button>
+      </div>
+      <div class="product-details">
+        <h3>{{ product.name }}</h3>
+        <p class="price">{{ product.price | currency }}</p>
+      </div>
+      <button class="action-btn add-to-cart-btn" (click)="onAddToCart(product)">
+        Add to Cart
+      </button>
+    </div>
+  </div>
+
+  <ng-template #emptyState>
+    <p class="empty-text">You have no favorite products yet.</p>
+  </ng-template>
+</main>
+
+<app-footer></app-footer>

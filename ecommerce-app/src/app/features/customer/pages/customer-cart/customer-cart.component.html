@@ -1,23 +1,33 @@
-<div *ngIf="loading" class="loading">Loading...</div>
+<app-customer-navbar></app-customer-navbar>
 
-<div *ngIf="!loading && products.length === 0" class="empty-cart">
-  Your cart is empty.
-</div>
+<div class="cart-container">
+  <div *ngIf="loading" class="loading">Loading...</div>
 
-<div *ngIf="!loading && products.length > 0">
-  <div *ngFor="let product of products">
-    <div class="cart-item">
-      <img [src]="product.imageUrl" alt="{{ product.name }}" class="cart-item-image">
-      <div class="cart-item-details">
-        <span>{{ product.name }}</span>
-        <span>{{ product.price | currency }}</span>
+  <div *ngIf="!loading && products.length === 0" class="empty-cart">
+    <p>Your cart is empty.</p>
+  </div>
+
+  <div *ngIf="!loading && products.length > 0" class="cart-content">
+    <h2>Your Shopping Cart</h2>
+
+    <div class="cart-items">
+      <div *ngFor="let product of products" class="cart-item">
+        <img [src]="product.imageUrl" alt="{{ product.name }}" class="cart-item-image" />
+        
+        <div class="cart-item-details">
+          <h3>{{ product.name }}</h3>
+          <p class="price">{{ product.price | currency }}</p>
+        </div>
+
+        <button class="remove-btn" (click)="removeFromCart(product)">Remove</button>
       </div>
-      <button (click)="removeFromCart(product)">Remove</button>
+    </div>
+
+    <div class="cart-summary">
+      <p>Total: <strong>{{ totalPrice | currency }}</strong></p>
+      <button class="checkout-btn" (click)="checkout()">Checkout</button>
     </div>
   </div>
-  
-  <div class="cart-summary">
-    <span>Total: {{ totalPrice | currency }}</span>
-    <button (click)="checkout()">Checkout</button>
-  </div>
 </div>
+
+<app-footer></app-footer>
