@@ -1,7 +1,10 @@
-<div class="issue-resolution-container">
-    <h1>Issue Resolution</h1>
-    <div class="issue-list">
-      <p>we will resolve issues here.</p>
-    </div>
+<div class="issue-resolution">
+  <h1>Issue Resolution</h1>
+  <div *ngFor="let issue of issues" class="issue-card">
+    <h3>{{ issue.title }}</h3>
+    <p>Status: {{ issue.status }}</p>
+    <p>Priority: {{ issue.priority }}</p>
+    <button *ngIf="issue.status === 'Open'" (click)="resolveIssue(issue.id)">Resolve</button>
+    <button *ngIf="issue.status !== 'Closed'" (click)="closeIssue(issue.id)">Close</button>
   </div>
-  
+</div>

@@ -1,0 +1,103 @@
+.admin-dashboard {
+    padding: 20px;
+  
+    .dashboard-title {
+      font-size: 2rem;
+      color: #333;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+  
+    .dashboard-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+  
+      .dashboard-card {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+  
+        h3 {
+          font-size: 1.2rem;
+          color: #444;
+          margin-bottom: 0.5rem;
+        }
+  
+        p {
+          font-size: 1.5rem;
+          font-weight: bold;
+          color: #007bff;
+        }
+      }
+    }
+  
+    .dashboard-charts {
+      margin-bottom: 2rem;
+  
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+  
+      .chart-container {
+        height: 300px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      }
+    }
+  
+    .recent-activities {
+      margin-bottom: 2rem;
+  
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+  
+      .recent-activity-item {
+        background-color: #fff;
+        padding: 15px;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  
+        p {
+          font-size: 1rem;
+          color: #555;
+        }
+      }
+    }
+  
+    .quick-links {
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+  
+      .quick-link {
+        background-color: #fff;
+        padding: 15px;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  
+        a {
+          color: #007bff;
+          text-decoration: none;
+          font-size: 1rem;
+          font-weight: bold;
+          display: block;
+        }
+  
+        a:hover {
+          background-color: #f0f8ff;
+        }
+      }
+    }
+  }
+  

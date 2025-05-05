@@ -25,7 +25,6 @@ export class CustomerProfileComponent implements OnInit {
       birthDay: ['', Validators.required],
       birthMonth: ['', Validators.required],
       birthYear: ['', Validators.required],
-      // Şifre bölümü:
       currentPassword: [''],
       newPassword: [''],
       confirmPassword: ['']
@@ -46,15 +45,12 @@ export class CustomerProfileComponent implements OnInit {
       this.profileForm.markAllAsTouched();
       return;
     }
-    // Burada API çağrısını yap
     console.log('Profile saved', this.profileForm.value);
   }
 
   onViewOrders(): void {
-    // Router ile order history sayfasına geç
   }
   onUpdatePassword(): void {
-    // Sadece şifre alanlarını kontrol edelim
     const cur = this.profileForm.get('currentPassword')!;
     const nw  = this.profileForm.get('newPassword')!;
     const cp  = this.profileForm.get('confirmPassword')!;
@@ -64,7 +60,7 @@ export class CustomerProfileComponent implements OnInit {
     cp.markAsTouched();
   
     if (this.profileForm.errors?.['mismatch'] || nw.invalid || cp.invalid) {
-      return;  // eşleşmiyorsa veya invalidsa işleme alma
+      return;  
     }
   
     if (!cur.value) {
@@ -72,10 +68,8 @@ export class CustomerProfileComponent implements OnInit {
       return;
     }
   
-    // Şifre güncelleme API çağrısını burada yapın
     console.log('Changing password to:', nw.value);
   
-    // Başarı sonrası formu sıfırla
     cur.reset();
     nw.reset();
     cp.reset();

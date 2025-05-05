@@ -1,7 +1,25 @@
-<div class="user-management-container">
-    <h1>User Management</h1>
-    <div class="user-list">
-      <p>we will view and manage users here.</p>
-    </div>
-  </div>
-  
+<div class="user-management">
+  <h1>User Management</h1>
+
+  <table class="user-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.role }}</td>
+        <td>
+          <button class="btn-promote" (click)="promoteToAdmin(user.id)" [disabled]="user.role === 'Admin'">Promote</button>
+          <button class="btn-delete" (click)="deleteUser(user.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

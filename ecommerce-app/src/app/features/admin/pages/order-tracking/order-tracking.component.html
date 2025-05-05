@@ -1,7 +1,24 @@
-<div class="order-tracking-container">
-    <h1>Order Tracking</h1>
-    <div class="order-status">
-      <p>Ywe will track orders here.</p>
-    </div>
-  </div>
-  
+<div class="order-tracking">
+  <h1>Order Tracking</h1>
+
+  <table class="order-table">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders">
+        <td>{{ order.id }}</td>
+        <td>{{ order.customer }}</td>
+        <td>{{ order.date }}</td>
+        <td>
+          <span class="status" [ngClass]="order.status.toLowerCase()">{{ order.status }}</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

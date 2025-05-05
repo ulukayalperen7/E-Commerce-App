@@ -1,0 +1,44 @@
+.issue-resolution {
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+  
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+  
+    .issue-card {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1.5rem;
+  
+      h3 {
+        font-size: 1.2rem;
+        color: #333;
+      }
+  
+      p {
+        font-size: 1rem;
+        color: #555;
+      }
+  
+      button {
+        margin-top: 1rem;
+        padding: 0.8rem 1.5rem;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.3s ease;
+      }
+  
+      button:hover {
+        background: #0056b3;
+      }
+    }
+  }
+  

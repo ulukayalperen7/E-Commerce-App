@@ -1,7 +1,25 @@
-<div class="product-management-container">
-    <h1>Product Management</h1>
-    <div class="product-list">
-      <p>we can add, update, or remove products here.</p>
-    </div>
-  </div>
-  
+<div class="product-management">
+  <h1>Product Management</h1>
+
+  <table class="product-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Price ($)</th>
+        <th>Stock</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td>{{ product.name }}</td>
+        <td>{{ product.price }}</td>
+        <td>{{ product.stock }}</td>
+        <td>
+          <button class="btn-edit">Edit</button>
+          <button class="btn-delete" (click)="deleteProduct(product.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

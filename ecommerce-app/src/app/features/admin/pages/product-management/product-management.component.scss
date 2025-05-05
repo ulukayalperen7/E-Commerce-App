@@ -1,0 +1,51 @@
+.product-management {
+    padding: 2rem;
+  
+    h1 {
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+  
+    .product-table {
+      width: 100%;
+      border-collapse: collapse;
+  
+      th, td {
+        border: 1px solid #ddd;
+        padding: 0.8rem;
+        text-align: left;
+      }
+  
+      th {
+        background-color: #f2f2f2;
+      }
+  
+      .btn-edit {
+        background-color: #ffc107;
+        color: white;
+        border: none;
+        padding: 0.4rem 0.8rem;
+        margin-right: 0.5rem;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+  
+      .btn-delete {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 0.4rem 0.8rem;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+  
+      .btn-edit:hover {
+        background-color: #e0a800;
+      }
+  
+      .btn-delete:hover {
+        background-color: #c82333;
+      }
+    }
+  }
+  
