@@ -1,0 +1,99 @@
+.profile-container {
+    padding: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .profile-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-header h2 {
+    font-size: 2rem;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .profile-header .profile-email {
+    font-size: 1.2rem;
+    color: #666;
+  }
+  
+  .profile-card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+  }
+  
+  .profile-card h3 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  .profile-info {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .info-item label {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .info-item span {
+    color: #555;
+    font-size: 1.1rem;
+  }
+  
+  .profile-actions {
+    text-align: center;
+  }
+  
+  .btn-update {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-update:hover {
+    background-color: #0056b3;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .profile-container {
+      padding: 20px;
+    }
+  
+    .profile-info {
+      grid-template-columns: 1fr;
+    }
+  
+    .btn-update {
+      width: 100%;
+      padding: 12px;
+    }
+  }
+  

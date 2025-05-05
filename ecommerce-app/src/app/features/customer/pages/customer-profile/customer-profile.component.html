@@ -1,1 +1,29 @@
-<p>customer-profile works!</p>
+<div class="profile-container">
+    <div class="profile-header">
+      <h2>Welcome, {{ user.name }}!</h2>
+      <p class="profile-email">{{ user.email }}</p>
+    </div>
+  
+    <div class="profile-card">
+      <h3>Your Information</h3>
+      <div class="profile-info">
+        <div class="info-item">
+          <label>Name:</label>
+          <span>{{ user.name }}</span>
+        </div>
+        <div class="info-item">
+          <label>Email:</label>
+          <span>{{ user.email }}</span>
+        </div>
+        <div class="info-item">
+          <label>Joined Date:</label>
+          <span>{{ user.joinedDate | date:'shortDate' }}</span>
+        </div>
+      </div>
+    </div>
+  
+    <div class="profile-actions">
+      <button class="btn-update" routerLink="/customer/profile/orders">View Order History</button>
+      <button class="btn-update" routerLink="/customer/profile/security">Change Password</button>
+    </div>
+</div>
