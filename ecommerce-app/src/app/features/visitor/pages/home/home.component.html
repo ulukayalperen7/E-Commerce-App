@@ -40,26 +40,15 @@
               </svg>
             </button>
           </div>
-
+  
           <div class="product-details">
             <div class="product-header">
               <span class="brand">{{ product.brand }}</span>
               <span class="product-description">{{ product.description || ' ' }}</span>
             </div>
             <div class="rating">
+              <span class="star-emoji">⭐</span>
               <span class="rating-value">{{ product.rating }}</span>
-              <span class="stars">
-                <ng-container *ngFor="let star of [1,2,3,4,5]">
-                  <i
-                    class="fa"
-                    [ngClass]="{
-                      'fa-star': product.rating >= star,
-                      'fa-star-half-o': product.rating >= star - 0.5 && product.rating < star,
-                      'fa-star-o': product.rating < star - 0.5
-                    }"
-                  ></i>
-                </ng-container>
-              </span>
               <span class="review-count">({{ product.reviewCount }})</span>
             </div>
             <div class="price-container">
@@ -67,7 +56,7 @@
               <p class="sale-price">{{ product.price | currency }}</p>
             </div>
           </div>
-
+  
           <button class="action-btn view-details-btn" (click)="onViewDetails(product)">
             View Details
           </button>
@@ -106,26 +95,15 @@
               </svg>
             </button>
           </div>
-
+  
           <div class="product-details">
             <div class="product-header">
               <span class="brand">{{ deal.brand }}</span>
               <span class="product-description">{{ deal.description || ' ' }}</span>
             </div>
             <div class="rating">
+              <span class="star-emoji">⭐</span>
               <span class="rating-value">{{ deal.rating }}</span>
-              <span class="stars">
-                <ng-container *ngFor="let star of [1,2,3,4,5]">
-                  <i
-                    class="fa"
-                    [ngClass]="{
-                      'fa-star': deal.rating >= star,
-                      'fa-star-half-o': deal.rating >= star - 0.5 && deal.rating < star,
-                      'fa-star-o': deal.rating < star - 0.5
-                    }"
-                  ></i>
-                </ng-container>
-              </span>
               <span class="review-count">({{ deal.reviewCount }})</span>
             </div>
             <div class="price-container">
@@ -133,7 +111,7 @@
               <p class="sale-price">{{ deal.price | currency }}</p>
             </div>
           </div>
-
+  
           <button class="action-btn add-to-cart-btn" (click)="onAddToCart(deal)">
             Add to Cart
           </button>
@@ -141,7 +119,6 @@
       </div>
     </div>
   </section>
-
   <section class="brands">
     <h2>Popular Brands</h2>
     <div class="scroll-brands">

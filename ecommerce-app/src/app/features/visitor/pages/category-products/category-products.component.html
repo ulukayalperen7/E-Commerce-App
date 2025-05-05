@@ -44,24 +44,18 @@
               <span class="product-description">{{ product.name || ' ' }}</span>
             </div>
             <div class="rating">
+              <span class="star-emoji">⭐</span>
               <span class="rating-value">{{ product.rating }}</span>
-              <span class="stars">
-                <ng-container *ngFor="let star of [1,2,3,4,5]">
-                  <i
-                    class="fa"
-                    [ngClass]="{
-                      'fa-star': product.rating >= star,
-                      'fa-star-half-o': product.rating >= star - 0.5 && product.rating < star,
-                      'fa-star-o': product.rating < star - 0.5
-                    }"
-                  ></i>
-                </ng-container>
-              </span>
               <span class="review-count">({{ product.reviewCount }})</span>
             </div>
+          
             <div class="price-container">
               <p class="original-price" *ngIf="product.originalPrice">{{ product.originalPrice | currency }}</p>
               <p class="sale-price">{{ product.price | currency }}</p>
+            </div>
+            <div class="price-container">
+              <p class="original-price" *ngIf="product.originalPrice">{{ product.originalPrice | currency }}</p>
+              
             </div>
           </div>
 

@@ -217,14 +217,14 @@ section h2 i {
     flex-direction: column;
     justify-content: space-between;
     min-height: 120px;
-    
+  
     .product-header {
       display: flex;
       flex-wrap: nowrap;
       align-items: center;
       margin-bottom: 8px;
       overflow: hidden;
-      
+  
       .brand {
         font-size: 1rem;
         font-weight: 600;
@@ -232,7 +232,7 @@ section h2 i {
         margin-right: 6px;
         white-space: nowrap;
       }
-      
+  
       .product-description {
         font-size: 0.85rem;
         color: #666;
@@ -247,31 +247,19 @@ section h2 i {
       display: flex;
       align-items: center;
       margin-bottom: 12px;
-  
+      font-size: 0.9rem;
+    
+      .star-emoji {
+        font-size: 1rem;
+        margin-right: 6px;
+      }
+    
       .rating-value {
         font-weight: bold;
         color: #111;
-        margin-right: 6px;
-        font-size: 0.9rem;
-      }
-  
-      .stars {
-        display: inline-flex;
-        margin-right: 5px;
-        
-        i {
-          color: #ffc107; /* Yellow stars */
-          font-size: 0.9rem;
-          margin-right: 2px;
-        }
-      }
-      
-      .review-count {
-        color: #666;
-        font-size: 0.8rem;
+        margin-right: 8px;
       }
     }
-  
     .price-container {
       display: flex;
       align-items: center;

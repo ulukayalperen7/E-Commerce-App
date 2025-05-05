@@ -194,25 +194,19 @@
       display: flex;
       align-items: center;
       margin-bottom: 12px;
-  
+      font-size: 0.9rem;
+    
+      .star-emoji {
+        font-size: 1rem;
+        margin-right: 6px;
+      }
+    
       .rating-value {
         font-weight: bold;
         color: #111;
-        margin-right: 6px;
-        font-size: 0.9rem;
+        margin-right: 8px;  
       }
-  
-      .stars {
-        display: inline-flex;
-        margin-right: 5px;
-        
-        i {
-          color: #ffc107;
-          font-size: 0.9rem;
-          margin-right: 2px;
-        }
-      }
-      
+    
       .review-count {
         color: #666;
         font-size: 0.8rem;

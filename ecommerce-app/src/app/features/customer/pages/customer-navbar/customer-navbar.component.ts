@@ -48,7 +48,7 @@ export class CustomerNavbarComponent implements OnInit {
   }
 
   onLogout(): void {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/home']);
   }
 
   private updateNavbarHeight(): void {
