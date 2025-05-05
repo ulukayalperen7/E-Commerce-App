@@ -1,17 +1,12 @@
 <div class="navbar-spacer" [style.height.px]="navbarHeight"></div>
-
 <nav class="visitor-navbar" [class.hidden]="isNavbarHidden">
   <div class="container">
     <div class="navbar-inner">
-      <div class="logo">
-        <a routerLink="/">MyStore</a>
-      </div>
+      <div class="logo"><a routerLink="/">AlSer</a></div>
 
       <div class="categories-wrapper">
-        <button class="categories-btn" (click)="toggleCategories()">
-          Categories ▾
-        </button>
-        <ul class="categories-menu">
+        <button class="categories-btn" (click)="toggleCategories()">Categories ▾</button>
+        <ul class="categories-menu" [class.open]="categoriesOpen">
           <li *ngFor="let cat of categories">
             <a [routerLink]="['/category', cat.id]">{{ cat.name }}</a>
           </li>
