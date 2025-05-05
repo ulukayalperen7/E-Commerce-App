@@ -9,8 +9,8 @@ import { Router } from '@angular/router';
 })
 export class LoginRequiredComponent {
   constructor(private router: Router) {}
-
+  
   goToLogin() {
-    this.router.navigate(['/login']); 
+    this.router.navigate(['/login']);
   }
 }

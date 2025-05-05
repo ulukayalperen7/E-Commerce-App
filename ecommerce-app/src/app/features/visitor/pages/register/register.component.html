@@ -1,12 +1,68 @@
-<h2>Register</h2>
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-  <input formControlName="name" type="text" placeholder="Name" />
-  <input formControlName="email" type="email" placeholder="Email" />
-  <input formControlName="password" type="password" placeholder="Password" />
-  <button type="submit">Register</button>
-</form>
+<div class="auth-container">
+  <div class="auth-header">
+    <div class="auth-icon">
+      <i class="fa fa-user-plus"></i>
+    </div>
+    <h2>Create Account</h2>
+    <p>Join us to start shopping</p>
+  </div>
 
-<p>
-  Already have an account?
-  <a routerLink="/login">Login here</a>
-</p>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <input 
+        type="text" 
+        formControlName="name" 
+        placeholder="Full Name"
+        [class.invalid]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched"
+        required
+      >
+      <small *ngIf="registerForm.get('name')?.hasError('required')" class="error">
+        Name is required
+      </small>
+    </div>
+
+    <div class="form-group">
+      <input 
+        type="email" 
+        formControlName="email" 
+        placeholder="Email address"
+        [class.invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+        required
+      >
+      <small *ngIf="registerForm.get('email')?.hasError('required')" class="error">
+        Email is required
+      </small>
+      <small *ngIf="registerForm.get('email')?.hasError('email')" class="error">
+        Invalid email format
+      </small>
+    </div>
+
+    <div class="form-group">
+      <input
+        type="password"
+        formControlName="password"
+        placeholder="Password"
+        [class.invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+        required
+      >
+      <small *ngIf="registerForm.get('password')?.hasError('required')" class="error">
+        Password is required
+      </small>
+    </div>
+
+    <button 
+      type="submit" 
+      class="auth-btn"
+      [disabled]="registerForm.invalid"
+    >
+      <i class="fa fa-user-plus"></i> Register
+    </button>
+
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+  </form>
+
+  <div class="auth-footer">
+    <span>Already have an account? </span>
+    <a routerLink="/login">Sign in</a>
+  </div>
+</div>

@@ -1,13 +1,18 @@
-import { Component, OnInit }        from '@angular/core';
-import { ActivatedRoute, Router }   from '@angular/router';
-import { Product }                  from '../../../../core/models/product.model';
-import { ProductService }           from '../../../../core/services/product.service';
-import { AuthService }              from '../../../../core/services/auth.service';
-import { CartService }              from '../../../../core/services/cart.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Product } from '../../../../core/models/product.model';
+import { CartService } from '../../../../core/services/cart.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
-type ProductView = Product & {
-  isFavorite?: boolean;
-};
+interface ProductDetails extends Product {
+  brand: string;
+  rating: number;
+  reviewCount: number;
+  originalPrice?: number;
+  discount?: number;
+  isFavorite: boolean;
+  images: string[];
+}
 
 @Component({
   selector: 'app-product-detail',
@@ -16,57 +21,73 @@ type ProductView = Product & {
   styleUrls: ['./product-detail.component.scss']
 })
 export class ProductDetailComponent implements OnInit {
-  product: ProductView | null = null;
-  relatedProducts: ProductView[] = [];
-  loading = true;
+  product: ProductDetails = this.generateMockProduct();
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
-    private productService: ProductService,
+    private cartService: CartService,
     private authService: AuthService,
-    private cartService: CartService
+    private router : Router
   ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      const idParam = params.get('id');
-      if (!idParam) {
-        this.router.navigate(['/home']);
-        return;
+      const productId = params.get('id');
+      if (productId) {
+        this.product = this.generateMockProduct(+productId);
       }
-      const id = +idParam;
-      this.loading = true;
-
-      this.productService.getAllProducts().subscribe(list => {
-        const all = list.map(p => ({ ...p, isFavorite: false }));
-        this.relatedProducts = all.filter(p => p.id !== id).slice(0, 4);
-        this.product = all.find(p => p.id === id) || null;
-        this.loading = false;
-      });
     });
   }
 
-  toggleFavorite(p: ProductView, event: Event): void {
-    event.stopPropagation();
+  private generateMockProduct(id: number = 1): ProductDetails {
+    const price = Math.floor(Math.random() * 500) + 50;
+    const discount = Math.random() > 0.5 ? Math.floor(Math.random() * 30) + 10 : undefined;
+    const brands = ['Nike', 'Adidas', 'Apple', 'Sony', 'Samsung', 'Zara', "Levi's"];
+    
+    return {
+      id: id,
+      name: `Premium Product ${id}`,
+      description: `High-quality product description for item ${id}.`,
+      price: discount ? price * (1 - discount/100) : price,
+      imageUrl: `https://picsum.photos/600/600?random=${id}`,
+      categoryId: 1, 
+      brand: brands[id % brands.length],
+      rating: +(Math.random() * 2 + 3).toFixed(1),
+      reviewCount: Math.floor(Math.random() * 500) + 50,
+      originalPrice: discount ? price : undefined,
+      discount: discount,
+      isFavorite: false,
+      images: Array.from({length: 4}, (_, i) => 
+        `https://picsum.photos/600/600?random=${id + i + 1}`)
+    };
+  }
+
+  changeMainImage(img: string): void {
+    this.product.imageUrl = img;
+  }
+
+  addToCart(): void {
     if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/login']);
-      return;
-    }
-    p.isFavorite = !p.isFavorite;
-  }
-
-  onViewDetails(p: ProductView): void {
-    this.router.navigate(['/product', p.id]);
-  }
-
-  addToCart(event?: Event): void {
-    event?.stopPropagation();
-    if (!this.product || !this.authService.isLoggedIn()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/login'], { 
+        queryParams: { 
+          returnTo: this.router.url,
+          productId: this.product.id 
+        }
+      });
       return;
     }
     this.cartService.add(this.product);
-    this.router.navigate(['/cart']);
+  }
+  toggleFavorite(): void {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login'], { 
+        queryParams: { 
+          returnTo: this.router.url,
+          productId: this.product.id 
+        }
+      });
+      return;
+    }
+    this.product.isFavorite = !this.product.isFavorite;
   }
 }

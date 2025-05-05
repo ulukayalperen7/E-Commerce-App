@@ -1,5 +1,14 @@
 <div class="login-required-container">
-    <h2>Login Required</h2>
-    <p>Please log in to access your favorites or cart.</p>
-    <button (click)="goToLogin()">Log In</button>
+  <div class="login-icon">
+    <i class="fa fa-user-circle"></i>
   </div>
+  <h2>Login Required</h2>
+  <p>Please log in to access your favorites or cart.</p>
+  <button (click)="goToLogin()" class="login-btn">
+    <i class="fa fa-sign-in"></i> Log In
+  </button>
+  <div class="register-link">
+    <span>Don't have an account?</span>
+    <a href="/register">Register now</a>
+  </div>
+</div>

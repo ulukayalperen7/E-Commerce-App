@@ -215,47 +215,85 @@ section h2 i {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    min-height: 120px;
     
-    h3 {
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: #333;
+    .product-header {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
       margin-bottom: 8px;
+      overflow: hidden;
+      
+      .brand {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-right: 6px;
+        white-space: nowrap;
+      }
+      
+      .product-description {
+        font-size: 0.85rem;
+        color: #666;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        opacity: 0.8;
+      }
     }
-    
-    .price {
-      font-size: 1.1rem;
-      color: #111;
-      font-weight: 600;
-      margin: 5px 0;
+  
+    .rating {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+  
+      .rating-value {
+        font-weight: bold;
+        color: #111;
+        margin-right: 6px;
+        font-size: 0.9rem;
+      }
+  
+      .stars {
+        display: inline-flex;
+        margin-right: 5px;
+        
+        i {
+          color: #ffc107; /* Yellow stars */
+          font-size: 0.9rem;
+          margin-right: 2px;
+        }
+      }
+      
+      .review-count {
+        color: #666;
+        font-size: 0.8rem;
+      }
     }
-    
-    .description {
-      font-size: 0.9rem;
-      color: #666;
-      margin-top: 8px;
-      line-height: 1.4;
-    }
-    
+  
     .price-container {
       display: flex;
       align-items: center;
       gap: 8px;
-      
+      margin-top: auto;
+  
       .original-price {
         text-decoration: line-through;
         color: #999;
         font-size: 0.9rem;
+        margin: 0;
       }
-      
+  
       .sale-price {
         color: #3498db;
         font-size: 1.1rem;
         font-weight: 600;
+        margin: 0;
       }
     }
   }
-
+  
   .action-btn {
     width: 100%;
     padding: 12px;

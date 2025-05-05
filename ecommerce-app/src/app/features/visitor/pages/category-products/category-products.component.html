@@ -1,27 +1,77 @@
 <app-visitor-navbar></app-visitor-navbar>
 
-<main class="category-products">
-  <header>
-    <h2>Products in “{{ categoryName }}”</h2>
-  </header>
+<main class="category-container">
+  <section class="category-header">
+    <h1 class="category-title">
+      Products in <span class="category-name">{{ categoryName }}</span>
+    </h1>
+  </section>
 
   <div *ngIf="loading" class="loading">Loading products…</div>
   <div *ngIf="!loading && products.length === 0" class="empty">
     No products found in this category.
   </div>
 
-  <div *ngIf="!loading && products.length > 0" class="products-grid">
-    <div *ngFor="let product of products" class="product-card">
-      <div class="thumb" (click)="viewDetails(product)" style="cursor: pointer">
-        <img [src]="product.imageUrl" [alt]="product.name" />
+  <section *ngIf="!loading && products.length > 0" class="products-section">
+    <div class="section-container products-container">
+      <div class="product-cards">
+        <div *ngFor="let product of products" class="product-card">
+          <div class="image-container" (click)="viewDetails(product)" style="cursor: pointer">
+            <img [src]="product.imageUrl" [alt]="product.name" />
+            <button
+              (click)="onFavoriteClick(product, $event)"
+              class="favorite-btn"
+              [class.active]="product.isFavorite"
+              aria-label="Add to favorites"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+                     2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09
+                     C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42
+                     22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                  class="heart-icon"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <div class="product-details">
+            <div class="product-header">
+              <span class="brand">{{ product.brand }}</span>
+              <span class="product-description">{{ product.name || ' ' }}</span>
+            </div>
+            <div class="rating">
+              <span class="rating-value">{{ product.rating }}</span>
+              <span class="stars">
+                <ng-container *ngFor="let star of [1,2,3,4,5]">
+                  <i
+                    class="fa"
+                    [ngClass]="{
+                      'fa-star': product.rating >= star,
+                      'fa-star-half-o': product.rating >= star - 0.5 && product.rating < star,
+                      'fa-star-o': product.rating < star - 0.5
+                    }"
+                  ></i>
+                </ng-container>
+              </span>
+              <span class="review-count">({{ product.reviewCount }})</span>
+            </div>
+            <div class="price-container">
+              <p class="original-price" *ngIf="product.originalPrice">{{ product.originalPrice | currency }}</p>
+              <p class="sale-price">{{ product.price | currency }}</p>
+            </div>
+          </div>
+
+          <button class="action-btn view-details-btn" (click)="viewDetails(product)">
+            View Details
+          </button>
+        </div>
       </div>
-      <div class="info">
-        <h3>{{ product.name }}</h3>
-        <p class="price">{{ product.price | currency }}</p>
-      </div>
-      <button class="btn view-btn" (click)="viewDetails(product)">View Details</button>
     </div>
-  </div>
+  </section>
 </main>
 
 <app-footer></app-footer>
