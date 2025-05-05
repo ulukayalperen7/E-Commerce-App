@@ -6,6 +6,7 @@ import { OrderHistoryComponent } from './pages/order-history/order-history.compo
 import { CustomerCategoryProductsComponent } from './pages/customer-category-products/customer-category-products.component';
 import { AuthGuard } from '../../core/guards/auth.guard';
 import { FavoritesComponent } from './pages/favorites/favorites.component';
+import { CustomerProfileComponent } from './pages/customer-profile/customer-profile.component';
 
 const routes: Routes = [
   { path: 'home',           component: CustomerHomeComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'order-history',  component: OrderHistoryComponent,          canActivate: [AuthGuard] },
   { path: 'category/:id',   component: CustomerCategoryProductsComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'profile',        component: CustomerProfileComponent,       canActivate: [AuthGuard] },
 ];
 
 @NgModule({

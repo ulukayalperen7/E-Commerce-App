@@ -1,99 +1,138 @@
-.profile-container {
-    padding: 30px;
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: #f9f9f9;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .profile-header {
+.profile-wrap {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: Arial, sans-serif;
+
+  h1 {
     text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .profile-header h2 {
-    font-size: 2rem;
+    margin-bottom: 1.5rem;
     color: #333;
-    font-weight: bold;
   }
-  
-  .profile-header .profile-email {
-    font-size: 1.2rem;
-    color: #666;
-  }
-  
-  .profile-card {
-    background-color: #ffffff;
-    padding: 20px;
+
+  section {
+    background: #fff;
+    padding: 1.5rem;
     border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    margin-bottom: 30px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
+
+    h2 {
+      margin-top: 0;
+      color: #444;
+      font-size: 1.2rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
   }
-  
-  .profile-card h3 {
-    font-size: 1.6rem;
-    margin-bottom: 15px;
-    color: #333;
-  }
-  
-  .profile-info {
+
+  .grid-two {
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 10px;
-    align-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+    gap: 1rem;
   }
-  
-  .info-item {
+
+  .field {
+    display: flex;
+    flex-direction: column;
+
+    &.full { grid-column: 1 / -1; }
+    &.birthdate { grid-column: 1 / -1; }
+
+    label {
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: #555;
+    }
+
+    input, select {
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+
+    small {
+      color: #d9534f;
+      margin-top: 0.3rem;
+      font-size: 0.85rem;
+    }
+  }
+
+  .birth-grid {
+    display: flex;
+    gap: 0.5rem;
+
+    select {
+      flex: 1;
+    }
+  }
+
+  .password-section {
+    .grid-two { 
+      grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); 
+    }
+  }
+
+  /* Şifre güncelleme butonu */
+  .password-actions {
+    text-align: right;
+    margin-top: 1rem;
+
+    .btn-primary {
+      background: #28a745;
+      color: #fff;
+      padding: 0.8rem 1.6rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: #1e7e34;
+      }
+    }
+  }
+
+  .actions {
     display: flex;
     justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid #f0f0f0;
-  }
-  
-  .info-item label {
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .info-item span {
-    color: #555;
-    font-size: 1.1rem;
-  }
-  
-  .profile-actions {
-    text-align: center;
-  }
-  
-  .btn-update {
-    background-color: #007bff;
-    color: white;
-    padding: 12px 30px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    margin: 10px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .btn-update:hover {
-    background-color: #0056b3;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .profile-container {
-      padding: 20px;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+
+    .btn-alt, .btn-primary {
+      padding: 0.8rem 2rem;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
     }
-  
-    .profile-info {
-      grid-template-columns: 1fr;
+
+    .btn-alt {
+      background: transparent;
+      color: #007bff;
+      border: 1px solid #007bff;
+      &:hover {
+        background: #f0f8ff;
+      }
     }
-  
-    .btn-update {
-      width: 100%;
-      padding: 12px;
+
+    .btn-primary {
+      background: #007bff;
+      color: #fff;
+      &:hover {
+        background: #0056b3;
+      }
     }
   }
-  
+}
+
+@media (max-width: 600px) {
+  .actions {
+    flex-direction: column;
+  }
+}

@@ -1,29 +1,85 @@
-<div class="profile-container">
-    <div class="profile-header">
-      <h2>Welcome, {{ user.name }}!</h2>
-      <p class="profile-email">{{ user.email }}</p>
-    </div>
-  
-    <div class="profile-card">
-      <h3>Your Information</h3>
-      <div class="profile-info">
-        <div class="info-item">
-          <label>Name:</label>
-          <span>{{ user.name }}</span>
+<app-customer-navbar></app-customer-navbar>
+
+<main class="profile-wrap">
+  <form [formGroup]="profileForm" (ngSubmit)="onSave()">
+    <h1>My Profile</h1>
+
+    <section class="profile-section">
+      <h2>Personal Info</h2>
+      <div class="grid-two">
+        <div class="field">
+          <label>First Name</label>
+          <input formControlName="firstName" type="text" />
+          <small *ngIf="profileForm.get('firstName')?.touched && profileForm.get('firstName')?.invalid">Required</small>
         </div>
-        <div class="info-item">
-          <label>Email:</label>
-          <span>{{ user.email }}</span>
+        <div class="field">
+          <label>Last Name</label>
+          <input formControlName="lastName" type="text" />
+          <small *ngIf="profileForm.get('lastName')?.touched && profileForm.get('lastName')?.invalid">Required</small>
         </div>
-        <div class="info-item">
-          <label>Joined Date:</label>
-          <span>{{ user.joinedDate | date:'shortDate' }}</span>
+        <div class="field">
+          <label>Email</label>
+          <input formControlName="email" type="email" />
+          <small *ngIf="profileForm.get('email')?.touched && profileForm.get('email')?.invalid">Valid email required</small>
+        </div>
+        <div class="field">
+          <label>Phone</label>
+          <input formControlName="phone" type="tel" />
+          <small *ngIf="profileForm.get('phone')?.touched && profileForm.get('phone')?.invalid">Required</small>
+        </div>
+        <div class="field full">
+          <label>Address</label>
+          <input formControlName="address" type="text" />
+          <small *ngIf="profileForm.get('address')?.touched && profileForm.get('address')?.invalid">Required</small>
+        </div>
+        <div class="field birthdate">
+          <label>Birth Date</label>
+          <div class="birth-grid">
+            <select formControlName="birthDay">
+              <option value="">Day</option>
+              <option *ngFor="let d of days" [value]="d">{{ d }}</option>
+            </select>
+            <select formControlName="birthMonth">
+              <option value="">Month</option>
+              <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+            </select>
+            <select formControlName="birthYear">
+              <option value="">Year</option>
+              <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+            </select>
+          </div>
+          <small *ngIf="profileForm.get('birthDay')?.invalid">Required</small>
         </div>
       </div>
+    </section>
+
+    <section class="password-section">
+      <h2>Change Password</h2>
+      <div class="grid-two">
+        <div class="field">
+          <label>Current Password</label>
+          <input formControlName="currentPassword" type="password" />
+        </div>
+        <div class="field">
+          <label>New Password</label>
+          <input formControlName="newPassword" type="password" />
+        </div>
+        <div class="field">
+          <label>Confirm Password</label>
+          <input formControlName="confirmPassword" type="password" />
+          <small *ngIf="profileForm.errors?.['mismatch']">Passwords do not match</small>
+        </div>
+      </div>
+      <div class="password-actions">
+        <button type="button" class="btn-primary" (click)="onUpdatePassword()">Update Password</button>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button type="button" class="btn-alt" routerLink="/customer/order-history">View Order History</button>
+      <button type="submit" class="btn-primary">Save Profile</button>
     </div>
-  
-    <div class="profile-actions">
-      <button class="btn-update" routerLink="/customer/profile/orders">View Order History</button>
-      <button class="btn-update" routerLink="/customer/profile/security">Change Password</button>
-    </div>
-</div>
+  </form>
+</main>
+
+<app-footer></app-footer>
