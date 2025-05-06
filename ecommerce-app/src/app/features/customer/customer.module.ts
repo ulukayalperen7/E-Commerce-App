@@ -19,7 +19,7 @@ OrderHistoryComponent,
 FavoritesComponent,
 CustomerNavbarComponent,
 CustomerCategoryProductsComponent,
-CustomerProfileComponent
+CustomerProfileComponent,
 ],
 imports: [
 CommonModule,

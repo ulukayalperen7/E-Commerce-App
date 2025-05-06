@@ -1,7 +1,8 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CategoryService } from '../../../../core/services/category.service';
+import { Category, CategoryService } from '../../../../core/services/category.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-customer-navbar',
@@ -11,33 +12,48 @@ import { CategoryService } from '../../../../core/services/category.service';
 })
 export class CustomerNavbarComponent implements OnInit {
   searchForm!: FormGroup;
-  categories: any[] = [];
-  navbarHeight = 75;
+  categories: Category[] = [];
+  
+  categoriesOpen = false;
+
+  navbarHeight = 0;
+
   isNavbarHidden = false;
-  lastScrollTop = 0;
+  private lastScrollTop = 0;
 
   profileMenu = [
-    { label: 'Profile', path: '/customer/profile' },
+    { label: 'Profile',       path: '/customer/profile' },
     { label: 'Order History', path: '/customer/order-history' }
   ];
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.searchForm = this.fb.group({ query: [''] });
+
     this.categoryService.getAll().subscribe(data => this.categories = data);
+
     this.updateNavbarHeight();
   }
 
+  toggleCategories(): void {
+    this.categoriesOpen = !this.categoriesOpen;
+  }
+
   @HostListener('window:scroll')
-  onScroll(): void {
+  onWindowScroll(): void {
     const st = window.pageYOffset || document.documentElement.scrollTop;
-    this.isNavbarHidden = st > this.lastScrollTop && st > 100;
+    this.isNavbarHidden = st > this.lastScrollTop && st > this.navbarHeight;
     this.lastScrollTop = st <= 0 ? 0 : st;
+  }
+  @HostListener('window:resize')
+  onResize(): void {
+    this.updateNavbarHeight();
   }
 
   onSearch(): void {
@@ -48,7 +64,7 @@ export class CustomerNavbarComponent implements OnInit {
   }
 
   onLogout(): void {
-    this.router.navigate(['/home']);
+    this.authService.logout();
   }
 
   private updateNavbarHeight(): void {

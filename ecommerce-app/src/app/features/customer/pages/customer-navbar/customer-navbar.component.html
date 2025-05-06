@@ -3,14 +3,13 @@
 <nav class="customer-navbar" [class.hidden]="isNavbarHidden">
   <div class="container">
     <div class="navbar-inner">
-      
       <div class="logo">
-        <a routerLink="/customer/home">MyStore</a>
+        <a routerLink="/customer/home">AzuL</a>
       </div>
 
       <div class="categories-wrapper">
-        <button class="categories-btn">Categories ▾</button>
-        <ul class="categories-menu">
+        <button class="categories-btn" (click)="toggleCategories()">Categories ▾</button>
+        <ul class="categories-menu" [class.open]="categoriesOpen">
           <li *ngFor="let cat of categories">
             <a [routerLink]="['/customer/category', cat.id]">{{ cat.name }}</a>
           </li>
@@ -23,7 +22,7 @@
       </form>
 
       <a routerLink="/customer/favorites" class="icon-link">❤️ Favorites</a>
-      <a routerLink="/customer/cart"      class="icon-link">🛒 Cart</a>
+      <a routerLink="/customer/cart" class="icon-link">🛒 Cart</a>
 
       <div class="profile-dropdown">
         <button class="profile-btn">👤 Account ▾</button>
@@ -37,7 +36,6 @@
           </li>
         </ul>
       </div>
-
     </div>
   </div>
 </nav>

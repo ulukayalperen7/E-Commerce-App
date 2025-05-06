@@ -63,4 +63,17 @@ export class FavoriteService {
     }
     return this.getFavorites().includes(id);
   }
+
+  toggleFavorite(id: number): void {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login-required']);
+      return;
+    }
+
+    if (this.isFavorite(id)) {
+      this.removeFavorite(id);
+    } else {
+      this.addFavorite(id);
+    }
+  }
 }
