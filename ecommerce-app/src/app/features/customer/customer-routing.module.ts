@@ -8,6 +8,7 @@ import { OrderHistoryComponent } from './pages/order-history/order-history.compo
 import { CustomerCategoryProductsComponent } from './pages/customer-category-products/customer-category-products.component';
 import { FavoritesComponent } from './pages/favorites/favorites.component';
 import { CustomerProfileComponent } from './pages/customer-profile/customer-profile.component';
+import { CustomerProductDetailComponent } from './pages/customer-product-detail/customer-product-detail.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
       { path: 'favorites',     component: FavoritesComponent },
       { path: 'order-history', component: OrderHistoryComponent },
       { path: 'category/:id',  component: CustomerCategoryProductsComponent },
+      { path: 'product/:id',   component: CustomerProductDetailComponent },
       { path: 'profile',       component: CustomerProfileComponent },
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
