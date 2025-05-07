@@ -16,13 +16,13 @@ const routes: Routes = [
     canActivate: [AuthGuard], // guard root of this module
     canActivateChild: [AuthGuard],  // apply guard to all child routes
     children: [
-      { path: 'home',          component: CustomerHomeComponent },
-      { path: 'cart',          component: CustomerCartComponent },
-      { path: 'favorites',     component: FavoritesComponent },
+      { path: 'home',        component: CustomerHomeComponent },
+      { path: 'cart',        component: CustomerCartComponent },
+      { path: 'favorites',   component: FavoritesComponent },
       { path: 'order-history', component: OrderHistoryComponent },
-      { path: 'category/:id',  component: CustomerCategoryProductsComponent },
-      { path: 'product/:id',   component: CustomerProductDetailComponent },
-      { path: 'profile',       component: CustomerProfileComponent },
+      { path: 'category/:id', component: CustomerCategoryProductsComponent },
+      { path: 'product/:id',  component: CustomerProductDetailComponent },
+      { path: 'profile',      component: CustomerProfileComponent },
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
   }

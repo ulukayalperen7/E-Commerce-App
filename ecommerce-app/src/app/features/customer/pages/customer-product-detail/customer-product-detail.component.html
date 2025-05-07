@@ -1,1 +1,82 @@
-<p>customer-product-detail works!</p>
+<app-customer-navbar></app-customer-navbar>
+
+<main class="product-detail-container">
+  <div class="product-main">
+    <div class="product-images">
+      <div class="main-image">
+        <img [src]="product.imageUrl" [alt]="product.name" />
+      </div>
+      <div class="thumbnail-container">
+        <div *ngFor="let img of product.images"
+             class="thumbnail"
+             (click)="changeMainImage(img)"
+             [class.active]="img === product.imageUrl">
+          <img [src]="img" [alt]="product.name" />
+        </div>
+      </div>
+    </div>
+    
+    <div class="product-info">
+      <div class="product-header">
+        <h1 class="brand">{{ product.brand }}</h1>
+        <h2 class="product-title">{{ product.name }}</h2>
+      </div>
+      
+      <div class="rating-container">
+        <span class="rating-value">{{ product.rating }}</span>
+        <div class="stars">
+          <i *ngFor="let star of [1,2,3,4,5]"
+             class="fa"
+             [ngClass]="{
+               'fa-star': product.rating >= star,
+               'fa-star-half-o': product.rating >= star - 0.5 && product.rating < star,
+               'fa-star-o': product.rating < star - 0.5
+             }"></i>
+        </div>
+        <span class="review-count">({{ product.reviewCount }} reviews)</span>
+      </div>
+      
+      <div class="price-container">
+        <p class="original-price" *ngIf="product.originalPrice">
+          {{ product.originalPrice | currency }}
+        </p>
+        <p class="sale-price">{{ product.price | currency }}</p>
+        <p class="discount-badge" *ngIf="product.discount">
+          Save {{ product.discount }}%
+        </p>
+      </div>
+      
+      <div class="actions">
+        <button class="add-to-cart-btn" (click)="addToCart()">
+          <i class="fa fa-shopping-cart"></i> Add to Cart
+        </button>
+        <button class="favorite-btn"
+                (click)="toggleFavorite()"
+                [class.active]="product.isFavorite"
+                [attr.aria-label]="product.isFavorite ? 'Remove from favorites' : 'Add to favorites'">
+          <svg class="heart-icon" viewBox="0 0 24 24">
+            <path [attr.fill]="product.isFavorite ? '#ff3e3e' : 'transparent'"
+                  stroke="#666" 
+                  stroke-width="1.5"
+                  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="product-description">
+        <h3>Product Details</h3>
+        <p>{{ product.description }}</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="reviews-section">
+    <h2>Customer Reviews</h2>
+    <div class="reviews-placeholder">
+      <i class="fa fa-comments"></i>
+      <p>Reviews will be displayed here in future updates</p>
+    </div>
+  </div>
+</main>
+
+<app-footer></app-footer>
