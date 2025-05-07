@@ -81,7 +81,7 @@ export class HomeComponent implements OnInit {
   }
 
   onViewDetails(p: ProductView): void {
-    this.router.navigate(['/customer/product', p.id]);
+    this.router.navigate(['/product', p.id]);
   }
 
   onAddToCart(p: ProductView): void {
