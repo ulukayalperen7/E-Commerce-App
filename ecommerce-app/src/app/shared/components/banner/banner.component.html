@@ -1,6 +1,5 @@
 <div class="banner" (mouseenter)="pause()" (mouseleave)="play()">
   <button class="arrow prev" (click)="prev()">‹</button>
-
   <div class="banner-slider"
        [style.transform]="'translateX(-' + currentIndex * 100 + '%)'">
     <div class="slide" *ngFor="let item of items">
@@ -13,6 +12,5 @@
       </div>
     </div>
   </div>
-
   <button class="arrow next" (click)="next()">›</button>
 </div>

@@ -73,7 +73,7 @@ export class AuthService {
     localStorage.removeItem('favorites');
   
     // Redirect to login-required page
-    this.router.navigate(['/login-required']);
+    this.router.navigate(['/home']);
   }
 
   /**

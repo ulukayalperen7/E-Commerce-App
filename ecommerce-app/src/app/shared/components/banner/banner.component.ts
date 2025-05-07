@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router }                        from '@angular/router';
 import { BannerItem, BannerService } from '../../../core/services/banner.service';
 
@@ -9,6 +9,7 @@ import { BannerItem, BannerService } from '../../../core/services/banner.service
   styleUrls: ['./banner.component.scss']
 })
 export class BannerComponent implements OnInit, OnDestroy {
+  @Input() routePrefix: string = '';
   items: BannerItem[] = [];
   currentIndex = 0;
   private intervalId!: any;
@@ -48,6 +49,10 @@ export class BannerComponent implements OnInit, OnDestroy {
   }
 
   goToCategory(item: BannerItem) {
-    this.router.navigate(['/category', item.categoryId, item.name]);
+    if ( this.router.url.startsWith('/customer') ) {
+      this.router.navigate(['/customer','category', item.categoryId]);
+    } else {
+      this.router.navigate(['/category', item.categoryId, item.name]);
+    }
   }
 }
