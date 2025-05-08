@@ -1,25 +1,37 @@
 <div class="user-management">
-  <h1>User Management</h1>
+  <h1 class="title">User Management</h1>
 
-  <table class="user-table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let user of users">
-        <td>{{ user.name }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.role }}</td>
-        <td>
-          <button class="btn-promote" (click)="promoteToAdmin(user.id)" [disabled]="user.role === 'Admin'">Promote</button>
-          <button class="btn-delete" (click)="deleteUser(user.id)">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-wrapper">
+    <table class="user-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+          <td class="actions">
+            <button
+              class="btn promote"
+              (click)="promoteToAdmin(user.id)"
+              [disabled]="user.role === 'Admin'"
+            >
+              {{ user.role === 'Admin' ? 'Admin' : 'Promote' }}
+            </button>
+            <button class="btn delete" (click)="deleteUser(user.id)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <button class="btn add-new" (click)="addUser()">+ Add New User</button>
 </div>

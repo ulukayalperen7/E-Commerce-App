@@ -1,44 +1,123 @@
 .issue-resolution {
-    padding: 2rem;
-    font-family: Arial, sans-serif;
-  
-    h1 {
-      text-align: center;
-      margin-bottom: 2rem;
+  padding: 2rem;
+  font-family: 'Helvetica Neue', sans-serif;
+  background: #f5f7fa;
+  color: #222;
+
+  .title {
+    text-align: center;
+    font-size: 2.25rem;
+    margin-bottom: 2rem;
+    background: linear-gradient(45deg, #3498db, #8e44ad);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 5px rgba(52, 152, 219, 0.3),
+                  0 0 10px rgba(142, 68, 173, 0.3);
     }
-  
-    .issue-card {
-      background: #fff;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      margin-bottom: 1.5rem;
-  
+    to {
+      text-shadow: 0 0 10px rgba(52, 152, 219, 0.5),
+                  0 0 20px rgba(142, 68, 173, 0.5);
+    }
+  }
+
+  .issue-card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    margin-bottom: 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+
       h3 {
-        font-size: 1.2rem;
-        color: #333;
+        font-size: 1.25rem;
+        color: #6c5ce7;
       }
-  
-      p {
-        font-size: 1rem;
-        color: #555;
+
+      .status {
+        font-size: 0.9rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 12px;
+        text-transform: uppercase;
+        font-weight: 600;
+        &.open {
+          background: #ffeaa7;
+          color: #2d3436;
+        }
+        &.resolved {
+          background: #81ecec;
+          color: #2d3436;
+        }
+        &.pending {
+          background: #fab1a0;
+          color: #2d3436;
+        }
+        &.closed {
+          background: #dfe6e9;
+          color: #2d3436;
+        }
       }
-  
-      button {
-        margin-top: 1rem;
-        padding: 0.8rem 1.5rem;
-        background: #007bff;
-        color: white;
+    }
+
+    .priority {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: #555;
+
+      strong {
+        color: #6c5ce7;
+      }
+    }
+
+    .actions {
+      display: flex;
+      gap: 1rem;
+
+      .btn {
+        flex: 1;
+        padding: 0.6rem 1rem;
         border: none;
-        border-radius: 5px;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        font-weight: 600;
         cursor: pointer;
-        font-size: 1rem;
-        transition: background 0.3s ease;
+        transition: background 0.2s, transform 0.1s;
+
+        &:active {
+          transform: scale(0.98);
+        }
       }
-  
-      button:hover {
-        background: #0056b3;
+
+      .resolve {
+        background: #6c5ce7;
+        color: #fff;
+        &:hover {
+          background: #5649c0;
+        }
+      }
+
+      .close {
+        background: #d63031;
+        color: #fff;
+        &:hover {
+          background: #b71c1c;
+        }
       }
     }
   }
-  
+}

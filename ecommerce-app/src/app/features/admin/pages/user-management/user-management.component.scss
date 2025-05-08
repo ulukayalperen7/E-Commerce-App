@@ -1,56 +1,121 @@
 .user-management {
-    padding: 2rem;
-  
-    h1 {
-      margin-bottom: 1.5rem;
-      color: #333;
+  padding: 2rem;
+  font-family: 'Helvetica Neue', sans-serif;
+  background: #f5f7fa;
+  color: #222;
+
+  .title {
+    text-align: center;
+    font-size: 2.25rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(45deg, #3498db, #8e44ad);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 5px rgba(52,152,219,0.3),
+                  0 0 10px rgba(142,68,173,0.3);
     }
-  
-    .user-table {
-      width: 100%;
-      border-collapse: collapse;
-  
-      th, td {
-        border: 1px solid #ddd;
-        padding: 0.8rem;
-        text-align: left;
+    to {
+      text-shadow: 0 0 10px rgba(52,152,219,0.5),
+                  0 0 20px rgba(142,68,173,0.5);
+    }
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+
+  .user-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+
+    th, td {
+      padding: 1rem;
+      border-bottom: 1px solid #e0e0e0;
+      text-align: left;
+    }
+
+    th {
+      background: #f7f7f7;
+      font-weight: 600;
+      color: #444;
+    }
+
+    tr:hover {
+      background: rgba(108,92,231,0.05);
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+
+      &:active {
+        transform: scale(0.98);
       }
-  
-      th {
-        background-color: #f2f2f2;
+    }
+
+    .promote {
+      background: #6c5ce7;
+      color: #fff;
+
+      &:hover:not([disabled]) {
+        background: #5649c0;
       }
-  
-      .btn-promote {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 0.4rem 0.8rem;
-        margin-right: 0.5rem;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-  
-      .btn-delete {
-        background-color: #dc3545;
-        color: white;
-        border: none;
-        padding: 0.4rem 0.8rem;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-  
-      .btn-promote:hover {
-        background-color: #0056b3;
-      }
-  
-      .btn-delete:hover {
-        background-color: #c82333;
-      }
-  
-      .btn-promote[disabled] {
-        background-color: #aaa;
+
+      &:disabled {
+        background: #aaa;
         cursor: not-allowed;
       }
     }
+
+    .delete {
+      background: #d63031;
+      color: #fff;
+
+      &:hover {
+        background: #b71c1c;
+      }
+    }
   }
-  
+
+  .add-new {
+    display: block;
+    margin: 0 auto;
+    padding: 0.75rem 1.5rem;
+    background: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+
+    &:hover {
+      background: #2980b9;
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}

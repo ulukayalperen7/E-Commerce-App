@@ -1,10 +1,30 @@
 <div class="issue-resolution">
-  <h1>Issue Resolution</h1>
+  <h1 class="title">Issue Resolution</h1>
+
   <div *ngFor="let issue of issues" class="issue-card">
-    <h3>{{ issue.title }}</h3>
-    <p>Status: {{ issue.status }}</p>
-    <p>Priority: {{ issue.priority }}</p>
-    <button *ngIf="issue.status === 'Open'" (click)="resolveIssue(issue.id)">Resolve</button>
-    <button *ngIf="issue.status !== 'Closed'" (click)="closeIssue(issue.id)">Close</button>
+    <div class="card-header">
+      <h3>{{ issue.title }}</h3>
+      <span class="status" [ngClass]="issue.status.toLowerCase()">
+        {{ issue.status }}
+      </span>
+    </div>
+    <p class="priority">Priority: <strong>{{ issue.priority }}</strong></p>
+
+    <div class="actions">
+      <button
+        *ngIf="issue.status === 'Open'"
+        (click)="resolveIssue(issue.id)"
+        class="btn resolve"
+      >
+        Resolve
+      </button>
+      <button
+        *ngIf="issue.status !== 'Closed'"
+        (click)="closeIssue(issue.id)"
+        class="btn close"
+      >
+        Close
+      </button>
+    </div>
   </div>
 </div>

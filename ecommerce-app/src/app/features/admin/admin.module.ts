@@ -8,7 +8,8 @@ import { UserManagementComponent } from './pages/user-management/user-management
 import { ProductManagementComponent } from './pages/product-management/product-management.component';
 import { OrderTrackingComponent } from './pages/order-tracking/order-tracking.component';
 import { IssueResolutionComponent } from './pages/issue-resolution/issue-resolution.component';
-import { AdminNavbarComponent } from './components/admin-navbar/admin-navbar.component';
+import { AdminHomeComponent } from './pages/admin-home/admin-home.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,12 +18,13 @@ import { AdminNavbarComponent } from './components/admin-navbar/admin-navbar.com
     ProductManagementComponent,
     OrderTrackingComponent,
     IssueResolutionComponent,
-    AdminNavbarComponent
+    AdminHomeComponent
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ]
 })
 export class AdminModule { }

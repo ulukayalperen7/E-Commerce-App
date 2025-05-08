@@ -1,0 +1,32 @@
+<main class="admin-home">
+    <h1 class="title">
+      Welcome to <span class="highlight">Admin Panel</span>
+    </h1>
+  
+    <div class="grid">
+      <button class="card" (click)="goTo('dashboard')">
+        <h3>Dashboard</h3>
+        <p>System overview</p>
+      </button>
+  
+      <button class="card" (click)="goTo('order-tracking')">
+        <h3>Order Tracking</h3>
+        <p>Manage orders</p>
+      </button>
+  
+      <button class="card" (click)="goTo('issue-resolution')">
+        <h3>Issue Resolution</h3>
+        <p>Handle tickets</p>
+      </button>
+  
+      <button class="card" (click)="goTo('product-management')">
+        <h3>Product Management</h3>
+        <p>Add/Edit/Delete products</p>
+      </button>
+  
+      <button class="card" (click)="goTo('user-management')">
+        <h3>User Management</h3>
+        <p>Roles & permissions</p>
+      </button>
+    </div>
+  </main>

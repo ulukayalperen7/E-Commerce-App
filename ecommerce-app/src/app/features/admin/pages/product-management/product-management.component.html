@@ -1,25 +1,37 @@
-<div class="product-management">
-  <h1>Product Management</h1>
+<div class="product-management" [formGroup]="filterForm">
+  <header class="pm-header">
+    <h1>Product Management</h1>
+    <div class="actions-bar">
+      <input
+        type="text"
+        formControlName="filterText"
+        placeholder="Search products..."
+      />
+      <button class="btn add-new" (click)="addProduct()">+ Add New</button>
+    </div>
+  </header>
 
-  <table class="product-table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Price ($)</th>
-        <th>Stock</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let product of products">
-        <td>{{ product.name }}</td>
-        <td>{{ product.price }}</td>
-        <td>{{ product.stock }}</td>
-        <td>
-          <button class="btn-edit">Edit</button>
-          <button class="btn-delete" (click)="deleteProduct(product.id)">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-wrapper">
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th class="actions-col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of filteredProducts">
+          <td>{{ p.name }}</td>
+          <td>{{ p.price | currency }}</td>
+          <td>{{ p.stock }}</td>
+          <td class="actions-col">
+            <button class="btn edit" (click)="editProduct(p.id)">✏️</button>
+            <button class="btn delete" (click)="deleteProduct(p.id)">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

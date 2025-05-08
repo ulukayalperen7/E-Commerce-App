@@ -2,35 +2,23 @@
   <h1 class="dashboard-title">Admin Dashboard</h1>
 
   <div class="dashboard-cards">
-    <div class="dashboard-card">
-      <h3>Total Users</h3>
-      <p>{{ stats[0].value }}</p>
-    </div>
-    <div class="dashboard-card">
-      <h3>Total Products</h3>
-      <p>{{ stats[1].value }}</p>
-    </div>
-    <div class="dashboard-card">
-      <h3>Total Orders</h3>
-      <p>{{ stats[2].value }}</p>
-    </div>
-    <div class="dashboard-card">
-      <h3>Open Issues</h3>
-      <p>{{ stats[3].value }}</p>
+    <div class="dashboard-card" *ngFor="let stat of stats">
+      <div class="icon">{{ stat.icon }}</div>
+      <h3>{{ stat.title }}</h3>
+      <p>{{ stat.value }}</p>
     </div>
   </div>
 
   <section class="dashboard-charts">
     <h2>Sales Overview</h2>
     <div id="salesChart" class="chart-container">
-      <!-- Grafik buraya gelecek -->
     </div>
   </section>
 
   <section class="recent-activities">
     <h2>Recent Activities</h2>
-    <div class="recent-activity-item" *ngFor="let product of newProducts">
-      <p><strong>New Product:</strong> {{ product.name }} - ${{ product.price }}</p>
+    <div class="recent-activity-item" *ngFor="let product of newProducts; let i = index">
+      <p><strong>New Product {{ i + 1 }}:</strong> {{ product.name }} - ${{ product.price }}</p>
     </div>
     <div class="recent-activity-item">
       <p><strong>New Orders:</strong> {{ newOrders }}</p>
@@ -39,14 +27,11 @@
 
   <section class="quick-links">
     <h2>Quick Links</h2>
-    <div class="quick-link">
-      <a routerLink="/admin/product-management">Manage Products</a>
+    <div class="quick-link"><a routerLink="/admin/product-management">Manage Products</a></div>
+    <div class="quick-link"><a routerLink="/admin/order-tracking">Track Orders</a></div>
+    <div class="quick-link"><a routerLink="/admin/user-management">Manage Users</a></div>
+    <div class="quick-link"><a routerLink="/admin/issue-resolution">Resolve Issues</a>
     </div>
-    <div class="quick-link">
-      <a routerLink="/admin/order-tracking">Track Orders</a>
-    </div>
-    <div class="quick-link">
-      <a routerLink="/admin/user-management">Manage Users</a>
-    </div>
+
   </section>
 </div>

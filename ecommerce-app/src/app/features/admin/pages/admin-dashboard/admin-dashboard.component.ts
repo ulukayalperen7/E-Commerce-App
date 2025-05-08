@@ -7,21 +7,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./admin-dashboard.component.scss']
 })
 export class AdminDashboardComponent implements OnInit {
+  // Placeholder stats; replace with API when backend is ready
   stats = [
-    { title: 'Total Users', value: 1560, icon: '👥' },
-    { title: 'Products', value: 320, icon: '📦' },
-    { title: 'Orders Today', value: 87, icon: '🛒' },
-    { title: 'Open Issues', value: 5, icon: '❗' }
+    { title: 'Total Users', value: 0, icon: '👥' },
+    { title: 'Total Products', value: 0, icon: '📦' },
+    { title: 'Total Orders', value: 0, icon: '🛒' },
+    { title: 'Open Issues', value: 0, icon: '❗' }
   ];
 
-  newOrders = 5;
-  newProducts = [
-    { name: 'Product 1', price: 20 },
-    { name: 'Product 2', price: 35 },
-    { name: 'Product 3', price: 15 }
-  ];
+  newOrders = 0;
+  newProducts: Array<{ name: string; price: number }> = [];
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // TODO: Inject a dashboard service and fetch real data:
+    // this.dashboardService.getStats().subscribe(data => this.stats = data);
+    // this.dashboardService.getRecentProducts().subscribe(list => this.newProducts = list);
+    // this.dashboardService.getNewOrders().subscribe(count => this.newOrders = count);
+  }
 }

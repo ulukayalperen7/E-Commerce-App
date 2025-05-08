@@ -1,0 +1,61 @@
+.admin-home {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    font-family: 'Helvetica Neue', sans-serif;
+    background: #f5f7fa;
+    color: #222;
+  
+    .title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+  
+      .highlight {
+        background: linear-gradient(45deg, #3498db, #8e44ad);
+        -webkit-background-clip: text;
+        color: transparent;
+        animation: glow 2s ease-in-out infinite alternate;
+      }
+    }
+  
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 5px rgba(52,152,219,0.3), 0 0 10px rgba(142,68,173,0.3);
+      }
+      to {
+        text-shadow: 0 0 10px rgba(52,152,219,0.5), 0 0 20px rgba(142,68,173,0.5);
+      }
+    }
+  
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+      gap: 1.5rem;
+    }
+  
+    .card {
+      background: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: left;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+  
+      h3 {
+        color: #6c5ce7;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        color: #666;
+        font-size: 0.95rem;
+      }
+  
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      }
+    }
+  }
