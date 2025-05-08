@@ -1,29 +1,55 @@
 <app-customer-navbar></app-customer-navbar>
 
 <main class="favorites-container">
-  <h1 class="favorites-heading">Your Favorites</h1>
+  <section class="favorites-header">
+    <h1 class="favorites-title">Your Favorites</h1>
+  </section>
 
-  <div *ngIf="favorites.length; else emptyState" class="product-cards favorites-cards">
-    <div *ngFor="let product of favorites" class="product-card">
-      <div class="image-container" (click)="onViewDetails(product)">
-        <img [src]="product.imageUrl" [alt]="product.name" />
-        <button (click)="onRemoveFavorite(product); $event.stopPropagation()"
-                class="remove-fav-btn" aria-label="Remove from favorites">
-          ✖
-        </button>
+  <div *ngIf="favorites.length; else emptyState" class="products-section">
+    <div class="section-container favorites-products-container">
+      <div class="product-cards">
+        <div *ngFor="let product of favorites" class="product-card">
+          <div class="image-container" (click)="onViewDetails(product)" style="cursor: pointer">
+            <img [src]="product.imageUrl" [alt]="product.name" />
+            <button
+              (click)="onRemoveFavorite(product); $event.stopPropagation()"
+              class="remove-favorite-button"
+              aria-label="Remove from favorites"
+            >
+              ✖
+            </button>
+          </div>
+
+          <div class="product-details">
+            <div class="product-header">
+              <span class="brand">{{ product.brand }}</span>
+              <span class="product-description">{{ product.name || ' ' }}</span>
+            </div>
+
+            <div class="rating">
+              <span class="star-emoji">⭐</span>
+              <span class="rating-value">{{ product.rating }}</span>
+              <span class="review-count">({{ product.reviewCount }})</span>
+            </div>
+
+            <div class="price-container">
+              <p class="original-price" *ngIf="product.originalPrice">{{ product.originalPrice | currency }}</p>
+              <p class="sale-price">{{ product.price | currency }}</p>
+            </div>
+          </div>
+
+          <button class="action-btn add-to-cart-btn" (click)="onAddToCart(product)">
+            Add to Cart
+          </button>
+        </div>
       </div>
-      <div class="product-details">
-        <h3>{{ product.name }}</h3>
-        <p class="price">{{ product.price | currency }}</p>
-      </div>
-      <button class="action-btn add-to-cart-btn" (click)="onAddToCart(product)">
-        Add to Cart
-      </button>
     </div>
   </div>
 
   <ng-template #emptyState>
-    <p class="empty-text">You have no favorite products yet.</p>
+    <div class="empty">
+      You have no favorite products yet.
+    </div>
   </ng-template>
 </main>
 

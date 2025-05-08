@@ -20,6 +20,7 @@ const routes: Routes = [
       { path: 'cart',        component: CustomerCartComponent },
       { path: 'favorites',   component: FavoritesComponent },
       { path: 'order-history', component: OrderHistoryComponent },
+      { path: 'category/:id/:name', component: CustomerCategoryProductsComponent },
       { path: 'category/:id', component: CustomerCategoryProductsComponent },
       { path: 'product/:id',  component: CustomerProductDetailComponent },
       { path: 'profile',      component: CustomerProfileComponent },

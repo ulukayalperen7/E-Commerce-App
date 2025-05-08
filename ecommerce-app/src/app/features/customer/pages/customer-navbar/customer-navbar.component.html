@@ -11,7 +11,7 @@
         <button class="categories-btn" (click)="toggleCategories()">Categories ▾</button>
         <ul class="categories-menu" [class.open]="categoriesOpen">
           <li *ngFor="let cat of categories">
-            <a [routerLink]="['/customer/category', cat.id]">{{ cat.name }}</a>
+            <a [routerLink]="['/customer/category', cat.id,cat.name]">{{ cat.name }}</a>
           </li>
         </ul>
       </div>
