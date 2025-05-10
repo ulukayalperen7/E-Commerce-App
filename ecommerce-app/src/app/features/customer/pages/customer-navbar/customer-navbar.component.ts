@@ -13,7 +13,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 export class CustomerNavbarComponent implements OnInit {
   searchForm!: FormGroup;
   categories: Category[] = [];
-  
+
   categoriesOpen = false;
 
   navbarHeight = 0;
@@ -22,7 +22,7 @@ export class CustomerNavbarComponent implements OnInit {
   private lastScrollTop = 0;
 
   profileMenu = [
-    { label: 'Profile',       path: '/customer/profile' },
+    { label: 'Profile', path: '/customer/profile' },
     { label: 'Order History', path: '/customer/order-history' }
   ];
 
@@ -31,12 +31,19 @@ export class CustomerNavbarComponent implements OnInit {
     private router: Router,
     private categoryService: CategoryService,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.searchForm = this.fb.group({ query: [''] });
-
-    this.categoryService.getAll().subscribe(data => this.categories = data);
+    this.categoryService.getAllCategories().subscribe({
+      next: (fetchedCategories: Category[]) => {
+        this.categories = fetchedCategories;
+        console.log('CustomerNavbarComponent - Categories fetched successfully:', this.categories);
+      },
+      error: (err) => {
+        console.error('CustomerNavbarComponent - Error fetching categories:', err);
+      }
+    });
 
     this.updateNavbarHeight();
   }

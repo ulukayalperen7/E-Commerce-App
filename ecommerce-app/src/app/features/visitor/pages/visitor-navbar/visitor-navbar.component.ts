@@ -17,7 +17,15 @@ export class VisitorNavbarComponent implements OnInit {
   constructor(private categoryService: CategoryService) {}
 
   ngOnInit() {
-    this.categoryService.getAll().subscribe(cats => this.categories = cats);
+    this.categoryService.getAllCategories().subscribe({
+      next: (fetchedCategories: Category[]) => { 
+        this.categories = fetchedCategories;
+        console.log('VisitorNavbarComponent - Categories fetched successfully:', this.categories);
+      },
+      error: (err) => {
+        console.error('VisitorNavbarComponent - Error fetching categories:', err);
+      }
+    });
     this.updateNavbarHeight();
   }
 
