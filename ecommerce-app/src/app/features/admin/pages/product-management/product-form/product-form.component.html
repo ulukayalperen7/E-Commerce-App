@@ -1,0 +1,148 @@
+<div class="product-form-container">
+    <h2>{{ pageTitle }}</h2>
+  
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+      <!-- Product Name -->
+      <div class="form-group">
+        <label for="name">Product Name</label>
+        <input type="text" id="name" formControlName="name" class="form-control"
+               [ngClass]="{ 'is-invalid': nameCtrl?.invalid && nameCtrl?.touched }">
+        <div *ngIf="nameCtrl?.invalid && nameCtrl?.touched" class="invalid-feedback">
+          <div *ngIf="nameCtrl?.errors?.['required']">Product name is required.</div>
+          <div *ngIf="nameCtrl?.errors?.['minlength']">Name must be at least 3 characters.</div>
+        </div>
+      </div>
+  
+      <!-- Product Description -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" formControlName="description" class="form-control" rows="4"
+                  [ngClass]="{ 'is-invalid': descriptionCtrl?.invalid && descriptionCtrl?.touched }"></textarea>
+        <div *ngIf="descriptionCtrl?.invalid && descriptionCtrl?.touched" class="invalid-feedback">
+          <div *ngIf="descriptionCtrl?.errors?.['required']">Description is required.</div>
+        </div>
+      </div>
+  
+      <!-- Price -->
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input type="number" id="price" formControlName="price" class="form-control"
+               [ngClass]="{ 'is-invalid': priceCtrl?.invalid && priceCtrl?.touched }">
+        <div *ngIf="priceCtrl?.invalid && priceCtrl?.touched" class="invalid-feedback">
+          <div *ngIf="priceCtrl?.errors?.['required']">Price is required.</div>
+          <div *ngIf="priceCtrl?.errors?.['min']">Price must be greater than 0.</div>
+        </div>
+      </div>
+  
+      <!-- Stock Quantity -->
+      <div class="form-group">
+        <label for="stockQuantity">Stock Quantity</label>
+        <input type="number" id="stockQuantity" formControlName="stockQuantity" class="form-control"
+               [ngClass]="{ 'is-invalid': stockQuantityCtrl?.invalid && stockQuantityCtrl?.touched }">
+        <div *ngIf="stockQuantityCtrl?.invalid && stockQuantityCtrl?.touched" class="invalid-feedback">
+          <div *ngIf="stockQuantityCtrl?.errors?.['required']">Stock quantity is required.</div>
+          <div *ngIf="stockQuantityCtrl?.errors?.['min']">Stock must be 0 or more.</div>
+        </div>
+      </div>
+  
+      <!-- Category Dropdown -->
+      <div class="form-group">
+        <label for="categoryId">Category</label>
+        <select id="categoryId" formControlName="categoryId" class="form-control"
+                [ngClass]="{ 'is-invalid': categoryIdCtrl?.invalid && categoryIdCtrl?.touched }">
+          <option [ngValue]="null" disabled>Select Category</option>
+          <option *ngFor="let category of availableCategories" [ngValue]="category.categoryId">
+            {{ category.name }}
+          </option>
+        </select>
+        <div *ngIf="categoryIdCtrl?.invalid && categoryIdCtrl?.touched" class="invalid-feedback">
+          <div *ngIf="categoryIdCtrl?.errors?.['required']">Category is required.</div>
+        </div>
+      </div>
+  
+      <!-- Brand Dropdown -->
+      <div class="form-group">
+        <label for="brandId">Brand</label>
+        <select id="brandId" formControlName="brandId" class="form-control"
+                [ngClass]="{ 'is-invalid': brandIdCtrl?.invalid && brandIdCtrl?.touched }">
+          <option [ngValue]="null" disabled>Select Brand</option>
+          <option *ngFor="let brand of availableBrands" [ngValue]="brand.brandId">
+            {{ brand.name }}
+          </option>
+        </select>
+        <div *ngIf="brandIdCtrl?.invalid && brandIdCtrl?.touched" class="invalid-feedback">
+          <div *ngIf="brandIdCtrl?.errors?.['required']">Brand is required.</div>
+        </div>
+      </div>
+  
+      <!-- Is Active Checkbox -->
+      <div class="form-group form-check">
+        <input type="checkbox" id="isActive" formControlName="isActive" class="form-check-input">
+        <label for="isActive" class="form-check-label">Product is Active</label>
+      </div>
+  
+      <hr>
+      <h3>Product Images</h3>
+  
+      <!-- Main Image Upload -->
+      <div class="form-group">
+        <label for="mainImageFile">Main Image</label>
+        <input type="file" id="mainImageFile" (change)="onMainImageSelected($event)" class="form-control-file" accept="image/*">
+        
+        <div *ngIf="mainImageToUpload" class="image-preview-section mt-2">
+          <p>New Main Image Preview:</p>
+          <div class="image-item">
+            <img [src]="mainImageToUpload.url" alt="New main image preview" class="image-preview">
+            <button type="button" (click)="removeMainImageToUpload()" class="btn btn-sm btn-warning mt-1">Remove New Image</button>
+          </div>
+        </div>
+        <div *ngIf="!mainImageToUpload && editMode && currentMainImageUrl" class="image-preview-section mt-2">
+          <p>Current Main Image:</p>
+           <div class="image-item">
+            <img [src]="currentMainImageUrl" alt="Current main image" class="image-preview">
+            <!-- <button type="button" (click)="triggerMainImageRemovalFromBackend()" class="btn btn-sm btn-danger mt-1">Delete Current Image</button> -->
+            <!-- Gerçek silme backend'e bildirilerek yapılmalı, bu buton sadece UI'da gizleyebilir veya TS'de bir flag set edebilir -->
+          </div>
+        </div>
+      </div>
+  
+      <!-- Additional Images Upload -->
+      <div class="form-group">
+        <label for="additionalImageFiles">Additional Images (Max 4)</label>
+        <input type="file" id="additionalImageFiles" #additionalImagesInputRef (change)="onAdditionalImagesSelected($event)" multiple class="form-control-file" accept="image/*">
+  
+        <div *ngIf="additionalImagesToUpload.length > 0" class="image-preview-section mt-2">
+          <p>New Additional Images Preview:</p>
+          <div class="d-flex flex-wrap">
+            <div *ngFor="let img of additionalImagesToUpload; let i = index" class="image-item mr-2 mb-2">
+              <img [src]="img.url" [alt]="'New additional image ' + (i+1)" class="image-preview">
+              <button type="button" (click)="removeAdditionalImageToUpload(i)" class="btn btn-sm btn-warning mt-1">Remove</button>
+            </div>
+          </div>
+        </div>
+  
+        <div *ngIf="editMode && currentAdditionalImageUrls.length > 0" class="image-preview-section mt-2">
+          <p>Current Additional Images:</p>
+          <div class="d-flex flex-wrap">
+            <div *ngFor="let img of currentAdditionalImageUrls; let i = index" class="image-item mr-2 mb-2">
+              <img [src]="img.imageUrl" [alt]="'Current additional image ' + (i+1)" class="image-preview">
+              <button type="button" (click)="removeCurrentAdditionalImage(i)" class="btn btn-sm btn-danger mt-1">Remove Current</button>
+              <!-- Bu buton sadece görselden kaldırır, backend'e silme işlemi için onSubmit'te mantık eklenmeli -->
+            </div>
+          </div>
+        </div>
+      </div>
+  
+  
+      <!-- Form Actions -->
+      <div class="form-actions mt-4">
+        <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid || isLoading">
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          {{ isLoading ? ' Saving...' : (editMode ? 'Update Product' : 'Add Product') }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="isLoading">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>

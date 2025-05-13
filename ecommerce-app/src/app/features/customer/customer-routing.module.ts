@@ -9,15 +9,17 @@ import { CustomerCategoryProductsComponent } from './pages/customer-category-pro
 import { FavoritesComponent } from './pages/favorites/favorites.component';
 import { CustomerProfileComponent } from './pages/customer-profile/customer-profile.component';
 import { CustomerProductDetailComponent } from './pages/customer-product-detail/customer-product-detail.component';
+import { CustomerCheckoutComponent } from './pages/customer-checkout/customer-checkout.component';
 
 const routes: Routes = [
   {
     path: '',
-    canActivate: [AuthGuard], // guard root of this module
-    canActivateChild: [AuthGuard],  // apply guard to all child routes
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
       { path: 'home',        component: CustomerHomeComponent },
       { path: 'cart',        component: CustomerCartComponent },
+      { path: 'checkout',    component: CustomerCheckoutComponent },
       { path: 'favorites',   component: FavoritesComponent },
       { path: 'order-history', component: OrderHistoryComponent },
       { path: 'category/:id/:name', component: CustomerCategoryProductsComponent },

@@ -1,31 +1,88 @@
 <app-customer-navbar></app-customer-navbar>
 
 <div class="cart-container">
-  <div *ngIf="loading" class="loading">Loading...</div>
-
-  <div *ngIf="!loading && products.length === 0" class="empty-cart">
-    <p>Your cart is empty.</p>
+  <div *ngIf="loading" class="loading text-center py-5">
+    <p>Loading your cart...</p>
   </div>
 
-  <div *ngIf="!loading && products.length > 0" class="cart-content">
+  <div *ngIf="!loading && checkoutError && (!cart || cart.cartItems.length === 0)" class="empty-cart text-center py-5">
+    <p class="text-danger">{{ checkoutError }}</p>
+    <button routerLink="/customer/home" class="btn btn-primary mt-3">Continue Shopping</button>
+  </div>
+
+  <div *ngIf="!loading && !checkoutError && (!cart || cart.cartItems.length === 0)" class="empty-cart text-center py-5">
+    <p>Your cart is empty.</p>
+    <button routerLink="/customer/home" class="btn btn-primary mt-3">Continue Shopping</button>
+  </div>
+
+  <div class="cart-content" *ngIf="!loading && cart && cart.cartItems.length > 0">
     <h2>Your Shopping Cart</h2>
+    <div *ngIf="checkoutError" class="alert alert-danger">{{ checkoutError }}</div>
 
     <div class="cart-items">
-      <div *ngFor="let product of products" class="cart-item">
-        <img [src]="product.imageUrl" alt="{{ product.name }}" class="cart-item-image" />
-        
+      <div *ngFor="let item of cart!.cartItems"
+           class="cart-item"
+           (click)="navigateToProductDetails(item.product.productId)">
+
+        <img [src]="item.product.imageUrl || 'assets/images/default-product.png'"
+             [alt]="item.product.name"
+             class="cart-item-image" />
+
         <div class="cart-item-details">
-          <h3>{{ product.name }}</h3>
-          <p class="price">{{ product.price | currency }}</p>
+          <h3>{{ item.product.name }}</h3>
+          <p class="price">{{ item.product.price | currency:'TRY' }}</p>
+
+          <div class="quantity-controls">
+            <button (click)="updateQuantity(item, item.quantity - 1); $event.stopPropagation()"
+                    [disabled]="item.quantity <= 1"
+                    class="quantity-btn"
+                    aria-label="Decrease quantity">-</button>
+            <input
+              type="number"
+              [value]="item.quantity"
+              (change)="updateQuantity(item, +($any($event.target).value)); $event.stopPropagation()"
+              (click)="$event.stopPropagation()"
+              class="quantity-input"
+              min="1"
+              aria-label="Product quantity"
+            />
+            <button (click)="updateQuantity(item, item.quantity + 1); $event.stopPropagation()"
+                    class="quantity-btn"
+                    aria-label="Increase quantity">+</button>
+          </div>
+
+          <p class="subtotal">Subtotal: {{ item.subtotal | currency:'TRY' }}</p>
         </div>
 
-        <button class="remove-btn" (click)="removeFromCart(product)">Remove</button>
+        <button class="remove-btn"
+                (click)="removeFromCart(item.product); $event.stopPropagation()"
+                aria-label="Remove item from cart">
+                <svg class="trash-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16px" height="16px">
+                    <path d="M0 0h24v24H0V0z" fill="none"/>
+                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/>
+                </svg>
+                <span class="remove-text">Remove</span>
+        </button>
       </div>
     </div>
 
-    <div class="cart-summary">
-      <p>Total: <strong>{{ totalPrice | currency }}</strong></p>
-      <button class="checkout-btn" (click)="checkout()">Checkout</button>
+    <hr>
+
+    <div class="cart-summary-actions">
+      <p>Total: <strong>{{ cart!.totalAmount | currency:'TRY' }}</strong></p>
+      <div class="button-group">
+          <button
+              class="clear-cart-btn"
+              (click)="clearEntireCart()">
+              Clear Cart
+          </button>
+          <button
+              class="checkout-btn"
+              (click)="proceedToCheckout()"
+              [disabled]="!cart || !cart.cartItems || cart.cartItems.length === 0">
+              Proceed to Checkout
+          </button>
+      </div>
     </div>
   </div>
 </div>

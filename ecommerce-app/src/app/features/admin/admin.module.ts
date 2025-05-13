@@ -10,6 +10,7 @@ import { OrderTrackingComponent } from './pages/order-tracking/order-tracking.co
 import { IssueResolutionComponent } from './pages/issue-resolution/issue-resolution.component';
 import { AdminHomeComponent } from './pages/admin-home/admin-home.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ProductFormComponent } from './pages/product-management/product-form/product-form.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     ProductManagementComponent,
     OrderTrackingComponent,
     IssueResolutionComponent,
-    AdminHomeComponent
+    AdminHomeComponent,
+    ProductFormComponent
   ],
   imports: [
     CommonModule,

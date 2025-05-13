@@ -20,7 +20,6 @@ export class UserManagementComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    // TODO: fetch users from backend via service
     this.users = [
       { id: 1, name: 'Ahmet Yılmaz', email: 'ahmet@example.com', role: 'Customer' },
       { id: 2, name: 'Ayşe Demir', email: 'ayse@example.com', role: 'Customer' },
@@ -29,7 +28,6 @@ export class UserManagementComponent implements OnInit {
   }
 
   deleteUser(id: number): void {
-    // TODO: call service to delete, then refresh list
     this.users = this.users.filter(u => u.id !== id);
   }
 
@@ -37,12 +35,10 @@ export class UserManagementComponent implements OnInit {
     const user = this.users.find(u => u.id === id);
     if (user) {
       user.role = 'Admin';
-      // TODO: call service to update role
     }
   }
 
   addUser(): void {
-    // navigate to add-user form (to be implemented)
     this.router.navigate(['/admin/user-management/add']);
   }
 }

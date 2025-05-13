@@ -1,4 +1,3 @@
-
 <div class="auth-container">
   <div class="auth-header">
     <div class="auth-icon">
@@ -15,12 +14,11 @@
         formControlName="email" 
         placeholder="Email address"
         [class.invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
-        required
       >
-      <small *ngIf="loginForm.get('email')?.hasError('required')" class="error">
+      <small *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required')" class="error">
         Email is required
       </small>
-      <small *ngIf="loginForm.get('email')?.hasError('email')" class="error">
+      <small *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.hasError('email')" class="error">
         Invalid email format
       </small>
     </div>
@@ -31,9 +29,8 @@
         formControlName="password"
         placeholder="Password"
         [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-        required
       >
-      <small *ngIf="loginForm.get('password')?.hasError('required')" class="error">
+      <small *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')" class="error">
         Password is required
       </small>
     </div>

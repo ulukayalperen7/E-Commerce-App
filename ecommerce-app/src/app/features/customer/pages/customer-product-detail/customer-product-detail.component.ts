@@ -1,18 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Product } from '../../../../core/models/product.model';
+import { ProductService } from '../../../../core/services/product.service';
+import { ProductDetail, ProductImage as ProductImageModel } from '../../../../core/models/product.model';
 import { CartService } from '../../../../core/services/cart.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { FavoriteService } from '../../../../core/services/favorite.service';
 
-interface ProductDetails extends Product {
-  brand: string;
-  rating: number;
-  reviewCount: number;
-  originalPrice?: number;
-  discount?: number;
+interface ProductViewForDetail extends ProductDetail {
   isFavorite: boolean;
-  images: string[];
+  selectedImageUrl?: string;
 }
 
 @Component({
@@ -22,10 +18,13 @@ interface ProductDetails extends Product {
   styleUrls: ['./customer-product-detail.component.scss']
 })
 export class CustomerProductDetailComponent implements OnInit {
-  product: ProductDetails = this.generateMockProduct();
+  product?: ProductViewForDetail;
+  loading: boolean = true;
+  productId: number = 0;
 
   constructor(
     private route: ActivatedRoute,
+    private productService: ProductService,
     private cartService: CartService,
     private authService: AuthService,
     private favoriteService: FavoriteService,
@@ -34,67 +33,67 @@ export class CustomerProductDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      const productId = params.get('id');
-      if (productId) {
-        this.product = this.generateMockProduct(+productId);
-        // Check if the product is in favorites
-        this.product.isFavorite = this.favoriteService.isFavorite(+productId);
+      const idParam = params.get('id');
+      if (idParam) {
+        this.productId = +idParam;
+        this.loadProductDetails();
+      } else {
+        this.loading = false;
+        this.router.navigate(['/customer/home']);
       }
     });
   }
 
-  private generateMockProduct(id: number = 1): ProductDetails {
-    const price = Math.floor(Math.random() * 500) + 50;
-    const discount = Math.random() > 0.5 ? Math.floor(Math.random() * 30) + 10 : undefined;
-    const brands = ['Nike', 'Adidas', 'Apple', 'Sony', 'Samsung', 'Zara', "Levi's"];
-    
-    return {
-      id: id,
-      name: `Premium Product ${id}`,
-      description: `High-quality product description for item ${id}.`,
-      price: discount ? price * (1 - discount/100) : price,
-      imageUrl: `https://picsum.photos/600/600?random=${id}`,
-      categoryId: 1,
-      
-      brand: brands[id % brands.length],
-      rating: +(Math.random() * 2 + 3).toFixed(1),
-      reviewCount: Math.floor(Math.random() * 500) + 50,
-      originalPrice: discount ? price : undefined,
-      discount: discount,
-      isFavorite: false,
-      images: Array.from({length: 4}, (_, i) => 
-        `https://picsum.photos/600/600?random=${id + i + 1}`)
-    };
+  loadProductDetails(): void {
+    this.loading = true;
+    this.productService.getProductById(this.productId).subscribe({
+      next: (data: ProductDetail) => {
+        this.product = {
+          ...data,
+          isFavorite: this.favoriteService.isFavorite(data.productId),
+          selectedImageUrl: data.imageUrl || (data.additionalImages && data.additionalImages.length > 0 ? data.additionalImages[0].imageUrl : 'assets/images/default-product.png')
+        };
+        this.loading = false;
+      },
+      error: (err) => {
+        this.loading = false;
+        this.router.navigate(['/customer/home']);
+      }
+    });
   }
 
-  changeMainImage(img: string): void {
-    this.product.imageUrl = img;
+  changeMainImage(newImageUrl: string): void {
+    if (this.product) {
+      this.product.selectedImageUrl = "http://localhost:8080/product-images/"+ this.productId+ ".jpg";
+    }
   }
 
   addToCart(): void {
-    if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/login'], {
-        queryParams: {
-          returnTo: this.router.url,
-          productId: this.product.id
-        }
-      });
+    if (!this.product) {
       return;
     }
-    this.cartService.add(this.product);
+    
+    this.cartService.add(this.product); 
   }
   
   toggleFavorite(): void {
-    if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/login'], {
-        queryParams: {
-          returnTo: this.router.url,
-          productId: this.product.id
+    if (!this.product) return;
+
+    const currentProduct = this.product;
+    const oldIsFavorite = currentProduct.isFavorite;
+    currentProduct.isFavorite = !currentProduct.isFavorite;
+
+    this.favoriteService.toggleFavoriteAndUpdateState(currentProduct.productId).subscribe({
+      next: () => {
+        if (this.product) {
+             this.product.isFavorite = this.favoriteService.isFavorite(this.product.productId);
         }
-      });
-      return;
-    }
-    this.favoriteService.toggleFavorite(this.product.id);
-    this.product.isFavorite = this.favoriteService.isFavorite(this.product.id);
+      },
+      error: (err) => {
+        if (this.product) {
+            currentProduct.isFavorite = oldIsFavorite;
+        }
+      }
+    });
   }
 }

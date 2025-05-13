@@ -77,12 +77,12 @@ section h2 {
 
   &.recommended-container {
     background: linear-gradient(to bottom, #f7f7f7, #edf2f7);
-    border-top: 4px solid #6c5ce7;
+    border-top: 4px solid #6c5ce7; // Recommended section top border
   }
 
   &.flash-deals-container {
     background: linear-gradient(to bottom, #fafaff, #f0f4ff);
-    border-top: 4px solid #3498db;
+    border-top: 4px solid #3498db; // Flash deals section top border
   }
 }
 
@@ -103,12 +103,16 @@ section h2 {
   margin-top: 1.5rem;
 
   &.recommended-cards {
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(5, 1fr); 
+    grid-template-rows: repeat(2, 1fr); 
   }
 
   &.flash-deal-cards {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr); 
+  }
+  
+  &.all-product-cards {
+    grid-template-columns: repeat(4, 1fr); 
   }
 }
 
@@ -122,6 +126,7 @@ section h2 {
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 
   &:hover {
     transform: translateY(-6px);
@@ -149,7 +154,7 @@ section h2 {
       position: absolute;
       top: 10px;
       left: 10px;
-      background: #3498db;
+      background: #3498db; // Discount badge background
       color: white;
       padding: 5px 10px;
       border-radius: 4px;
@@ -263,7 +268,7 @@ section h2 {
       }
 
       .sale-price {
-        color: #3498db;
+        color: #3498db; // Sale price color
         font-size: 1.1rem;
         font-weight: 600;
         margin: 0;
@@ -282,16 +287,67 @@ section h2 {
     letter-spacing: 0.5px;
     transition: all 0.3s;
     margin-top: auto;
-    background-color: #6c5ce7;
     color: #fff;
 
-    &:hover {
-      background-color: #5649c0;
-      transform: translateY(-2px);
+    &.view-details-btn {
+      background-color: #6c5ce7; // View Details button - Default action button color
+      &:hover {
+        background-color: #5649c0; // Darker shade for hover
+      }
+    }
+    
+    // Specifically for Add to Cart in Flash Deals section
+    &.add-to-cart-btn {
+      background: linear-gradient(45deg, #6c5ce7, #3498db); // Gradient for Add to Cart
+      &:hover {
+        // Optional: Slightly adjust gradient or add shadow on hover
+        background: linear-gradient(45deg, darken(#6c5ce7, 5%), darken(#3498db, 5%));
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(108, 92, 231, 0.2);
+      }
     }
 
     &:active {
       transform: scale(0.98);
+    }
+  }
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  
+  span {
+    font-size: 0.95rem;
+    color: #555;
+  }
+  
+  .pagination-btn {
+    padding: 8px 16px;
+    background-color: #6c5ce7; // Pagination button color
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover:not([disabled]) {
+      background-color: #5649c0; // Darker shade for hover
+      transform: translateY(-2px);
+    }
+    
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+      opacity: 0.7;
     }
   }
 }
@@ -325,8 +381,12 @@ section h2 {
 // Responsive Design
 @media (max-width: 1200px) {
   .product-cards {
-    &.recommended-cards,
-    &.flash-deal-cards {
+    &.recommended-cards {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto;
+    }
+    &.flash-deal-cards,
+    &.all-product-cards {
       grid-template-columns: repeat(3, 1fr);
     }
   }
@@ -335,7 +395,8 @@ section h2 {
 @media (max-width: 992px) {
   .product-cards {
     &.recommended-cards,
-    &.flash-deal-cards {
+    &.flash-deal-cards,
+    &.all-product-cards {
       grid-template-columns: repeat(2, 1fr);
     }
   }
@@ -352,8 +413,9 @@ section h2 {
 
   .product-cards {
     &.recommended-cards,
-    &.flash-deal-cards {
-      grid-template-columns: 1fr;
+    &.flash-deal-cards,
+    &.all-product-cards {
+      grid-template-columns: repeat(2, 1fr); // Changed to 2 for better tablet view
     }
   }
 
@@ -369,6 +431,14 @@ section h2 {
 @media (max-width: 576px) {
   .home-container {
     padding: 1rem;
+  }
+
+  .product-cards {
+    &.recommended-cards,
+    &.flash-deal-cards,
+    &.all-product-cards {
+      grid-template-columns: 1fr; // Single column for small screens
+    }
   }
 
   .scroll-brands {

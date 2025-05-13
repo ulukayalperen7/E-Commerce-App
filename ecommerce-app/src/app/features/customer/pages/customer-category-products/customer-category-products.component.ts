@@ -1,21 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Product } from '../../../../core/models/product.model';
+import { ProductSummary, Page } from '../../../../core/models/product.model';
 import { ProductService } from '../../../../core/services/product.service';
 import { CartService } from '../../../../core/services/cart.service';
 import { FavoriteService } from '../../../../core/services/favorite.service';
+import { AuthService } from '../../../../core/services/auth.service';
+import { CategoryService } from '../../../../core/services/category.service';
+import { Category } from '../../../../core/models/category.model';
 
-/**
- * Interface to extend Product model with additional display properties
- */
-interface ProductView extends Product {
+interface ProductView extends ProductSummary {
   isFavorite: boolean;
-  rating: number;
-  brand: string;
-  originalPrice?: number;
-  discount?: number;
   reviewCount?: number;
+  originalPrice?: number;
 }
 
 @Component({
@@ -25,143 +22,123 @@ interface ProductView extends Product {
   styleUrls: ['./customer-category-products.component.scss']
 })
 export class CustomerCategoryProductsComponent implements OnInit, OnDestroy {
-  categoryId = 0;
-  categoryName = '';
-  products: ProductView[] = [];
-  loading = true;
-  
-  // Brands list for randomly assigning to products
-  private brands = [
-    'Zara', 'Nike', 'New Balance', 'Ray-Ban', 'Fossil', 'Apple',
-    'Puma', 'MSI', "L'Oréal", 'Xiaomi', 'Samsung', 'Adidas',
-    "Levi's", 'Sony', 'Gucci'
-  ];
-  
-  private routeSub: Subscription | null = null;
+  categoryId: number = 0;
+  categoryName: string = 'Category';
+  productsForView: ProductView[] = [];
+  productsPage?: Page<ProductSummary>;
+  currentPage: number = 0;
+  pageSize: number = 8;
+  loading: boolean = true;
+
+  private routeSub?: Subscription;
+  private favoritesSub?: Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
     private cartService: CartService,
-    private favoriteService: FavoriteService
+    private favoriteService: FavoriteService,
+    private authService: AuthService,
+    private categoryService: CategoryService
   ) {}
 
   ngOnInit(): void {
-    // Subscribe to route parameters to get category ID and name
     this.routeSub = this.route.paramMap.subscribe(params => {
       const idParam = params.get('id');
-      const nameParam = params.get('name');
-      
-      if (!idParam) {
+      if (!idParam || isNaN(+idParam)) {
         this.router.navigate(['/customer/home']);
         return;
       }
-      
+
       const newId = +idParam;
       if (this.categoryId !== newId) {
         this.categoryId = newId;
-        this.categoryName = nameParam ?? '';
-        this.loadCategoryData();
+        this.currentPage = 0;
+        this.loadCategoryDetailsAndProducts();
       }
+    });
+
+    this.favoritesSub = this.favoriteService.favoriteProductIds$.subscribe(favIds => {
+      this.productsForView = this.productsForView.map(p => ({
+        ...p,
+        isFavorite: favIds.includes(p.productId)
+      }));
     });
   }
 
   ngOnDestroy(): void {
-    // Clean up subscriptions to prevent memory leaks
     this.routeSub?.unsubscribe();
+    this.favoritesSub?.unsubscribe();
   }
 
-  /**
-   * Load products for the selected category
-   */
-  loadCategoryData(): void {
+  loadCategoryDetailsAndProducts(): void {
     this.loading = true;
-    this.productService.getProductsByCategory(this.categoryId).subscribe({
-      next: list => {
-        // Transform product data to include display properties
-        this.products = list.map(p => {
-          const originalPrice = this.shouldApplyDiscount() ? this.calculateOriginalPrice(p.price) : undefined;
-          
-          return {
-            ...p,
-            isFavorite: this.favoriteService.isFavorite(p.id),
-            rating: this.getInitialRating(p),
-            brand: this.getRandomBrand(),
-            originalPrice,
-            reviewCount: this.getRandomReviewCount()
-          };
-        });
+    
+    this.categoryService.getCategoryById(this.categoryId).subscribe({
+      next: (category: Category) => {
+        this.categoryName = category.name;
+        this.loadProducts();
+      },
+      error: (error) => {
+        console.error('Error loading category:', error);
+        this.loadProducts();
+      }
+    });
+  }
+
+  loadProducts(): void {
+    this.productService.getActiveProductsByCategory(
+      this.categoryId,
+      this.currentPage,
+      this.pageSize,
+      'name',
+      'asc'
+    ).subscribe({
+      next: (pageData: Page<ProductSummary>) => {
+        this.productsPage = pageData;
+        this.productsForView = pageData.content.map(p => ({
+          ...p,
+          isFavorite: this.favoriteService.isFavorite(p.productId),
+          reviewCount: p.averageRating ? Math.floor(p.averageRating * 20) : 0
+        }));
         this.loading = false;
       },
-      error: err => {
-        console.error('Error loading category products:', err);
+      error: (error) => {
+        console.error('Error loading products:', error);
+        this.productsForView = [];
+        this.productsPage = undefined;
         this.loading = false;
       }
     });
   }
 
-  /**
-   * Navigate to product details page
-   */
-  viewDetails(p: ProductView): void {
-    this.router.navigate(['/customer/product', p.id]);
+  onPageChange(newPage: number): void {
+    if (newPage < 0 || newPage >= (this.productsPage?.totalPages || 0)) return;
+    
+    this.currentPage = newPage;
+    this.loadProducts();
   }
 
-  /**
-   * Add product to cart
-   */
+  viewDetails(product: ProductView): void {
+    this.router.navigate(['/customer/product', product.productId]);
+  }
+
   addToCart(product: ProductView): void {
     this.cartService.add(product);
   }
 
-  /**
-   * Toggle product favorite status
-   */
-  onFavoriteClick(p: ProductView, event: Event): void {
+  onFavoriteClick(product: ProductView, event: Event): void {
     event.stopPropagation();
-    this.favoriteService.toggleFavorite(p.id);
-    p.isFavorite = this.favoriteService.isFavorite(p.id);
-  }
-
-  /**
-   * Generate a random rating if not provided
-   */
-  private getInitialRating(p: Product): number {
-    const anyP = p as any;
-    if (typeof anyP.rating === 'number') {
-      return anyP.rating;
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login-required'], { queryParams: { returnUrl: this.router.url } });
+      return;
     }
-    return +(Math.random() * 2 + 3).toFixed(1); // Random rating between 3.0 and 5.0
-  }
 
-  /**
-   * Generate random review count
-   */
-  private getRandomReviewCount(): number {
-    return Math.floor(Math.random() * 500) + 50; // Between 50 and 549 reviews
-  }
-
-  /**
-   * Select a random brand from the brands array
-   */
-  private getRandomBrand(): string {
-    const idx = Math.floor(Math.random() * this.brands.length);
-    return this.brands[idx];
-  }
-
-  /**
-   * Decide if we should show a discount for visual variety
-   */
-  private shouldApplyDiscount(): boolean {
-    return Math.random() > 0.6; // 40% chance of having a discount
-  }
-
-  /**
-   * Calculate the "original" price to show discount
-   */
-  private calculateOriginalPrice(currentPrice: number): number {
-    const increasePercentage = Math.floor(Math.random() * 30) + 10; // 10-40% increase
-    return +(currentPrice * (1 + increasePercentage / 100)).toFixed(2);
+    this.favoriteService.toggleFavoriteAndUpdateState(product.productId).subscribe({
+      error: (error) => {
+        alert(error.message || 'Failed to update favorite status.');
+      }
+    });
   }
 }

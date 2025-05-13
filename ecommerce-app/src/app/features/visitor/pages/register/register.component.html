@@ -4,20 +4,37 @@
       <i class="fa fa-user-plus"></i>
     </div>
     <h2>Create Account</h2>
-    <p>Join us to start shopping</p>
+    <p>Join us to start shopping or selling</p>
   </div>
 
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <input 
         type="text" 
-        formControlName="name" 
-        placeholder="Full Name"
-        [class.invalid]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched"
-        required
+        formControlName="firstName" 
+        placeholder="First Name"
+        [class.invalid]="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched"
       >
-      <small *ngIf="registerForm.get('name')?.hasError('required')" class="error">
-        Name is required
+      <small *ngIf="registerForm.get('firstName')?.touched && registerForm.get('firstName')?.hasError('required')" class="error">
+        First name is required
+      </small>
+      <small *ngIf="registerForm.get('firstName')?.touched && registerForm.get('firstName')?.hasError('minlength')" class="error">
+        First name must be at least 2 characters
+      </small>
+    </div>
+
+    <div class="form-group">
+      <input 
+        type="text" 
+        formControlName="lastName" 
+        placeholder="Last Name"
+        [class.invalid]="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched"
+      >
+      <small *ngIf="registerForm.get('lastName')?.touched && registerForm.get('lastName')?.hasError('required')" class="error">
+        Last name is required
+      </small>
+      <small *ngIf="registerForm.get('lastName')?.touched && registerForm.get('lastName')?.hasError('minlength')" class="error">
+        Last name must be at least 2 characters
       </small>
     </div>
 
@@ -27,12 +44,11 @@
         formControlName="email" 
         placeholder="Email address"
         [class.invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
-        required
       >
-      <small *ngIf="registerForm.get('email')?.hasError('required')" class="error">
+      <small *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('required')" class="error">
         Email is required
       </small>
-      <small *ngIf="registerForm.get('email')?.hasError('email')" class="error">
+      <small *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('email')" class="error">
         Invalid email format
       </small>
     </div>
@@ -43,10 +59,23 @@
         formControlName="password"
         placeholder="Password"
         [class.invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
-        required
       >
-      <small *ngIf="registerForm.get('password')?.hasError('required')" class="error">
+      <small *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('required')" class="error">
         Password is required
+      </small>
+      <small *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('minlength')" class="error">
+        Password must be at least 6 characters
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="roleSelect">Register as:</label>
+      <select formControlName="role" id="roleSelect" class="form-control">
+        <option value="ROLE_CUSTOMER">Customer</option>
+        <option value="ROLE_SELLER">Seller</option>
+      </select>
+      <small *ngIf="registerForm.get('role')?.touched && registerForm.get('role')?.hasError('required')" class="error">
+        Account type is required
       </small>
     </div>
 

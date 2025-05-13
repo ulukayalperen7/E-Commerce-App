@@ -1,4 +1,5 @@
 <div class="navbar-spacer" [style.height.px]="navbarHeight"></div>
+
 <nav class="visitor-navbar" [class.hidden]="isNavbarHidden">
   <div class="container">
     <div class="navbar-inner">
@@ -8,20 +9,21 @@
         <button class="categories-btn" (click)="toggleCategories()">Categories ▾</button>
         <ul class="categories-menu" [class.open]="categoriesOpen">
           <li *ngFor="let cat of categories">
-            <a [routerLink]="['/category', cat.id, cat.name]">{{ cat.name }}</a>
+            <a [routerLink]="['/category', cat.categoryId, cat.name]" (click)="categoriesOpen = false">{{ cat.name }}</a>
           </li>
+          <li *ngIf="categories.length === 0"><a (click)="categoriesOpen = false">No categories</a></li>
         </ul>
       </div>
 
-      <div class="search-box">
-        <input type="text" placeholder="Search products..." />
+      <form [formGroup]="visitorSearchForm" class="search-box" (ngSubmit)="onVisitorSearch()">
+        <input formControlName="query" type="text" placeholder="Search products..." />
         <button type="submit" aria-label="Search">🔍</button>
-      </div>
+      </form>
 
-      <a routerLink="/favorites" class="icon-link">❤️ Favorites</a>
-      <a routerLink="/cart"      class="icon-link">🛒 Cart</a>
-      <a routerLink="/login"     class="nav-link">Login</a>
-      <a routerLink="/register"  class="nav-link">Register</a>
+      <a routerLink="/login-required" class="icon-link">❤️ Favorites</a>
+      <a routerLink="/login-required" class="icon-link">🛒 Cart</a>
+      <a routerLink="/login" class="nav-link auth-link login-link">Login</a>
+      <a routerLink="/register" class="nav-link auth-link register-link">Register</a>
     </div>
   </div>
 </nav>

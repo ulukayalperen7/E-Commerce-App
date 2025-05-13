@@ -12,6 +12,7 @@ import { CustomerNavbarComponent } from './pages/customer-navbar/customer-navbar
 import { CustomerCategoryProductsComponent } from './pages/customer-category-products/customer-category-products.component';
 import { CustomerProfileComponent } from './pages/customer-profile/customer-profile.component';
 import { CustomerProductDetailComponent } from './pages/customer-product-detail/customer-product-detail.component';
+import { CustomerCheckoutComponent } from './pages/customer-checkout/customer-checkout.component';
 @NgModule({
 declarations: [
 CustomerHomeComponent,
@@ -21,7 +22,8 @@ FavoritesComponent,
 CustomerNavbarComponent,
 CustomerCategoryProductsComponent,
 CustomerProfileComponent,
-CustomerProductDetailComponent
+CustomerProductDetailComponent,
+CustomerCheckoutComponent
 ],
 imports: [
 CommonModule,

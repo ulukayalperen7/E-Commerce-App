@@ -1,48 +1,53 @@
 <app-customer-navbar></app-customer-navbar>
 
-<main class="product-detail-container">
+<main class="product-detail-container" *ngIf="!loading && product; else loadingOrError">
   <div class="product-main">
     <div class="product-images">
       <div class="main-image">
-        <img [src]="product.imageUrl" [alt]="product.name" />
+        <img [src]="product.selectedImageUrl || 'assets/images/default-product.png'" [alt]="product.name" />
       </div>
-      <div class="thumbnail-container">
-        <div *ngFor="let img of product.images"
+      <div class="thumbnail-container" *ngIf="product.additionalImages && product.additionalImages.length > 0">
+        <div *ngFor="let img of product.additionalImages"
              class="thumbnail"
-             (click)="changeMainImage(img)"
-             [class.active]="img === product.imageUrl">
-          <img [src]="img" [alt]="product.name" />
+             (click)="changeMainImage(img.imageUrl)"
+             [class.active]="img.imageUrl === product.selectedImageUrl">
+          <img [src]="img.imageUrl" [alt]="img.altText || product.name" />
         </div>
       </div>
+       <div class="thumbnail-container" *ngIf="product.imageUrl && (!product.additionalImages || product.additionalImages.length === 0)">
+         <div class="thumbnail active">
+           <img [src]="product.imageUrl" [alt]="product.name" />
+         </div>
+       </div>
     </div>
     
     <div class="product-info">
       <div class="product-header">
-        <h1 class="brand">{{ product.brand }}</h1>
+        <h1 class="brand">{{ product.brand.name || 'Brand' }}</h1>
         <h2 class="product-title">{{ product.name }}</h2>
       </div>
       
-      <div class="rating-container">
-        <span class="rating-value">{{ product.rating }}</span>
+      <div class="rating-container" *ngIf="product.averageRating !== undefined && product.averageRating !== null">
+        <span class="rating-value">{{ product.averageRating | number:'1.1-1' }}</span>
         <div class="stars">
           <i *ngFor="let star of [1,2,3,4,5]"
              class="fa"
              [ngClass]="{
-               'fa-star': product.rating >= star,
-               'fa-star-half-o': product.rating >= star - 0.5 && product.rating < star,
-               'fa-star-o': product.rating < star - 0.5
+               'fa-star': product.averageRating >= star,
+               'fa-star-half-o': product.averageRating >= star - 0.5 && product.averageRating < star,
+               'fa-star-o': product.averageRating < star - 0.5
              }"></i>
         </div>
-        <span class="review-count">({{ product.reviewCount }} reviews)</span>
+        <span class="review-count" *ngIf="product.totalReviews !== undefined">({{ product.totalReviews }} reviews)</span>
       </div>
       
       <div class="price-container">
-        <p class="original-price" *ngIf="product.originalPrice">
-          {{ product.originalPrice | currency }}
+        <p class="original-price" *ngIf="product.price < (product.price * 1.2)"> 
+          {{ (product.price * 1.2) | currency }}
         </p>
         <p class="sale-price">{{ product.price | currency }}</p>
-        <p class="discount-badge" *ngIf="product.discount">
-          Save {{ product.discount }}%
+        <p class="discount-badge" *ngIf="product.price < (product.price * 1.2)">
+          Save {{ (( (product.price * 1.2) - product.price ) / (product.price * 1.2) * 100) | number:'1.0-0' }}%
         </p>
       </div>
       
@@ -78,5 +83,12 @@
     </div>
   </div>
 </main>
+
+<ng-template #loadingOrError>
+  <div *ngIf="loading" class="text-center py-5">Loading product details…</div>
+  <div *ngIf="!loading && !product" class="text-center py-5">
+    Product not found or an error occurred.
+  </div>
+</ng-template>
 
 <app-footer></app-footer>

@@ -3,64 +3,75 @@
 <main class="category-container">
   <section class="category-header">
     <h1 class="category-title">
-      Products in <span class="category-name">{{ categoryName }}</span>
+      Products in <span class="category-name">{{ categoryName || 'Category' }}</span>
     </h1>
   </section>
 
-  <div *ngIf="loading" class="loading">Loading products…</div>
-  <div *ngIf="!loading && products.length === 0" class="empty">
+  <div *ngIf="loading" class="text-center py-5 loading">Loading products...</div>
+
+  <div *ngIf="!loading && productsForView.length === 0" class="text-center py-5 no-products">
     No products found in this category.
   </div>
 
-  <section *ngIf="!loading && products.length > 0" class="products-section">
+  <section *ngIf="!loading && productsForView.length > 0" class="products-section">
     <div class="section-container products-container">
       <div class="product-cards">
-        <div *ngFor="let product of products" class="product-card">
+        <div *ngFor="let product of productsForView" class="product-card">
           <div class="image-container" (click)="viewDetails(product)" style="cursor: pointer">
-            <img [src]="product.imageUrl" [alt]="product.name" />
+            <img [src]="product.imageUrl || 'assets/images/default-product.png'" [alt]="product.name" />
             <button
               (click)="onFavoriteClick(product, $event)"
               class="favorite-btn"
-              [class.active]="product.isFavorite"
               aria-label="Add to favorites"
             >
               <svg width="24" height="24" viewBox="0 0 24 24">
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
-                     2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09
-                     C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42
-                     22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-                  class="heart-icon"
-                />
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                      class="heart-icon"/>
               </svg>
             </button>
           </div>
 
           <div class="product-details">
             <div class="product-header">
-              <span class="brand">{{ product.brand }}</span>
-              <span class="product-description">{{ product.name || ' ' }}</span>
+              <span class="brand">{{ product.brandName || 'Brand' }}</span>
+              <span class="product-description">{{ product.name }}</span>
             </div>
-            <div class="rating">
+            <div class="rating" *ngIf="product.averageRating !== undefined && product.averageRating !== null">
               <span class="star-emoji">⭐</span>
-              <span class="rating-value">{{ product.rating }}</span>
-              <span class="review-count">({{ product.reviewCount }})</span>
+              <span class="rating-value">{{ product.averageRating | number:'1.1-1' }}</span>
+              <span class="review-count" *ngIf="product.reviewCount">({{ product.reviewCount }})</span>
             </div>
-          
+
             <div class="price-container">
               <p class="original-price" *ngIf="product.originalPrice">{{ product.originalPrice | currency }}</p>
               <p class="sale-price">{{ product.price | currency }}</p>
             </div>
-            <div class="price-container">
-              <p class="original-price" *ngIf="product.originalPrice">{{ product.originalPrice | currency }}</p>
-              
-            </div>
           </div>
 
-          <button class="action-btn view-details-btn" (click)="viewDetails(product)">
-            View Details
+          <div class="action-buttons">
+            <button class="action-btn view-details-btn" (click)="viewDetails(product)">
+              View Details
+            </button>
+            <button class="action-btn add-to-cart-btn" (click)="addToCart(product)">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination-container" *ngIf="productsPage && productsPage.totalPages > 1">
+        <div class="pagination-controls">
+          <button (click)="onPageChange(currentPage - 1)"
+                  [disabled]="productsPage.first"
+                  class="pagination-btn">
+            « Previous
+          </button>
+          <span>Page {{ currentPage + 1 }} of {{ productsPage.totalPages }}</span>
+          <button (click)="onPageChange(currentPage + 1)"
+                  [disabled]="productsPage.last"
+                  class="pagination-btn">
+            Next »
           </button>
         </div>
       </div>

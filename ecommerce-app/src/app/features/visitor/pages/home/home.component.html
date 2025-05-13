@@ -8,126 +8,133 @@
   </section>
 
   <section class="banner-section">
-    <app-banner></app-banner>
+    <app-banner [routePrefix]="''"></app-banner>
   </section>
 
-  <section class="recommended-section">
-    <div class="section-container recommended-container">
-      <h2>
-        <i class="fa fa-check-circle"></i>
-        <span class="section-title">Recommended Just for You</span>
-      </h2>
-      <div class="product-cards recommended-cards">
-        <div *ngFor="let product of recommendedProducts" class="product-card">
-          <div class="image-container" (click)="onViewDetails(product)" style="cursor: pointer">
-            <img [src]="product.imageUrl" [alt]="product.name" />
-            <button
-              (click)="onFavoriteClick(product, $event)"
-              class="favorite-btn"
-              [class.active]="product.isFavorite"
-              aria-label="Add to favorites"
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24">
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
-                     2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09
-                     C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42
-                     22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-                  class="heart-icon"
-                />
-              </svg>
-            </button>
-            
-          </div>
-  
-          <div class="product-details">
-            <div class="product-header">
-              <span class="brand">{{ product.brand }}</span>
-              <span class="product-description">{{ product.description || ' ' }}</span>
-            </div>
-            <div class="rating">
-              <span class="star-emoji">⭐</span>
-              <span class="rating-value">{{ product.rating }}</span>
-              <span class="review-count">({{ product.reviewCount }})</span>
-            </div>
-            <div class="price-container">
-              <p class="original-price" *ngIf="product.originalPrice">{{ product.originalPrice | currency }}</p>
-              <p class="sale-price">{{ product.price | currency }}</p>
-            </div>
-          </div>
-  
-          <button class="action-btn view-details-btn" (click)="onViewDetails(product)">
-            View Details
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
+  <div *ngIf="loadingProducts" class="text-center py-5">Loading products...</div>
 
-  <section class="flash-deals-section">
-    <div class="section-container flash-deals-container">
-      <h2>
-        <i class="fa fa-bolt"></i>
-        <span class="section-title">Today's Flash Deals</span>
-      </h2>
-      <div class="product-cards flash-deal-cards">
-        <div *ngFor="let deal of flashDeals" class="product-card">
-          <div class="image-container" (click)="onViewDetails(deal)" style="cursor: pointer">
-            <img [src]="deal.imageUrl" [alt]="deal.name" />
-            <div class="discount-badge">-{{ deal.discount }}%</div>
-            <button
-              (click)="onFavoriteClick(deal, $event)"
-              class="favorite-btn"
-              [class.active]="deal.isFavorite"
-              aria-label="Add to favorites"
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24">
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
-                     2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09
-                     C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42
-                     22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-                  class="heart-icon"
-                />
-              </svg>
-            </button>
+  <ng-container *ngIf="!loadingProducts">
+    <section class="recommended-section" *ngIf="recommendedProducts.length > 0">
+      <div class="section-container recommended-container">
+        <h2>
+          <i class="fa fa-check-circle"></i>
+          <span class="section-title">Recommended for You</span>
+        </h2>
+        <div class="product-cards recommended-cards">
+          <div *ngFor="let product of recommendedProducts" class="product-card">
+            <div class="image-container" (click)="onViewDetails(product)" style="cursor: pointer">
+              <img [src]="product.imageUrl || 'assets/images/default-product.png'" [alt]="product.name" />
+              <button (click)="onFavoriteClick(product, $event)" class="favorite-btn" aria-label="Add to favorites">
+                <svg width="24" height="24" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09 C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" class="heart-icon"/></svg>
+              </button>
+            </div><!--  -->
+            <div class="product-details">
+              <div class="product-header">
+                <span class="brand">{{ product.brandName || 'Brand' }}</span>
+                <span class="product-description">{{ product.name }}</span>
+              </div>
+              <div class="rating" *ngIf="product.averageRating !== undefined && product.averageRating !== null">
+                <span class="star-emoji">⭐</span>
+                <span class="rating-value">{{ product.averageRating | number:'1.1-1' }}</span>
+                <span class="review-count" *ngIf="product.reviewCount">({{ product.reviewCount }})</span>
+              </div>
+              <div class="price-container">
+                <p class="original-price" *ngIf="product.originalPrice">{{ product.originalPrice | currency }}</p>
+                <p class="sale-price">{{ product.price | currency }}</p>
+              </div>
+            </div>
+            <button class="action-btn view-details-btn" (click)="onViewDetails(product)">View Details</button>
           </div>
-  
-          <div class="product-details">
-            <div class="product-header">
-              <span class="brand">{{ deal.brand }}</span>
-              <span class="product-description">{{ deal.description || ' ' }}</span>
-            </div>
-            <div class="rating">
-              <span class="star-emoji">⭐</span>
-              <span class="rating-value">{{ deal.rating }}</span>
-              <span class="review-count">({{ deal.reviewCount }})</span>
-            </div>
-            <div class="price-container">
-              <p class="original-price" *ngIf="deal.originalPrice">{{ deal.originalPrice | currency }}</p>
-              <p class="sale-price">{{ deal.price | currency }}</p>
-            </div>
-          </div>
-  
-          <button class="action-btn add-to-cart-btn" (click)="onAddToCart(deal)">
-            Add to Cart
-          </button>
         </div>
       </div>
-    </div>
-  </section>
-  <section class="brands">
-    <h2>Popular Brands</h2>
-    <div class="scroll-brands">
-      <div *ngFor="let brand of brands" class="brand-logo">
-        {{ brand }}
+    </section>
+
+    <section class="flash-deals-section" *ngIf="flashDeals.length > 0">
+      <div class="section-container flash-deals-container">
+        <h2>
+          <i class="fa fa-bolt"></i>
+          <span class="section-title">Flash Deals</span>
+        </h2>
+        <div class="product-cards flash-deal-cards">
+          <div *ngFor="let deal of flashDeals" class="product-card">
+            <div class="image-container" (click)="onViewDetails(deal)" style="cursor: pointer">
+              <img [src]="deal.imageUrl || 'assets/images/default-product.png'" [alt]="deal.name" />
+              <div class="discount-badge" *ngIf="deal.discount">-{{ deal.discount }}%</div>
+              <button (click)="onFavoriteClick(deal, $event)" class="favorite-btn" aria-label="Add to favorites">
+                <svg width="24" height="24" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09 C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" class="heart-icon"/></svg>
+              </button>
+            </div>
+            <div class="product-details">
+              <div class="product-header">
+                <span class="brand">{{ deal.brandName || 'Brand' }}</span>
+                <span class="product-description">{{ deal.name }}</span>
+              </div>
+              <div class="rating" *ngIf="deal.averageRating !== undefined && deal.averageRating !== null">
+                <span class="star-emoji">⭐</span>
+                <span class="rating-value">{{ deal.averageRating | number:'1.1-1' }}</span>
+                <span class="review-count" *ngIf="deal.reviewCount">({{ deal.reviewCount }})</span>
+              </div>
+              <div class="price-container">
+                <p class="original-price" *ngIf="deal.originalPrice">{{ deal.originalPrice | currency }}</p>
+                <p class="sale-price">{{ deal.price | currency }}</p>
+              </div>
+            </div>
+            <button class="action-btn add-to-cart-btn" (click)="onAddToCart(deal)">Add to Cart</button>
+          </div>
+        </div>
       </div>
+    </section>
+
+    <section class="all-products-section" *ngIf="productsForView.length > 0">
+      <div class="section-container">
+        <h2>All Products</h2>
+        <div class="product-cards all-product-cards">
+          <div *ngFor="let product of productsForView" class="product-card">
+            <div class="image-container" (click)="onViewDetails(product)" style="cursor: pointer">
+              <img [src]="product.imageUrl || 'assets/images/default-product.png'" [alt]="product.name" />
+              <button (click)="onFavoriteClick(product, $event)" class="favorite-btn" aria-label="Add to favorites">
+                 <svg width="24" height="24" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09 C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" class="heart-icon"/></svg>
+              </button>
+            </div>
+            <div class="product-details">
+              <span class="brand">{{ product.brandName || 'Brand' }}</span>
+              <span class="product-description">{{ product.name }}</span>
+              <div class="rating" *ngIf="product.averageRating !== undefined && product.averageRating !== null">
+                <span class="star-emoji">⭐</span>
+                <span class="rating-value">{{ product.averageRating | number:'1.1-1' }}</span>
+                <span class="review-count" *ngIf="product.reviewCount">({{ product.reviewCount }})</span>
+              </div>
+              <div class="price-container">
+                <p class="original-price" *ngIf="product.originalPrice">{{ product.originalPrice | currency }}</p>
+                <p class="sale-price">{{ product.price | currency }}</p>
+              </div>
+            </div>
+            <button class="action-btn view-details-btn" (click)="onViewDetails(product)">View Details</button>
+          </div>
+        </div>
+        <div class="pagination-container" *ngIf="productsPage && productsPage.totalPages > 1">
+          <div class="pagination-controls">
+            <button (click)="onPageChange(currentPage - 1)" [disabled]="productsPage.first" class="pagination-btn">
+              « Previous
+            </button>
+            <span>Page {{ currentPage + 1 }} of {{ productsPage.totalPages }}</span>
+            <button (click)="onPageChange(currentPage + 1)" [disabled]="productsPage.last" class="pagination-btn">
+              Next »
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div *ngIf="!loadingProducts && productsForView.length === 0 && !currentSearchTerm" class="no-products">
+      No products available at the moment.
     </div>
-  </section>
+     <div *ngIf="!loadingProducts && productsForView.length === 0 && currentSearchTerm" class="no-products">
+      No products found for "{{currentSearchTerm}}".
+    </div>
+
+  
+  </ng-container>
 </main>
 
 <app-footer></app-footer>

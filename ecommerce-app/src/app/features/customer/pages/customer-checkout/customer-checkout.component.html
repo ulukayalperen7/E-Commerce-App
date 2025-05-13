@@ -1,0 +1,147 @@
+<app-customer-navbar></app-customer-navbar>
+
+<div class="checkout-page-wrapper">
+  <div class="checkout-container container">
+    <div class="row justify-content-center">
+      <div class="col-md-10 col-lg-8">
+        <div class="card">
+          <div class="card-header text-white">
+            <h2 class="mb-0">Checkout Process</h2>
+          </div>
+          <div class="card-body">
+
+            <div *ngIf="isLoading && (stage === 'address' || stage === 'payment')" class="text-center my-3">
+              <p>Processing...</p>
+            </div>
+
+            <div *ngIf="errorMessage" class="alert alert-danger">
+              {{ errorMessage }}
+              <button *ngIf="stage === 'initial_error'" routerLink="/customer/cart" class="btn btn-sm btn-link">Return to Cart</button>
+            </div>
+
+            <div *ngIf="stage === 'address' && !isLoading && passedCart">
+              <h4 class="mb-3">1. Shipping Address & Order Review</h4>
+
+              <div class="order-summary-preview mb-4 p-3 rounded">
+                <h5>Order Preview</h5>
+                <p><strong>Total Items:</strong> {{ passedCart.totalItems }}</p>
+                <p><strong>Total Amount:</strong> {{ passedCart.totalAmount | currency:'TRY' }}</p>
+              </div>
+
+              <div *ngIf="userAddresses.length > 0">
+                <div class="form-group">
+                  <label for="shippingAddressCheckout">Select Shipping Address:</label>
+                  <select
+                    id="shippingAddressCheckout"
+                    class="form-control"
+                    [value]="selectedAddressId"
+                    (change)="onAddressSelectionChange($event)">
+                    <option *ngFor="let address of userAddresses" [value]="address.addressId">
+                      {{ address.addressLine }}, {{ address.district }}, {{ address.city }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div *ngIf="userAddresses.length === 0 && !showAddAddressForm" class="alert alert-info">
+                You have no saved addresses. You can <a routerLink="/customer/profile" class="alert-link">manage your addresses in profile</a> or add a new one below.
+              </div>
+
+              <div class="address-selection-actions">
+                <button *ngIf="!showAddAddressForm" type="button" class="btn btn-outline-themed" (click)="toggleAddAddressForm()">
+                  <i class="fa fa-plus-circle" style="margin-right: 5px;"></i> Add New Address
+                </button>
+                <button *ngIf="showAddAddressForm" type="button" class="btn btn-outline-secondary-custom" (click)="toggleAddAddressForm()">
+                  Cancel
+                </button>
+              </div>
+
+              <div *ngIf="showAddAddressForm" class="add-address-form card mt-2 mb-3">
+                <div class="card-body">
+                  <h5 class="card-title">Add New Address</h5>
+                  <form [formGroup]="addressForm" (ngSubmit)="onSaveNewAddress()">
+                    <div class="form-group mb-2">
+                        <label for="checkoutFormAddressLine">Address Line</label>
+                        <input id="checkoutFormAddressLine" type="text" class="form-control" formControlName="addressLine">
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="checkoutFormCity">City</label>
+                        <input id="checkoutFormCity" type="text" class="form-control" formControlName="city">
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="checkoutFormDistrict">District</label>
+                        <input id="checkoutFormDistrict" type="text" class="form-control" formControlName="district">
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="checkoutFormPostalCode">Postal Code</label>
+                        <input id="checkoutFormPostalCode" type="text" class="form-control" formControlName="postalCode">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="checkoutFormCountry">Country</label>
+                        <input id="checkoutFormCountry" type="text" class="form-control" formControlName="country">
+                    </div>
+                    <button type="submit" class="btn btn-action-save" [disabled]="addressForm.invalid || isLoading">
+                      Save Address
+                    </button>
+                  </form>
+                </div>
+              </div>
+
+              <div class="address-step-footer">
+                <button
+                  (click)="onProceedToPaymentStep()"
+                  class="btn btn-action-primary"
+                  [disabled]="!selectedAddressId || isLoading">
+                  Continue to Payment <i class="fa fa-arrow-right" style="margin-left: 5px;"></i>
+                </button>
+              </div>
+            </div>
+
+
+            <div *ngIf="stage === 'payment' && !isLoading && clientSecret && createdOrder">
+              <hr class="my-4">
+              <h4 class="mb-3">2. Payment Information</h4>
+
+              <div class="order-summary-final mb-4 p-3 rounded">
+                <h5>Final Order Details</h5>
+                <p><strong>Order ID:</strong> #{{ createdOrder.orderId }}</p>
+                <p *ngIf="selectedShippingAddress">
+                  <strong>Shipping to:</strong>
+                  {{ selectedShippingAddress.addressLine }},
+                  {{ selectedShippingAddress.city }}
+                </p>
+                <p><strong>Total Amount:</strong> {{ createdOrder.totalAmount | currency:'TRY' }}</p>
+              </div>
+
+              <form (submit)="handleSubmitPayment()" id="payment-form">
+                <div class="form-group">
+                  <label for="card-element" class="mb-2">Credit or debit card</label>
+                  <div id="card-element-ref" #cardElementRef class="p-3"></div>
+                </div>
+                <div class="payment-step-footer">
+                  <button
+                    id="submit-payment-button"
+                    type="submit"
+                    class="btn btn-action-primary"
+                    [disabled]="isLoading || !stripe || !cardElement">
+                    <span *ngIf="isLoading">Processing Payment...</span>
+                    <span *ngIf="!isLoading">Pay {{ createdOrder.totalAmount | currency:'TRY' }}</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+
+
+            <div *ngIf="stage === 'success'" class="alert alert-success mt-4 text-center">
+              <h4>Payment Successful!</h4>
+              <p>Your order #{{ createdOrder?.orderId }} has been placed.</p>
+              <p>Redirecting to your order history shortly...</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

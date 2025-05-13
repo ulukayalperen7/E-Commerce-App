@@ -1,33 +1,88 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { Product } from '../models/product.model';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ProductDetail, ProductSummary, Page } from '../models/product.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class ProductService {
-  private mockProducts: Product[] = [
-    { id: 1,  name: 'Smartphone X12',           categoryId: 1, price: 299, description: 'Latest model with advanced camera',      imageUrl: 'assets/images/smartphone.jpg' },
-    { id: 2,  name: 'Smart Watch Pro',          categoryId: 1, price: 150, description: 'Track fitness and notifications',        imageUrl: 'assets/images/smartwatch.jpg' },
-    { id: 3,  name: 'Ultra Laptop 15"',         categoryId: 2, price: 999, description: 'Powerful performance for work and play', imageUrl: 'assets/images/laptop.jpg' },
-    { id: 4,  name: 'Noise-Canceling Headphones',categoryId: 3, price: 89,  description: 'Premium sound quality',                  imageUrl: 'assets/images/headphones.jpg' },
-    { id: 5,  name: 'Running Shoes Air',        categoryId: 4, price: 120, description: 'Lightweight and comfortable',            imageUrl: 'assets/images/shoes.jpg' },
-    { id: 6,  name: 'Designer T-shirt',         categoryId: 5, price: 25,  description: '100% organic cotton',                    imageUrl: 'assets/images/tshirt.jpg' },
-    { id: 7,  name: 'Wireless Earbuds',         categoryId: 3, price: 79,  description: 'Long battery life with charging case',   imageUrl: 'assets/images/earbuds.jpg' },
-    { id: 8,  name: 'Gaming Mouse',             categoryId: 3, price: 45,  description: 'Adjustable DPI and RGB lighting',        imageUrl: 'assets/images/mouse.jpg' },
-    { id: 9,  name: 'Fitness Tracker',          categoryId: 4, price: 65,  description: 'Heart rate and sleep monitoring',        imageUrl: 'assets/images/tracker.jpg' },
-    { id: 10, name: 'Bluetooth Speaker',        categoryId: 3, price: 55,  description: 'Waterproof with 20h battery',            imageUrl: 'assets/images/speaker.jpg' },
-    { id: 11, name: 'Digital Camera',           categoryId: 2, price: 445, description: 'High resolution with 4K video',          imageUrl: 'assets/images/camera.jpg' },
-    { id: 12, name: 'Tablet Pro 10.5"',         categoryId: 2, price: 349, description: 'Full HD display with stylus support',    imageUrl: 'assets/images/tablet.jpg' }
-  ];
+  private baseUrl = 'http://localhost:8080/api/v1/products';
 
-  getProductsByCategory(categoryId: number): Observable<Product[]> {
-    return of(this.mockProducts.filter(p => p.categoryId === categoryId));
+  constructor(private http: HttpClient) { }
+
+  getAllActiveProducts(
+    page: number = 0,
+    size: number = 10,
+    sortField: string = 'productId',
+    sortDirection: string = 'asc'
+  ): Observable<Page<ProductSummary>> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('sort', `${sortField},${sortDirection}`);
+    return this.http.get<Page<ProductSummary>>(this.baseUrl, { params });
   }
 
-  getAllProducts(): Observable<Product[]> {
-    return of(this.mockProducts);
+  getProductById(productId: number): Observable<ProductDetail> {
+    const url = `${this.baseUrl}/${productId}`;
+    return this.http.get<ProductDetail>(url);
   }
-  getById(id: number): Observable<Product | undefined> {
-    return of(this.mockProducts.find(p => p.id === id));
+
+  getActiveProductsByCategory(
+    categoryId: number,
+    page: number = 0,
+    size: number = 10,
+    sortField: string = 'productId',
+    sortDirection: string = 'asc'
+  ): Observable<Page<ProductSummary>> {
+    const url = `${this.baseUrl}/category/${categoryId}`;
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('sort', `${sortField},${sortDirection}`);
+    return this.http.get<Page<ProductSummary>>(url, { params });
   }
-  
+
+  getActiveProductsByBrand(
+    brandId: number,
+    page: number = 0,
+    size: number = 10,
+    sortField: string = 'productId',
+    sortDirection: string = 'asc'
+  ): Observable<Page<ProductSummary>> {
+    const url = `${this.baseUrl}/brand/${brandId}`;
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('sort', `${sortField},${sortDirection}`);
+    return this.http.get<Page<ProductSummary>>(url, { params });
+  }
+
+  searchActiveProducts(
+    searchTerm?: string,
+    categoryId?: number,
+    brandId?: number,
+    page: number = 0,
+    size: number = 10,
+    sortField: string = 'name',
+    sortDirection: string = 'asc'
+  ): Observable<Page<ProductSummary>> {
+    const url = `${this.baseUrl}/search`;
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('sort', `${sortField},${sortDirection}`);
+
+    if (searchTerm && searchTerm.trim() !== '') {
+      params = params.append('searchTerm', searchTerm);
+    }
+    if (categoryId !== undefined && categoryId !== null) {
+      params = params.append('categoryId', categoryId.toString());
+    }
+    if (brandId !== undefined && brandId !== null) {
+      params = params.append('brandId', brandId.toString());
+    }
+    return this.http.get<Page<ProductSummary>>(url, { params });
+  }
 }

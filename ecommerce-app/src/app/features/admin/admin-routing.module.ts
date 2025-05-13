@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { UserManagementComponent } from './pages/user-management/user-management.component';
 import { ProductManagementComponent } from './pages/product-management/product-management.component';
+import { ProductFormComponent } from './pages/product-management/product-form/product-form.component';
 import { OrderTrackingComponent } from './pages/order-tracking/order-tracking.component';
 import { IssueResolutionComponent } from './pages/issue-resolution/issue-resolution.component';
 import { AdminHomeComponent } from './pages/admin-home/admin-home.component';
@@ -11,13 +12,13 @@ import { AuthGuard } from '../../core/guards/auth.guard';
 const routes: Routes = [
   {
     path: '',
-    canActivate: [AuthGuard],
-    component: AdminHomeComponent      // /admin → AdminHomeComponent
+    canActivate: [AuthGuard], 
+    component: AdminHomeComponent
   },
   {
     path: 'dashboard',
     canActivate: [AuthGuard],
-    component: AdminDashboardComponent  // /admin/dashboard
+    component: AdminDashboardComponent
   },
   {
     path: 'user-management',
@@ -27,7 +28,21 @@ const routes: Routes = [
   {
     path: 'product-management',
     canActivate: [AuthGuard],
-    component: ProductManagementComponent
+    children: [
+      {
+        path: '',
+        component: ProductManagementComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: 'add',
+        component: ProductFormComponent
+      },
+      {
+        path: 'edit/:id',
+        component: ProductFormComponent
+      }
+    ]
   },
   {
     path: 'order-tracking',
@@ -41,7 +56,8 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: ''                     // bilinmeyen her yol → Home
+    redirectTo: '',
+    pathMatch: 'full'
   }
 ];
 

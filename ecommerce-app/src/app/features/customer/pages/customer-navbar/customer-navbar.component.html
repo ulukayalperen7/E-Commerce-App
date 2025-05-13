@@ -11,8 +11,9 @@
         <button class="categories-btn" (click)="toggleCategories()">Categories ▾</button>
         <ul class="categories-menu" [class.open]="categoriesOpen">
           <li *ngFor="let cat of categories">
-            <a [routerLink]="['/customer/category', cat.id,cat.name]">{{ cat.name }}</a>
+            <a [routerLink]="['/customer/category', cat.categoryId, cat.name]" (click)="categoriesOpen = false">{{ cat.name }}</a>
           </li>
+          <li *ngIf="categories.length === 0"><a (click)="categoriesOpen = false">No categories</a></li>
         </ul>
       </div>
 
@@ -25,14 +26,14 @@
       <a routerLink="/customer/cart" class="icon-link">🛒 Cart</a>
 
       <div class="profile-dropdown">
-        <button class="profile-btn">👤 Account ▾</button>
-        <ul class="dropdown-menu">
+        <button class="profile-btn" (click)="toggleProfileMenu()">👤 Account ▾</button>
+        <ul class="dropdown-menu" [class.open]="profileMenuOpen">
           <li *ngFor="let item of profileMenu">
-            <a [routerLink]="item.path">{{ item.label }}</a>
+            <a [routerLink]="item.path" (click)="profileMenuOpen = false">{{ item.label }}</a>
           </li>
-          <li class="divider"></li>
+          <li *ngIf="profileMenu.length > 0" class="divider"></li>
           <li>
-            <a href="#" (click)="onLogout(); $event.preventDefault()">Logout</a>
+            <a href="#" (click)="onLogout(); profileMenuOpen = false; $event.preventDefault()">Logout</a>
           </li>
         </ul>
       </div>

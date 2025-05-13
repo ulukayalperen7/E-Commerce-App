@@ -1,7 +1,7 @@
 .customer-navbar {
   width: 100%;
-  background: #6c5ce7;
-  border-bottom: 1px solid #5942a2;
+  background: linear-gradient(45deg, #6c5ce7, #3498db);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   position: fixed;
   top: 0;
   left: 0;
@@ -23,8 +23,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 75px;
-    gap: 2rem;
+    height: 70px;
+    gap: 1.5rem;
   }
 
   .logo a {
@@ -32,180 +32,158 @@
     font-weight: bold;
     color: #fff;
     text-decoration: none;
-  }
-
-  .categories-wrapper {
-    position: relative;
-
-    &:hover .categories-menu {
-      display: block;
-    }
-
-    .categories-btn {
-      background: none;
-      border: none;
-      font-size: 1rem;
-      cursor: pointer;
-      padding: 0.5rem;
-      color: #fff;
-      transition: color 0.2s;
-
-      &:hover {
-        color: #dcd0f7;
-      }
-    }
-
-    .categories-menu {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: #6c5ce7;
-      border-radius: 4px;
-      list-style: none;
-      padding: 0.5rem 0;
-      margin: 0;
-      min-width: 160px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-      display: none;
-
-      &.open {
-        display: block;
-      }
-
-      li a {
-        display: block;
-        padding: 0.5rem 1rem;
-        text-decoration: none;
-        color: #fff;
-        font-size: 0.95rem;
-        transition: background 0.2s;
-
-        &:hover {
-          background: rgba(255, 255, 255, 0.1);
-        }
-      }
-    }
-  }
-
-  .search-box {
-    display: flex;
-    align-items: center;
-    border: 1px solid #d1bee7;
-    border-radius: 4px;
-    overflow: hidden;
-    width: 280px;
-    background: #fff;
-
-    input {
-      border: none;
-      padding: 0.4rem 1rem;
-      font-size: 1rem;
-      flex: 1;
-      outline: none;
-    }
-
-    button {
-      background: #6c5ce7;
-      border: none;
-      padding: 0.4rem;
-      cursor: pointer;
-      font-size: 1.2rem;
-      color: #fff;
-      transition: background 0.3s, transform 0.1s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 2.4rem;
-      height: 2.4rem;
-      margin-right: 0.2rem;
-      border-radius: 50%;
-      background: #fff;
-      color: #6c5ce7;
-
-      &:hover {
-        background: #f7f3ff;
-      }
-
-      &:active {
-        transform: scale(0.95);
-      }
-    }
-  }
-
-  .icon-link,
-  .nav-link {
-    text-decoration: none;
-    color: #fff;
-    font-weight: 500;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: color 0.2s;
-
+    transition: opacity 0.2s;
     &:hover {
-      color: #dcd0f7;
+      opacity: 0.9;
     }
   }
 
-  .profile-dropdown {
+  .categories-wrapper,
+  .profile-dropdown { // İki dropdown için ortak başlangıç stilleri
     position: relative;
 
+    .categories-btn, // Ortak buton stilleri
     .profile-btn {
       background: none;
       border: none;
       font-size: 1rem;
-      font-weight: 500;
-      color: #fff;
       cursor: pointer;
+      padding: 0.6rem 0.8rem;
+      color: #e0e0ff;
+      transition: color 0.2s, background-color 0.2s;
+      border-radius: 4px;
       user-select: none;
-      padding: 0.5rem;
 
       &:hover {
-        color: #dcd0f7;
+        color: #fff;
+        background-color: rgba(255, 255, 255, 0.1);
       }
     }
 
+    .categories-menu, // Ortak menü stilleri
     .dropdown-menu {
       position: absolute;
-      top: 2.5rem;
-      right: 0;
-      background: #fff;
-      border: 1px solid #ddd;
+      top: calc(100% + 5px);
+      background: linear-gradient(45deg, #6c5ce7, #3498db);
       border-radius: 6px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       list-style: none;
+      padding: 0.5rem 0;
       margin: 0;
-      padding: 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      z-index: 1001;
+      min-width: 180px; // Kategoriler için
+      
+      // Başlangıç durumu: Gizli
       opacity: 0;
       visibility: hidden;
       transform: translateY(-10px);
-      transition: all 0.2s ease;
+      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
 
-      .divider {
-        height: 1px;
-        background: #ddd;
-        margin: 0.25rem 0;
+      // .open sınıfı eklendiğinde veya hover olduğunda görünür yap
+      &.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
       }
 
       li a {
         display: block;
-        padding: 0.75rem 1.5rem;
+        padding: 0.6rem 1.2rem;
         text-decoration: none;
-        color: #333;
+        color: #e0e0ff;
         font-size: 0.95rem;
-        user-select: none;
+        transition: background 0.2s, color 0.2s;
 
         &:hover {
-          background-color: #f7f7f7;
+          background: rgba(255, 255, 255, 0.15);
+          color: #fff;
         }
       }
     }
+    // Profil menüsü için sağa hizalama ve genişlik
+    .profile-dropdown .dropdown-menu {
+        right: 0;
+        left: auto; // Sol hizalamayı iptal et
+        min-width: 200px;
+         .divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0.4rem 0;
+         }
+    }
 
-    &:hover .dropdown-menu {
+
+    // Hover ile açılma
+    &:hover > .categories-menu,
+    &:hover > .dropdown-menu {
       opacity: 1;
       visibility: visible;
       transform: translateY(0);
     }
   }
+
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    overflow: hidden;
+    width: 300px;
+    background: rgba(255, 255, 255, 0.9);
+    transition: width 0.3s ease, box-shadow 0.3s ease;
+
+    input {
+      border: none;
+      padding: 0.6rem 1rem;
+      font-size: 0.95rem;
+      flex: 1;
+      outline: none;
+      background: transparent;
+      color: #333;
+      &::placeholder {
+        color: #777;
+      }
+    }
+
+    button {
+      background: none;
+      border: none;
+      padding: 0.6rem 0.8rem;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: #6c5ce7;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        color: #3498db;
+      }
+    }
+    &:focus-within {
+      box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.5);
+    }
+  }
+
+  .icon-link {
+    text-decoration: none;
+    color: #e0e0ff;
+    font-weight: 500;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: color 0.2s, transform 0.2s;
+    padding: 0.5rem 0.3rem;
+
+    &:hover {
+      color: #fff;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+.navbar-spacer {
+  // TS'den ayarlanıyor
 }

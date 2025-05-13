@@ -2,19 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { CartService } from '../../../../core/services/cart.service';
-import { ProductService } from '../../../../core/services/product.service';
 import { FavoriteService } from '../../../../core/services/favorite.service';
-import { Product } from '../../../../core/models/product.model';
+import { ProductSummary, Page } from '../../../../core/models/product.model';
 
-type ProductView = Product & {
-  isFavorite: boolean;
-  rating: number;
-  brand: string;
+interface ProductView extends ProductSummary {
+  isFavorite: true;
+  description?: string;
+  reviewCount?: number;
   originalPrice?: number;
   discount?: number;
-  reviewCount?: number;
-};
-
+}
 
 @Component({
   selector: 'app-favorites',
@@ -23,16 +20,13 @@ type ProductView = Product & {
   styleUrls: ['./favorites.component.scss']
 })
 export class FavoritesComponent implements OnInit {
-  favorites: ProductView[] = [];
-
-  private brands = [
-    'Zara', 'Nike', 'New Balance', 'Ray-Ban', 'Fossil', 'Apple',
-    'Puma', 'MSI', "L'Oréal", 'Xiaomi', 'Samsung', 'Adidas',
-    "Levi's", 'Sony', 'Gucci'
-  ];
+  favoritesForView: ProductView[] = [];
+  favoritesPage?: Page<ProductSummary>;
+  currentPage: number = 0;
+  pageSize: number = 8;
+  loading: boolean = true;
 
   constructor(
-    private productService: ProductService,
     private favoriteService: FavoriteService,
     private authService: AuthService,
     private cartService: CartService,
@@ -40,69 +34,60 @@ export class FavoritesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadFavorites();
+    if (this.authService.isLoggedIn()) {
+      this.loadFavoritesPage();
+    } else {
+      this.loading = false;
+      this.favoritesForView = [];
+      this.router.navigate(['/login-required'], { queryParams: { returnUrl: this.router.url }});
+    }
   }
 
-  loadFavorites(): void {
-    const favIds = this.favoriteService.getFavorites();
-    this.productService.getAllProducts().subscribe(list => {
-      this.favorites = list
-        .filter(p => favIds.includes(p.id))
-        .map(p => {
-          const originalPrice = this.shouldApplyDiscount() ? this.calculateOriginalPrice(p.price) : undefined;
-          return {
-            ...p,
-            isFavorite: true,
-            rating: this.getInitialRating(p),
-            brand: this.getRandomBrand(),
-            originalPrice,
-            reviewCount: this.getRandomReviewCount()
-          };
-        });
+  loadFavoritesPage(page: number = 0): void {
+    this.loading = true;
+    this.currentPage = page;
+    this.favoriteService.getUserFavoritesPage(this.currentPage, this.pageSize).subscribe({
+      next: (pageData: Page<ProductSummary>) => {
+        this.favoritesPage = pageData;
+        this.favoritesForView = pageData.content.map(p_summary => ({
+          ...p_summary,
+          isFavorite: true,
+          description: p_summary.name,
+          reviewCount: p_summary.averageRating ? Math.floor(p_summary.averageRating * 15) : undefined,
+        }));
+        this.loading = false;
+      },
+      error: (err) => {
+        this.loading = false;
+        this.favoritesForView = [];
+        this.favoritesPage = undefined;
+      }
     });
   }
 
-  onViewDetails(p: ProductView): void {
-    this.router.navigate(['/customer/product', p.id]);
+  onViewDetails(product: ProductView): void {
+    this.router.navigate(['/customer/product', product.productId]);
   }
 
-  onAddToCart(p: ProductView): void {
-    if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/login']);
-    } else {
-      this.cartService.add(p);
-      this.router.navigate(['/customer/cart']);
-    }
+  onAddToCart(product: ProductView): void {
+    this.cartService.add(product);
+    this.router.navigate(['/customer/cart']);
   }
 
-  onRemoveFavorite(p: ProductView): void {
-    this.favoriteService.removeFavorite(p.id);
-    this.favorites = this.favorites.filter(x => x.id !== p.id);
+  onRemoveFavorite(product: ProductView): void {
+    this.loading = true;
+    this.favoriteService.removeFavorite(product.productId).subscribe({
+      next: () => {
+        this.loadFavoritesPage(this.currentPage); 
+      },
+      error: (err) => {
+        this.loading = false;
+        alert(err.message || 'Failed to remove favorite.');
+      }
+    });
   }
 
-  private getInitialRating(p: Product): number {
-    const anyP = p as any;
-    if (typeof anyP.rating === 'number' && anyP.rating > 0) {
-      return parseFloat(anyP.rating.toFixed(1));
-    }
-    return +(Math.random() * 2 + 3).toFixed(1);
-  }
-
-  private getRandomReviewCount(): number {
-    return Math.floor(Math.random() * 500) + 50;
-  }
-
-  private getRandomBrand(): string {
-    const idx = Math.floor(Math.random() * this.brands.length);
-    return this.brands[idx];
-  }
-
-  private shouldApplyDiscount(): boolean {
-    return Math.random() > 0.6;
-  }
-
-  private calculateOriginalPrice(currentPrice: number): number {
-    const increasePercentage = Math.floor(Math.random() * 30) + 10;
-    return +(currentPrice * (1 + increasePercentage / 100)).toFixed(2);
+  onPageChange(newPage: number): void {
+    this.loadFavoritesPage(newPage);
   }
 }

@@ -5,50 +5,57 @@
     <h1 class="favorites-title">Your Favorites</h1>
   </section>
 
-  <div *ngIf="favorites.length; else emptyState" class="products-section">
-    <div class="section-container favorites-products-container">
-      <div class="product-cards">
-        <div *ngFor="let product of favorites" class="product-card">
-          <div class="image-container" (click)="onViewDetails(product)" style="cursor: pointer">
-            <img [src]="product.imageUrl" [alt]="product.name" />
-            <button
-              (click)="onRemoveFavorite(product); $event.stopPropagation()"
-              class="remove-favorite-button"
-              aria-label="Remove from favorites"
-            >
-              ✖
+  <div *ngIf="loading" class="loading text-center py-5">Loading favorites…</div>
+
+  <div *ngIf="!loading && favoritesForView.length === 0; else favoritesList" class="empty text-center py-5">
+    You have no favorite products yet. Start by adding some!
+  </div>
+
+  <ng-template #favoritesList>
+    <div class="products-section">
+      <div class="section-container favorites-products-container">
+        <div class="product-cards">
+          <div *ngFor="let product of favoritesForView" class="product-card">
+            <div class="image-container" (click)="onViewDetails(product)" style="cursor: pointer">
+              <img [src]="product.imageUrl || 'assets/images/default-product.png'" [alt]="product.name" />
+              <button
+                (click)="onRemoveFavorite(product); $event.stopPropagation()"
+                class="remove-favorite-button"
+                aria-label="Remove from favorites"
+              >
+                ✖
+              </button>
+            </div>
+            <div class="product-details">
+              <div class="product-header">
+                <span class="brand">{{ product.brandName || 'Brand' }}</span>
+                <span class="product-description">{{ product.name }}</span>
+              </div>
+              <div class="rating" *ngIf="product.averageRating !== undefined && product.averageRating !== null">
+                <span class="star-emoji">⭐</span>
+                <span class="rating-value">{{ product.averageRating | number:'1.1-1' }}</span>
+                <span class="review-count" *ngIf="product.reviewCount">({{ product.reviewCount }})</span>
+              </div>
+              <div class="price-container">
+                <p class="original-price" *ngIf="product.originalPrice">{{ product.originalPrice | currency }}</p>
+                <p class="sale-price">{{ product.price | currency }}</p>
+              </div>
+            </div>
+            <button class="action-btn add-to-cart-btn" (click)="onAddToCart(product)">
+              Add to Cart
             </button>
           </div>
-
-          <div class="product-details">
-            <div class="product-header">
-              <span class="brand">{{ product.brand }}</span>
-              <span class="product-description">{{ product.name || ' ' }}</span>
-            </div>
-
-            <div class="rating">
-              <span class="star-emoji">⭐</span>
-              <span class="rating-value">{{ product.rating }}</span>
-              <span class="review-count">({{ product.reviewCount }})</span>
-            </div>
-
-            <div class="price-container">
-              <p class="original-price" *ngIf="product.originalPrice">{{ product.originalPrice | currency }}</p>
-              <p class="sale-price">{{ product.price | currency }}</p>
-            </div>
-          </div>
-
-          <button class="action-btn add-to-cart-btn" (click)="onAddToCart(product)">
-            Add to Cart
+        </div>
+        <div class="pagination-controls mt-4 text-center" *ngIf="favoritesPage && favoritesPage.totalPages > 1">
+          <button (click)="onPageChange(currentPage - 1)" [disabled]="favoritesPage.first" class="pagination-btn">
+            « Previous
+          </button>
+          <span class="mx-2">Page {{ currentPage + 1 }} of {{ favoritesPage.totalPages }}</span>
+          <button (click)="onPageChange(currentPage + 1)" [disabled]="favoritesPage.last" class="pagination-btn">
+            Next »
           </button>
         </div>
       </div>
-    </div>
-  </div>
-
-  <ng-template #emptyState>
-    <div class="empty">
-      You have no favorite products yet.
     </div>
   </ng-template>
 </main>

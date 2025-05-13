@@ -1,18 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Product } from '../../../../core/models/product.model';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ProductSummary, Page } from '../../../../core/models/product.model';
 import { ProductService } from '../../../../core/services/product.service';
 import { AuthService } from '../../../../core/services/auth.service';
-import { CartService } from '../../../../core/services/cart.service';
+import { Subscription } from 'rxjs';
 
-interface ProductView extends Product {
+interface ProductView extends ProductSummary {
   isFavorite: boolean;
-  rating: number;
-  brand: string;
+  description?: string;
+  reviewCount?: number;
   originalPrice?: number;
   discount?: number;
-  reviewCount?: number;
 }
 
 @Component({
@@ -21,84 +19,95 @@ interface ProductView extends Product {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
-  searchForm: FormGroup;
-  products: ProductView[] = [];
+export class HomeComponent implements OnInit, OnDestroy {
+  productsForView: ProductView[] = [];
   recommendedProducts: ProductView[] = [];
   flashDeals: ProductView[] = [];
-  brands = [
-    'Zara', 'Nike', 'New Balance', 'Ray-Ban', 'Fossil', 'Apple',
-    'Puma', 'MSI', "L'Oréal", 'Xiaomi', 'Samsung', 'Adidas',
-    "Levi's", 'Sony', 'Gucci'
-  ];
+  brandsMock: string[] = [];
+
+  productsPage?: Page<ProductSummary>;
+  currentPage: number = 0;
+  pageSize: number = 24;
+  
+  currentSearchTerm?: string;
+  loadingProducts: boolean = true;
+
+  private queryParamsSub?: Subscription;
 
   constructor(
-    private fb: FormBuilder,
     private productService: ProductService,
     private authService: AuthService,
-    private cartService: CartService,
-    private router: Router
-  ) {
-    this.searchForm = this.fb.group({ search: [''] });
-  }
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.productService.getAllProducts().subscribe(list => {
-      this.products = list.map(p => ({
-        ...p,
-        isFavorite: false,
-        rating: this.getInitialRating(p),
-        brand: this.getRandomBrand(),
-        reviewCount: this.getRandomReviewCount()
-      }));
+    this.queryParamsSub = this.activatedRoute.queryParamMap.subscribe(params => {
+      const query = params.get('q');
+      if (query !== null && query !== this.currentSearchTerm) {
+        this.currentSearchTerm = query;
+      }
+      this.loadProducts();
+    });
+    this.brandsMock = ['AzuL Brand', 'TechPro', 'Fashionista', 'HomeGoods', 'EcoLiving'];
+  }
 
-      this.recommendedProducts = this.products.slice(0, 10);
+  ngOnDestroy(): void {
+    this.queryParamsSub?.unsubscribe();
+  }
 
-      this.flashDeals = [
-        { ...this.products[2], originalPrice: 1299, price: 999, discount: 23, reviewCount: this.getRandomReviewCount() },
-        { ...this.products[4], originalPrice: 180, price: 120, discount: 33, reviewCount: this.getRandomReviewCount() },
-        { ...this.products[7], originalPrice: 60, price: 45, discount: 25, reviewCount: this.getRandomReviewCount() },
-        { ...this.products[9], originalPrice: 85, price: 55, discount: 35, reviewCount: this.getRandomReviewCount() }
-      ];
+  loadProducts(page: number = 0): void {
+    this.loadingProducts = true;
+    this.currentPage = page;
+    this.productService.searchActiveProducts(
+      this.currentSearchTerm,
+      undefined, 
+      undefined, 
+      this.currentPage,
+      this.pageSize,
+      'name',
+      'asc'
+    ).subscribe({
+      next: (pageData: Page<ProductSummary>) => {
+        this.productsPage = pageData;
+        this.productsForView = pageData.content.map(p_summary => ({
+          ...p_summary,
+          isFavorite: false,
+          description: p_summary.name, 
+          reviewCount: p_summary.averageRating ? Math.floor(p_summary.averageRating * 10) : undefined,
+        }));
+
+        this.recommendedProducts = this.productsForView.slice(0, 10);
+        this.flashDeals = this.productsForView.slice(10, 14);
+
+        this.loadingProducts = false;
+      },
+      error: (err) => {
+        this.productsForView = [];
+        this.recommendedProducts = [];
+        this.flashDeals = [];
+        this.productsPage = undefined;
+        this.loadingProducts = false;
+      }
     });
   }
 
-  private getInitialRating(p: Product): number {
-    const anyP = p as any;
-    if (typeof anyP.rating === 'number') {
-      return anyP.rating;
-    }
-    return +(Math.random() * 2 + 3).toFixed(1);
+  onViewDetails(product: ProductView): void {
+    this.router.navigate(['/product', product.productId]);
   }
 
-  private getRandomReviewCount(): number {
-    return Math.floor(Math.random() * 500) + 50;
+  onAddToCart(product: ProductView): void {
+    this.router.navigate(['/login-required'], { queryParams: { returnUrl: this.router.url } });
   }
 
-  private getRandomBrand(): string {
-    const idx = Math.floor(Math.random() * this.brands.length);
-    return this.brands[idx];
-  }
-
-  onViewDetails(p: ProductView): void {
-    this.router.navigate(['/product', p.id]);
-  }
-
-  onAddToCart(p: ProductView): void {
-    if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/login']);
-    } else {
-      this.cartService.add(p);
-      this.router.navigate(['/cart']);
-    }
-  }
-
-  onFavoriteClick(p: ProductView, event: Event): void {
+  onFavoriteClick(product: ProductView, event: Event): void {
     event.stopPropagation();
-    if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/login']);
-      return;
+    this.router.navigate(['/login-required'], { queryParams: { returnUrl: this.router.url } });
+  }
+
+  onPageChange(newPage: number): void {
+    if (newPage >= 0 && (!this.productsPage || newPage < this.productsPage.totalPages)) {
+      this.loadProducts(newPage);
     }
-    p.isFavorite = !p.isFavorite;
   }
 }

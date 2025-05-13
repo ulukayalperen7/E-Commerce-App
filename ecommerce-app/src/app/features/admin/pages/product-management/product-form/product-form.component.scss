@@ -1,0 +1,177 @@
+.product-form-container {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+  }
+  
+  .form-group {
+    margin-bottom: 1.25rem;
+  
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #454545;
+    }
+  
+    .form-control,
+    .form-control-file {
+      display: block;
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #495057;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  
+      &:focus {
+        color: #495057;
+        background-color: #fff;
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      }
+  
+      &.is-invalid {
+        border-color: #dc3545;
+        padding-right: calc(1.5em + 0.75rem); // Hata ikonu için yer
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right calc(0.375em + 0.1875rem) center;
+        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+  
+        &:focus {
+          border-color: #dc3545;
+          box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        }
+      }
+    }
+  
+    textarea.form-control {
+      min-height: 100px;
+    }
+  }
+  
+  .form-check {
+    display: flex;
+    align-items: center;
+    .form-check-input {
+      width: auto; // Checkbox için default genişlik
+      margin-right: 0.5rem;
+    }
+    .form-check-label {
+      margin-bottom: 0; // Label için alttaki boşluğu kaldır
+    }
+  }
+  
+  
+  .invalid-feedback {
+    display: block; // Angular ile is-invalid olduğunda otomatik block olmuyor, elle ekliyoruz
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+  }
+  
+  .image-preview-section {
+    border: 1px dashed #ccc;
+    padding: 1rem;
+    border-radius: 4px;
+  
+    p {
+      font-weight: bold;
+      margin-bottom: 0.75rem;
+    }
+  }
+  
+  .image-item {
+    display: inline-flex; // Resim ve butonu yanyana ve alt alta sığdırmak için
+    flex-direction: column; // Buton resmin altına gelsin
+    align-items: center;    // Ortala
+    margin-right: 1rem;     // Sağ boşluk
+    margin-bottom: 1rem;    // Alt boşluk
+  
+    .image-preview {
+      max-width: 120px;
+      max-height: 120px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      object-fit: cover; // Resmin oranını koruyarak sığdır
+      margin-bottom: 0.5rem; // Buton ile resim arasına boşluk
+    }
+  }
+  
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem; // Butonlar arası boşluk
+  
+    .btn {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      border: none; // Temel buton stili
+    }
+  
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+      &:hover { background-color: #0056b3; }
+      &:disabled { background-color: #6c757d; cursor: not-allowed;}
+    }
+  
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+      &:hover { background-color: #545b62; }
+       &:disabled { opacity: 0.65; cursor: not-allowed;}
+    }
+  
+    .btn-warning {
+      background-color: #ffc107;
+      color: #212529;
+       &:hover { background-color: #e0a800; }
+    }
+     .btn-danger {
+      background-color: #dc3545;
+      color: white;
+       &:hover { background-color: #c82333; }
+    }
+  }
+  
+  // Bootstrap'ten bazı yardımcı sınıflar (projenizde Bootstrap varsa gereksiz olabilir)
+  .mt-1 { margin-top: 0.25rem !important; }
+  .mt-2 { margin-top: 0.5rem !important; }
+  .mt-4 { margin-top: 1.5rem !important; }
+  .mr-2 { margin-right: 0.5rem !important; }
+  .mb-2 { margin-bottom: 0.5rem !important; }
+  .d-flex { display: flex !important; }
+  .flex-wrap { flex-wrap: wrap !important; }
+  .spinner-border {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    vertical-align: text-bottom;
+    border: .2em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spinner-border .75s linear infinite;
+  }
+  @keyframes spinner-border {
+    to { transform: rotate(360deg); }
+  }

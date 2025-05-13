@@ -1,16 +1,29 @@
-<div class="banner" (mouseenter)="pause()" (mouseleave)="play()">
-  <button class="arrow prev" (click)="prev()">‹</button>
-  <div class="banner-slider"
-       [style.transform]="'translateX(-' + currentIndex * 100 + '%)'">
-    <div class="slide" *ngFor="let item of items">
-      <img [src]="item.image" [alt]="item.name" />
-      <div class="caption">
-        <h2>{{ item.title }}</h2>
-        <button (click)="goToCategory(item)">
-          {{ item.buttonText }}
-        </button>
+<div class="banner-container" *ngIf="!loading && banners && banners.length > 0">
+  <div class="banner" (mouseenter)="pause()" (mouseleave)="play()">
+    <button class="arrow prev" (click)="prev()" *ngIf="banners.length > 1" aria-label="Previous slide">‹</button>
+    <div class="banner-slider"
+        [style.transform]="'translateX(-' + currentIndex * 100 + '%)'">
+      <div class="slide" *ngFor="let banner of banners; let i = index"
+           [class.active]="i === currentIndex">
+        <img [src]="banner.imageUrl" [alt]="banner.title" (click)="goToLink(banner)" style="cursor: pointer;"/>
+        <div class="caption">
+          <h2>{{ banner.title }}</h2>
+          <button (click)="goToLink(banner)" *ngIf="banner.linkUrl">
+            {{ getButtonText(banner.title) }}
+          </button>
+        </div>
       </div>
     </div>
+    <button class="arrow next" (click)="next()" *ngIf="banners.length > 1" aria-label="Next slide">›</button>
+    <div class="dots" *ngIf="banners.length > 1">
+      <span *ngFor="let banner of banners; let i = index"
+            class="dot"
+            [class.active]="i === currentIndex"
+            (click)="goToSlide(i)"></span>
+    </div>
   </div>
-  <button class="arrow next" (click)="next()">›</button>
+</div>
+<div *ngIf="loading" class="text-center py-3">Loading banners...</div>
+<div *ngIf="!loading && (!banners || banners.length === 0)" class="no-banner-message">
+  <!-- No active banners to display (or a placeholder) -->
 </div>

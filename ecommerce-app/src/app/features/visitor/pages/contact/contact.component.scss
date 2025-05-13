@@ -1,47 +1,85 @@
 .contact-container {
-    max-width: 600px;
-    margin: auto;
-    padding: 2rem;
-  
-    h1 {
-      text-align: center;
-      font-size: 2.5rem;
-      margin-bottom: 2rem;
-      color: #333;
+  background: linear-gradient(to bottom, #fafaff, #f0f4ff);
+  border-radius: 15px;
+  max-width: 600px;
+  margin: 100px auto;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(to right, #3498db, #6c5ce7);
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #2c3e50;
+    font-weight: 700;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    input, textarea {
+      width: 100%;
+      padding: 12px 20px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+      background-color: #fff;
+      color: #495057;
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+        border-color: #6c5ce7;
+        box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+      }
     }
-  
-    form {
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(45deg, #6c5ce7, #3498db);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
       display: flex;
-      flex-direction: column;
-      gap: 1rem;
-  
-      input, textarea {
-        padding: 1rem;
-        font-size: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        width: 100%;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
       }
-  
-      textarea {
-        resize: vertical;
-        min-height: 120px;
-      }
-  
-      button {
-        padding: 0.8rem;
-        font-size: 1rem;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-  
-        &:hover {
-          background-color: #0056b3;
-        }
+
+      &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: translateY(0);
+        box-shadow: none;
       }
     }
   }
-  
+}

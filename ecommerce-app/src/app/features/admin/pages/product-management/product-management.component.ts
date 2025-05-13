@@ -34,7 +34,6 @@ export class ProductManagementComponent implements OnInit {
     ];
     this.filteredProducts = [...this.products];
 
-    // Null-check ekleyerek subscribe et
     const ctrl = this.filterForm.get('filterText');
     if (ctrl) {
       ctrl.valueChanges.subscribe(txt => {
@@ -56,7 +55,6 @@ export class ProductManagementComponent implements OnInit {
 
   deleteProduct(id: number): void {
     this.products = this.products.filter(p => p.id !== id);
-    // filtre değerini tekrar uygula
     const ctrl = this.filterForm.get('filterText');
     const term = ctrl?.value?.toLowerCase() || '';
     this.filteredProducts = this.products.filter(p =>

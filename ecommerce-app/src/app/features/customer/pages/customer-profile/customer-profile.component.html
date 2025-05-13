@@ -1,85 +1,138 @@
 <app-customer-navbar></app-customer-navbar>
 
-<main class="profile-wrap">
-  <form [formGroup]="profileForm" (ngSubmit)="onSave()">
-    <h1>My Profile</h1>
+<div class="profile-page-wrapper">
+  <main class="profile-wrap">
+    <form [formGroup]="profileForm">
+      <h1>My Profile</h1>
 
-    <section class="profile-section">
-      <h2>Personal Info</h2>
-      <div class="grid-two">
-        <div class="field">
-          <label>First Name</label>
-          <input formControlName="firstName" type="text" />
-          <small *ngIf="profileForm.get('firstName')?.touched && profileForm.get('firstName')?.invalid">Required</small>
-        </div>
-        <div class="field">
-          <label>Last Name</label>
-          <input formControlName="lastName" type="text" />
-          <small *ngIf="profileForm.get('lastName')?.touched && profileForm.get('lastName')?.invalid">Required</small>
-        </div>
-        <div class="field">
-          <label>Email</label>
-          <input formControlName="email" type="email" />
-          <small *ngIf="profileForm.get('email')?.touched && profileForm.get('email')?.invalid">Valid email required</small>
-        </div>
-        <div class="field">
-          <label>Phone</label>
-          <input formControlName="phone" type="tel" />
-          <small *ngIf="profileForm.get('phone')?.touched && profileForm.get('phone')?.invalid">Required</small>
-        </div>
-        <div class="field full">
-          <label>Address</label>
-          <input formControlName="address" type="text" />
-          <small *ngIf="profileForm.get('address')?.touched && profileForm.get('address')?.invalid">Required</small>
-        </div>
-        <div class="field birthdate">
-          <label>Birth Date</label>
-          <div class="birth-grid">
-            <select formControlName="birthDay">
-              <option value="">Day</option>
-              <option *ngFor="let d of days" [value]="d">{{ d }}</option>
-            </select>
-            <select formControlName="birthMonth">
-              <option value="">Month</option>
-              <option *ngFor="let m of months" [value]="m">{{ m }}</option>
-            </select>
-            <select formControlName="birthYear">
-              <option value="">Year</option>
-              <option *ngFor="let y of years" [value]="y">{{ y }}</option>
-            </select>
+      <section class="profile-section">
+        <h2>Personal Info</h2>
+        <div class="grid-two">
+          <div class="field">
+            <label for="firstNameProfile">First Name</label>
+            <input id="firstNameProfile" formControlName="firstName" type="text" readonly class="form-control-plaintext"/>
           </div>
-          <small *ngIf="profileForm.get('birthDay')?.invalid">Required</small>
+          <div class="field">
+            <label for="lastNameProfile">Last Name</label>
+            <input id="lastNameProfile" formControlName="lastName" type="text" readonly class="form-control-plaintext"/>
+          </div>
+          <div class="field full">
+            <label for="emailProfile">Email</label>
+            <input id="emailProfile" formControlName="email" type="email" readonly class="form-control-plaintext"/>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="password-section">
-      <h2>Change Password</h2>
-      <div class="grid-two">
-        <div class="field">
-          <label>Current Password</label>
-          <input formControlName="currentPassword" type="password" />
-        </div>
-        <div class="field">
-          <label>New Password</label>
-          <input formControlName="newPassword" type="password" />
-        </div>
-        <div class="field">
-          <label>Confirm Password</label>
-          <input formControlName="confirmPassword" type="password" />
-          <small *ngIf="profileForm.errors?.['mismatch']">Passwords do not match</small>
-        </div>
-      </div>
-      <div class="password-actions">
-        <button type="button" class="btn-primary" (click)="onUpdatePassword()">Update Password</button>
-      </div>
-    </section>
+      <section class="profile-section addresses-section">
+        <h2>My Addresses</h2>
+        <div *ngIf="addressLoading" class="text-center my-3"><p>Loading addresses...</p></div>
+        <div *ngIf="addressError && !addressLoading" class="alert alert-danger my-3">{{ addressError }}</div>
 
-    <div class="actions">
-      <button type="button" class="btn-alt" routerLink="/customer/order-history">View Order History</button>
-      <button type="submit" class="btn-primary">Save Profile</button>
-    </div>
-  </form>
-</main>
+        <div *ngIf="!showAddAddressForm && !addressLoading && userAddresses.length > 0" class="addresses-list">
+          <div *ngFor="let addr of userAddresses" class="address-item card mb-3">
+            <div class="card-body">
+              <p><strong>Address:</strong> {{ addr.addressLine }}</p>
+              <p><strong>City:</strong> {{ addr.city }}</p>
+              <p><strong>District:</strong> {{ addr.district }}</p>
+              <p><strong>Postal Code:</strong> {{ addr.postalCode }}</p>
+              <p><strong>Country:</strong> {{ addr.country }}</p>
+              <div class="address-actions mt-2">
+                <button type="button" class="btn btn-sm btn-outline-primary mr-2" (click)="toggleAddAddressForm(addr)">Edit</button>
+                <button type="button" class="btn btn-sm btn-outline-danger" (click)="onDeleteAddress(addr.addressId)">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!showAddAddressForm && !addressLoading && userAddresses.length === 0" class="text-center my-3">
+          <p>You have no saved addresses.</p>
+        </div>
+
+        <div class="my-3 text-center" *ngIf="!showAddAddressForm">
+          <button type="button" class="btn btn-primary" (click)="toggleAddAddressForm()">
+            <i class="fa fa-plus-circle" style="margin-right: 5px;"></i> Add New Address
+          </button>
+        </div>
+
+        <div *ngIf="showAddAddressForm" class="add-address-form card mt-3">
+          <div class="card-body">
+            <h3 class="card-title">{{ editingAddress ? 'Edit Address' : 'Add New Address' }}</h3>
+            <form [formGroup]="addressForm" (ngSubmit)="onSaveAddress()">
+              <div class="form-group mb-2">
+                <label for="addressLine">Address Line</label>
+                <input id="addressLine" type="text" class="form-control" formControlName="addressLine">
+                <small *ngIf="addressForm.get('addressLine')?.touched && addressForm.get('addressLine')?.invalid" class="text-danger">Address line is required.</small>
+              </div>
+              <div class="form-group mb-2">
+                <label for="city">City</label>
+                <input id="city" type="text" class="form-control" formControlName="city">
+                <small *ngIf="addressForm.get('city')?.touched && addressForm.get('city')?.invalid" class="text-danger">City is required.</small>
+              </div>
+              <div class="form-group mb-2">
+                <label for="district">District</label>
+                <input id="district" type="text" class="form-control" formControlName="district">
+                <small *ngIf="addressForm.get('district')?.touched && addressForm.get('district')?.invalid" class="text-danger">District is required.</small>
+              </div>
+              <div class="form-group mb-2">
+                <label for="postalCode">Postal Code</label>
+                <input id="postalCode" type="text" class="form-control" formControlName="postalCode">
+                <small *ngIf="addressForm.get('postalCode')?.touched && addressForm.get('postalCode')?.invalid" class="text-danger">Postal code is required.</small>
+              </div>
+              <div class="form-group mb-3">
+                <label for="country">Country</label>
+                <input id="country" type="text" class="form-control" formControlName="country">
+                <small *ngIf="addressForm.get('country')?.touched && addressForm.get('country')?.invalid" class="text-danger">Country is required.</small>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-success" [disabled]="addressForm.invalid || addressLoading">
+                  <span *ngIf="addressLoading">Saving...</span>
+                  <span *ngIf="!addressLoading">{{ editingAddress ? 'Update Address' : 'Save Address' }}</span>
+                </button>
+                <button type="button" class="btn btn-secondary ml-2" (click)="toggleAddAddressForm()">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="profile-section password-section">
+        <h2>Change Password</h2>
+        <div *ngIf="passwordChangeError" class="alert alert-danger">{{ passwordChangeError }}</div>
+        <div *ngIf="passwordChangeSuccess" class="alert alert-success">{{ passwordChangeSuccess }}</div>
+        <div class="grid-two">
+          <div class="field">
+            <label for="currentPasswordProfile">Current Password</label>
+            <input id="currentPasswordProfile" formControlName="currentPassword" type="password" class="form-control"/>
+            <small *ngIf="profileForm.get('currentPassword')?.touched && profileForm.get('currentPassword')?.errors?.['required']" class="text-danger">Current password is required.</small>
+          </div>
+          <div class="field">
+            <label for="newPasswordProfile">New Password</label>
+            <input id="newPasswordProfile" formControlName="newPassword" type="password" class="form-control"/>
+            <small *ngIf="profileForm.get('newPassword')?.touched && profileForm.get('newPassword')?.errors?.['required']" class="text-danger">New password is required.</small>
+             <small *ngIf="profileForm.get('newPassword')?.touched && profileForm.get('newPassword')?.hasError('minlength')" class="text-danger">
+              New password must be at least 6 characters.
+            </small>
+          </div>
+          <div class="field">
+            <label for="confirmPasswordProfile">Confirm Password</label>
+            <input id="confirmPasswordProfile" formControlName="confirmPassword" type="password" class="form-control"/>
+            <small *ngIf="profileForm.get('confirmPassword')?.touched && profileForm.get('confirmPassword')?.errors?.['required']" class="text-danger">Confirm password is required.</small>
+            <small *ngIf="profileForm.errors?.['mismatch'] && profileForm.get('confirmPassword')?.touched" class="text-danger">Passwords do not match.</small>
+          </div>
+        </div>
+        <div class="password-actions">
+          <button type="button" class="btn btn-primary" (click)="onUpdatePassword()" [disabled]="passwordChangeLoading">
+              <span *ngIf="passwordChangeLoading">Updating...</span>
+              <span *ngIf="!passwordChangeLoading">Update Password</span>
+          </button>
+        </div>
+      </section>
+
+      <div class="actions main-actions mt-4">
+        <button type="button" class="btn btn-alt" routerLink="/customer/order-history">View Order History</button>
+      </div>
+    </form>
+  </main>
+</div>
 
 <app-footer></app-footer>

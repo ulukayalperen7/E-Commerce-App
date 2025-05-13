@@ -1,109 +1,107 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { AuthResponse, LoginCredentials, RegisterPayload } from '../models/auth.model';
+import { User } from '../models/user.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
-  // Add a BehaviorSubject to track authentication state in real-time
-  private readonly AUTH_USER_KEY = 'loggedInUser';
-  private readonly AUTH_SESSION_KEY = 'authSession';
+  private apiUrl = 'http://localhost:8080/api/v1/auth';
+  private tokenKey = 'authToken_ecommerceApp_v3';
+  private userKey = 'authUser_ecommerceApp_v3';
 
-  constructor(private router: Router) {
-    // Validate session on service initialization
-    this.validateSession();
-  }
+  private currentUserSubject: BehaviorSubject<User | null>;
+  public currentUser$: Observable<User | null>;
 
-  /**
-   * Validates the current session to ensure both localStorage and sessionStorage are in sync
-   * This prevents inconsistent auth states
-   */
-  private validateSession(): void {
-    const hasUser = localStorage.getItem(this.AUTH_USER_KEY) !== null;
-    const hasSession = sessionStorage.getItem(this.AUTH_SESSION_KEY) === 'true';
-    
-    // If there's a mismatch, clear everything to be safe
-    if (hasUser !== hasSession) {
-      this.clearAllAuthData();
-    }
-  }
+  constructor(private http: HttpClient, private router: Router) {
+    const storedUserJson = localStorage.getItem(this.userKey);
+    const storedToken = localStorage.getItem(this.tokenKey);
+    let initialUser: User | null = null;
 
-  /**
-   * Complete cleanup of all auth data
-   */
-  private clearAllAuthData(): void {
-    localStorage.removeItem(this.AUTH_USER_KEY);
-    sessionStorage.removeItem(this.AUTH_SESSION_KEY);
-    // Also clear any other related auth data
-    sessionStorage.removeItem('redirectUrl');
-  }
-
-  register(user: any): Observable<any> {
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const exists = users.some((u: any) => u.email === user.email);
-    if (exists) {
-      return throwError(() => new Error('Email already registered'));
-    }
-    users.push(user);
-    localStorage.setItem('users', JSON.stringify(users));
-    return of(user);
-  }
-
-  login(credentials: any): Observable<any> {
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const found = users.find(
-      (u: any) =>
-        u.email === credentials.email && u.password === credentials.password
-    );
-    if (found) {
-      // Set both auth storage items
-      localStorage.setItem(this.AUTH_USER_KEY, JSON.stringify(found));
-      sessionStorage.setItem(this.AUTH_SESSION_KEY, 'true');
-      return of(found);
+    if (storedUserJson && storedToken) {
+        try {
+            initialUser = JSON.parse(storedUserJson);
+        } catch (e) {
+            localStorage.removeItem(this.userKey);
+            localStorage.removeItem(this.tokenKey);
+        }
     } else {
-      return throwError(() => new Error('Invalid credentials'));
+        localStorage.removeItem(this.userKey);
+        localStorage.removeItem(this.tokenKey);
     }
+
+    this.currentUserSubject = new BehaviorSubject<User | null>(initialUser);
+    this.currentUser$ = this.currentUserSubject.asObservable();
+  }
+
+  public get currentUserValue(): User | null {
+    return this.currentUserSubject.value;
+  }
+
+  private handleAuthResponse(response: AuthResponse): void {
+    if (response && response.accessToken && response.user) {
+      localStorage.setItem(this.tokenKey, response.accessToken);
+      localStorage.setItem(this.userKey, JSON.stringify(response.user));
+      this.currentUserSubject.next(response.user);
+    } else {
+      this.logout();
+      throw new Error('Invalid auth response from server.');
+    }
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = 'An unknown error occurred during authentication.';
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      if (error.error && typeof error.error.message === 'string') {
+        errorMessage = error.error.message;
+      } else if (typeof error.error === 'string' && error.error.length < 250) {
+        errorMessage = error.error;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+    }
+    console.error('AuthService API Error:', errorMessage, error.status, error.error);
+    return throwError(() => new Error(errorMessage));
+  }
+
+  login(credentials: LoginCredentials): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
+      tap(response => this.handleAuthResponse(response)),
+      catchError(this.handleError)
+    );
+  }
+
+  register(payload: RegisterPayload): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, payload).pipe(
+      tap(response => {
+        this.handleAuthResponse(response);
+      }),
+      catchError(this.handleError)
+    );
   }
 
   logout(): void {
-    // Remove user data from storage
-    localStorage.removeItem('loggedInUser');
-    sessionStorage.removeItem('authSession');
-  
-    // ALSO clear the shared favorites key
-    localStorage.removeItem('favorites');
-  
-    // Redirect to login-required page
+    localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.userKey);
+    this.currentUserSubject.next(null);
+    sessionStorage.removeItem('redirectUrl');
     this.router.navigate(['/home']);
   }
 
-  /**
-   * Checks if user is authenticated by verifying both localStorage and sessionStorage
-   * This is the main method used by guards and components
-   */
-  isLoggedIn(): boolean {
-    const hasUser = localStorage.getItem(this.AUTH_USER_KEY) !== null;
-    const hasSession = sessionStorage.getItem(this.AUTH_SESSION_KEY) === 'true';
-    
-    return hasUser && hasSession;
+  getToken(): string | null {
+    return localStorage.getItem(this.tokenKey);
   }
 
-  getCurrentUser(): any {
-    if (!this.isLoggedIn()) {
-      return null;
-    }
-    const userData = localStorage.getItem(this.AUTH_USER_KEY);
-    return userData ? JSON.parse(userData) : null;
-  }
-  
-  /**
-   * Force authentication check and redirect if not authenticated
-   * This can be called from components to verify auth status
-   */
-  checkAuthAndRedirect(): boolean {
-    if (!this.isLoggedIn()) {
-      this.router.navigate(['/login-required']);
-      return false;
-    }
-    return true;
+  isLoggedIn(): boolean {
+    const token = this.getToken();
+    const user = this.currentUserValue;
+    console.log('AuthService isLoggedIn check: Token exists?', !!token, 'User value exists?', !!user); 
+    return !!token && !!user;
   }
 }

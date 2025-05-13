@@ -6,7 +6,7 @@
   padding: 40px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
   position: relative;
-  border-top: 4px solid #3498db;
+  // border-top: 4px solid #3498db; // Bu satırı kaldırıp ::before ile değiştirmiştik, doğru
 
   &::before {
     content: '';
@@ -14,7 +14,7 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 6px;
+    height: 6px; // 4px'ten 6px'e çıkarılmış, isteğe bağlı
     background: linear-gradient(to right, #3498db, #6c5ce7);
   }
 }
@@ -54,23 +54,52 @@
 .form-group {
   margin-bottom: 20px;
 
-  input {
+  label { // Label için stil eklendi
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #495057;
+    font-weight: 500;
+  }
+
+  input, 
+  select { // select elementi de input stillerini alacak şekilde güncellendi
     width: 100%;
     padding: 12px 20px;
     border: 2px solid #e0e0e0;
     border-radius: 8px;
     font-size: 16px;
     transition: border-color 0.3s;
+    background-color: #fff; // Select için arkaplan rengi
+    color: #495057; // Select için metin rengi
+    box-sizing: border-box; // Padding ve border'ın genişliği etkilememesi için
 
     &:focus {
       outline: none;
       border-color: #6c5ce7;
+      box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25); // Focus anında hafif bir gölge
     }
 
     &.invalid {
       border-color: #e74c3c;
+      &:focus { // Hatalı durumda focus gölgesi
+        box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.25);
+      }
     }
   }
+
+  // Select için özel görünüm (isteğe bağlı, tarayıcı varsayılan okunu gizlemek için)
+  select {
+    appearance: none; // Tarayıcı varsayılan okunu kaldır
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%236c5ce7'%3E%3Cpath d='M8 11.293l-4.646-4.647a.5.5 0 0 1 .708-.708L8 9.879l3.938-3.938a.5.5 0 1 1 .707.707L8 11.293z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    padding-right: 2.5rem; // Ok için yer bırak
+  }
+
 
   .error {
     display: block;
@@ -105,6 +134,8 @@
   &:disabled {
     opacity: 0.7;
     cursor: not-allowed;
+    transform: translateY(0); // Disabled iken hover efekti olmasın
+    box-shadow: none; // Disabled iken hover efekti olmasın
   }
 }
 

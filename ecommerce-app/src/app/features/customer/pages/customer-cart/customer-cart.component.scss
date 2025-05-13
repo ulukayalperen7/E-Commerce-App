@@ -1,98 +1,359 @@
+:host {
+  display: block;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - var(--navbar-height, 60px) - var(--footer-height, 60px));
+  padding-bottom: 2rem;
+}
+
 .cart-container {
-    padding: 2rem;
-    background-color: #f9f9f9; 
-  
-    .loading,
-    .empty-cart {
-      text-align: center;
-      font-size: 1.2rem;
-      color: #888;
+  max-width: 960px;
+  margin: 40px auto;
+  padding: 2rem;
+  box-sizing: border-box;
+
+  .loading,
+  .empty-cart {
+    background: #fff;
+    border-radius: 15px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border-top: 4px solid #6c5ce7;
+
+    p {
+      font-size: 1.25rem;
+      color: #555;
+      margin-bottom: 1.5rem;
     }
-  
-    .cart-content {
-      max-width: 900px;
-      margin: 0 auto;
-  
-      h2 {
-        margin-bottom: 1.5rem;
-        color: #333;
+
+    .btn-primary {
+      padding: 12px 25px;
+      background: linear-gradient(45deg, #6c5ce7, #3498db);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
       }
-  
-      .cart-items {
+    }
+  }
+
+  .cart-content {
+    background: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border-top: 4px solid #3498db;
+
+    h2 {
+      font-size: 2rem;
+      color: #2c3e50;
+      margin-bottom: 2rem;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .alert-danger {
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+      color: #721c24;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+    }
+
+    .cart-items {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      .cart-item {
         display: flex;
-        flex-direction: column;
-        gap: 1.2rem;
-  
-        .cart-item {
+        align-items: flex-start;
+        background: #fdfdfd;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        border: 1px solid #eee;
+        transition: box-shadow 0.3s ease;
+        cursor: pointer;
+
+        &:hover {
+          box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+        }
+
+        &-image {
+          width: 100px;
+          height: 100px;
+          object-fit: cover;
+          border-radius: 8px;
+          margin-right: 20px;
+          border: 1px solid #e0e0e0;
+        }
+
+        .cart-item-details {
+          flex-grow: 1;
+
+          h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.2rem;
+            color: #333;
+            font-weight: 500;
+          }
+
+          .price {
+            color: #555;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+          }
+
+          .quantity-controls {
+            display: flex;
+            align-items: center;
+            margin: 0.5rem 0 0.75rem;
+
+            .quantity-btn {
+              width: 32px;
+              height: 32px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background: #e9ecef;
+              border: 1px solid #ced4da;
+              color: #495057;
+              border-radius: 6px;
+              cursor: pointer;
+              font-size: 1.1rem;
+              transition: background-color 0.2s, border-color 0.2s;
+
+              &:hover:not(:disabled) {
+                background: #d4dae0;
+                border-color: #adb5bd;
+              }
+              &:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+              }
+            }
+
+            .quantity-input {
+              width: 60px;
+              text-align: center;
+              margin: 0 10px;
+              padding: 8px;
+              border: 1px solid #ced4da;
+              border-radius: 6px;
+              font-size: 1rem;
+              color: #495057;
+              background-color: #fff;
+
+              &:focus {
+                outline: none;
+                border-color: #6c5ce7;
+                box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+              }
+              &::-webkit-outer-spin-button,
+              &::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+              }
+              &[type=number] {
+                -moz-appearance: textfield;
+              }
+            }
+          }
+
+          .subtotal {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.05rem;
+            margin-top: 0.5rem;
+          }
+        }
+
+        .remove-btn {
+          background: transparent;
+          border: none;
+          color: #e74c3c; // Ana renk (ikon ve metin bu rengi alır)
+          cursor: pointer;
+          padding: 6px 8px; // Padding ayarlandı
+          margin-left: 15px;
+          align-self: center;
+          transition: color 0.2s ease, transform 0.2s ease;
           display: flex;
           align-items: center;
-          background: #fff;
-          border-radius: 8px;
-          padding: 1rem;
-          box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
-  
-          &-image {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 4px;
-            margin-right: 1rem;
+          font-size: 0.9rem; // Metin font boyutu
+          border-radius: 4px; // Hafif köşe yuvarlaklığı
+
+          .trash-icon {
+            // width ve height HTML'den geliyor, gerekirse burada ezilebilir.
+            // fill: currentColor; // Zaten SVG içinde var, ama burada da belirtilebilir.
+            margin-right: 5px; // İkon ve metin arası boşluk
+            // Dikey hizalama için (eğer gerekirse)
+            // vertical-align: middle;
           }
-  
-          .cart-item-details {
-            flex-grow: 1;
-  
-            h3 {
-              margin: 0 0 0.3rem;
-              font-size: 1.1rem;
-              color: #222;
-            }
-  
-            .price {
-              color: #666;
-              font-size: 1rem;
-            }
+
+          .remove-text {
+            // İsteğe bağlı: mobil için gizleme
+            // @media (max-width: 576px) {
+            //   display: none;
+            // }
           }
-  
-          .remove-btn {
-            background: none;
-            border: 1px solid #ccc;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-  
-            &:hover {
-              background-color: #ffe6e6;
-              border-color: #ff4d4d;
-              color: #d00;
-            }
+
+          &:hover {
+            color: #c0392b; // Hover rengi
+            background-color: rgba(231, 76, 60, 0.05); // Çok hafif bir hover arkaplanı
+            transform: scale(1.05);
           }
         }
       }
-  
-      .cart-summary {
-        margin-top: 2rem;
-        text-align: right;
-  
-        p {
-          font-size: 1.2rem;
-          margin-bottom: 0.8rem;
+    }
+
+    hr {
+      margin: 2rem 0;
+      border: 0;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .cart-summary-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1rem;
+
+      p {
+        font-size: 1.3rem;
+        color: #333;
+        margin-bottom: 1rem;
+        font-weight: 500;
+        strong {
+          color: #2c3e50;
+          font-weight: 700;
         }
-  
-        .checkout-btn {
-          background-color: #007bff;
-          color: white;
-          padding: 0.7rem 1.4rem;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-          transition: background-color 0.2s;
-  
-          &:hover {
-            background-color: #0056b3;
-          }
+      }
+
+      .button-group {
+          display: flex;
+          gap: 0.75rem;
+      }
+
+      .clear-cart-btn, .checkout-btn {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+        min-width: 180px;
+        text-align: center;
+      }
+
+      .clear-cart-btn {
+        background-color: #95a5a6;
+        color: white;
+        &:hover {
+          background-color: #7f8c8d;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+      }
+
+      .checkout-btn {
+        background: linear-gradient(45deg, #6c5ce7, #3498db);
+        color: white;
+        &:hover {
+          background: linear-gradient(45deg, darken(#6c5ce7, 5%), darken(#3498db, 5%));
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
+        &:disabled {
+          background: #bdc3c7;
+          opacity: 0.7;
+          cursor: not-allowed;
+          transform: translateY(0);
+          box-shadow: none;
         }
       }
     }
   }
+}
+
+@media (max-width: 768px) {
+  .cart-container {
+    padding: 1rem;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    .cart-content {
+      padding: 20px;
+      h2 {
+        font-size: 1.6rem;
+      }
+
+      .cart-items .cart-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+        &-image {
+          margin-right: 0;
+          margin-bottom: 1rem;
+        }
+        .cart-item-details {
+            align-items: center;
+            .quantity-controls {
+                justify-content: center;
+            }
+        }
+        .remove-btn {
+          margin-left: 0;
+          margin-top: 1rem;
+          align-self: center;
+        }
+      }
+
+      .cart-summary-actions {
+        align-items: center;
+        .button-group {
+            flex-direction: column;
+            width: 100%;
+        }
+        .clear-cart-btn, .checkout-btn {
+            width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+    .cart-container .cart-content {
+        .cart-items .cart-item-details {
+            h3 {
+                font-size: 1.1rem;
+            }
+            .price, .subtotal {
+                font-size: 0.95rem;
+            }
+        }
+        .cart-summary-actions p {
+            font-size: 1.1rem;
+        }
+        .cart-items .cart-item .remove-btn {
+            // Sadece ikonu göstermek için metni gizle
+            // .remove-text {
+            //    display: none;
+            // }
+            // .trash-icon {
+            //    margin-right: 0; // Metin yoksa sağ boşluğa gerek yok
+            // }
+        }
+    }
+}

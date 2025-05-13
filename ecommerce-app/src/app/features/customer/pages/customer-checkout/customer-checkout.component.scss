@@ -1,0 +1,272 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.checkout-page-wrapper { // Navbar ve Footer dışındaki tüm içeriği saracak
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.checkout-container {
+  width: 100%;
+  max-width: 900px; // checkout-container'ın maksimum genişliği
+  margin: 2rem auto 4rem auto; // Üst, sağ/sol auto, alt boşluk
+  padding: 0 1rem; // Yanlardan padding (mobil için)
+
+  .card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+
+  .card-header {
+    background: linear-gradient(45deg, #3498db, #6c5ce7);
+    color: white;
+    padding: 1.25rem 1.5rem;
+
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+  }
+
+  .card-body {
+    padding: 2rem;
+  }
+
+  h4 {
+    font-size: 1.4rem;
+    color: #2c3e50;
+    font-weight: 500;
+    margin-bottom: 1.5rem !important;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #eaeaea;
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
+
+    label {
+      font-weight: 500;
+      color: #495057;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      display: block;
+    }
+
+    .form-control {
+      border-radius: 8px;
+      border: 2px solid #e0e0e0;
+      padding: 10px 15px;
+      font-size: 1rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      width: 100%;
+      box-sizing: border-box;
+
+      &:focus {
+        border-color: #6c5ce7;
+        box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+        outline: none;
+      }
+    }
+
+    select.form-control {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%236c5ce7'%3E%3Cpath d='M8 11.293l-4.646-4.647a.5.5 0 0 1 .708-.708L8 9.879l3.938-3.938a.5.5 0 1 1 .707.707L8 11.293z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 1em;
+      padding-right: 2.5rem;
+    }
+  }
+
+  .order-summary-preview, .order-summary-final {
+    background-color: #f7f9fc;
+    border: 1px solid #e9ecef;
+    padding: 1.5rem;
+    border-radius: 8px;
+
+    h5 {
+      color: #34495e;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    p {
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      color: #555;
+      strong {
+        color: #2c3e50;
+      }
+    }
+  }
+
+  .address-selection-actions {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .add-address-form {
+    .card-body {
+      padding: 1.5rem;
+    }
+    .card-title {
+      font-size: 1.2rem;
+      color: #34495e;
+      font-weight: 500;
+    }
+  }
+
+  .btn {
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+    }
+     &:disabled {
+      background: #ced4da !important; // Önemli, diğer stilleri ezmek için
+      color: #6c757d !important;
+      opacity: 0.65 !important;
+      transform: translateY(0) !important;
+      box-shadow: none !important;
+      cursor: not-allowed !important;
+    }
+  }
+
+  .btn-action-primary {
+    background: linear-gradient(45deg, #6c5ce7, #3498db);
+    color: white;
+    padding: 12px 25px;
+
+    &:hover:not(:disabled) {
+      background: linear-gradient(45deg, darken(#6c5ce7, 7%), darken(#3498db, 7%));
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(108, 92, 231, 0.35);
+    }
+  }
+
+  .btn-action-save {
+    background-color: #6c5ce7;
+    color: white;
+    padding: 10px 22px;
+
+    &:hover:not(:disabled) {
+      background-color: darken(#6c5ce7, 10%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+    }
+  }
+
+  .btn-outline-themed {
+    color: #6c5ce7;
+    border: 2px solid #6c5ce7;
+    background-color: transparent;
+    padding: 8px 18px;
+    font-size: 0.95rem;
+
+    &:hover {
+      background-color: #6c5ce7;
+      color: white;
+      box-shadow: 0 2px 8px rgba(108, 92, 231, 0.2);
+    }
+  }
+
+  .btn-outline-secondary-custom {
+      color: #495057;
+      border: 2px solid #adb5bd;
+      background-color: transparent;
+      padding: 8px 18px;
+      font-size: 0.95rem;
+
+      &:hover {
+          background-color: #e9ecef;
+      }
+  }
+
+  .address-step-footer,
+  .payment-step-footer {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  #card-element-ref {
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px;
+    background-color: white;
+    margin-top: 0.5rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+
+    &.StripeElement--focus {
+      border-color: #6c5ce7;
+      box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+    }
+  }
+
+  .alert { // Genel alert stilleri, Bootstrap'i üzerine yazmak için
+    border-radius: 8px;
+    padding: 1.25rem; // Biraz daha fazla padding
+    margin-bottom: 1.5rem; // Diğer elemanlarla boşluk
+  }
+
+  .alert-success {
+    background-color: #e6f7ff;
+    border-color: #b3e0ff;
+    color: #004085;
+    h4 {
+      color: #004085;
+      border-bottom: none;
+      margin-bottom: 0.75rem !important;
+    }
+  }
+
+  .alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+     .btn-link {
+        color: #721c24;
+        text-decoration: underline;
+        padding-left: 5px;
+        font-weight: bold;
+        &:hover {
+            color: darken(#721c24, 10%);
+        }
+    }
+  }
+
+  .alert-info {
+    background-color: #e7f3fe;
+    border-color: #d0e7fd;
+    color: #0c5460;
+    .alert-link {
+        color: #0056b3;
+        font-weight: bold;
+        text-decoration: underline;
+         &:hover {
+            color: darken(#0056b3, 10%);
+        }
+    }
+  }
+
+  .text-center.my-3 p {
+    font-size: 1.1rem;
+    color: #555;
+  }
+}
